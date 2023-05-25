@@ -1,5 +1,6 @@
 package com.revature.eMarket.services;
 
+import com.revature.eMarket.models.User;
 import com.revature.eMarket.screens.HomeScreen;
 import com.revature.eMarket.screens.RegisterScreen;
 
@@ -14,10 +15,16 @@ public class RouterService {
                 new HomeScreen(this).start(scan);
                 break;
             case "/register":
-                new RegisterScreen().start(scan);
+                new RegisterScreen(new UserService()).start(scan);
                 break;
             default:
                 break;
         }
+    }
+
+    /*************************************** Helper Method ************************************/
+
+    private UserService getUserService() {
+        return new UserService();
     }
 }

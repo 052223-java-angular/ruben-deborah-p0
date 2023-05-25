@@ -26,13 +26,21 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok-maven-plugin -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok-maven-plugin</artifactId>
+      <version>1.18.20.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+
     <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>42.6.0</version>
     </dependency>
-
 
   </dependencies>
 
