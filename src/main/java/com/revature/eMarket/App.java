@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package com.revature.eMarket;
 
 public class App {
   public static void main(String args[]) {
