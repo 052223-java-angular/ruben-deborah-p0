@@ -32,6 +32,7 @@ public class RegisterScreen implements IScreen {
     /*************************** Helper methods *****************************************/
 
     public String getUsername(Scanner scan) {
+
         while (true) {
             System.out.print("\nEnter a username (x to cancel): ");
             String username = scan.nextLine();
@@ -47,8 +48,17 @@ public class RegisterScreen implements IScreen {
                 scan.nextLine();
                 continue;
             }
-            return username;
+
+            if (!userService.isUniqueUsername(username)) {
+
+                System.out.print("Username is not unique! [Enter] to continue: ");
+                scan.nextLine();
+                continue;
+            }
+
+            break;
         }
+        return "";
     }
 
     public String getPassword() {
