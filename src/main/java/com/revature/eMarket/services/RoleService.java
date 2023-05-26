@@ -12,12 +12,13 @@ public class RoleService {
     private final RoleDAO roleDao;
 
     public Role findByName(String username) {
+
         Optional<Role> roleOpt = roleDao.findByName(username);
+        System.out.println("RoleService > findByName");
 
         if (roleOpt.isEmpty()) {
-            throw new RoleNotFoundException();
+            System.out.println("User Role not found :(");
         }
-
         return roleOpt.get();
     }
 }

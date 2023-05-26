@@ -71,7 +71,7 @@ public class UserDAO implements CrudDAO<User> {
                         user.setId(rs.getString("id"));
                         user.setUsername(rs.getString("username"));
                         user.setPassword(rs.getString("password"));
-                        user.setRole_id(rs.getString("role_id)"));
+                        user.setRole_id(rs.getString("role_id"));
                         return Optional.of(user);
                     }
                 }
@@ -79,6 +79,7 @@ public class UserDAO implements CrudDAO<User> {
 
 
         }catch (SQLException e) {
+            System.out.println(e.toString());
             throw new RuntimeException("Unable to access the database. Debug");
         }catch(ClassNotFoundException e) {
             throw new RuntimeException("Can't find application. Debug");

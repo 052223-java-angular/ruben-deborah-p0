@@ -42,6 +42,9 @@ public class RoleDAO implements CrudDAO<Role> {
 
     public Optional<Role> findByName(String username) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+            System.out.println("RoleDAO > findByName");
+
             String sql = "SELECT * FROM roles WHERE role = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -53,6 +56,7 @@ public class RoleDAO implements CrudDAO<Role> {
                         Role role = new Role();
                         role.setId(rs.getString("id"));
                         role.setRole(rs.getString("role"));
+
                         return Optional.of(role);
                     }
                 }

@@ -23,12 +23,14 @@ public class UserService {
     // register new user to database
     public User register(String username, String password) {
         System.out.println("UserService > register method ERROR");
+
         Role foundFound = roleService.findByName("USER");
 
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt()); // one way encryption salt key
         User newUser = new User(username, hashed, foundFound.getId());
         userDAO.save(newUser);
-        return null;
+        return newUser;
+
     }
 
     // if username is valid

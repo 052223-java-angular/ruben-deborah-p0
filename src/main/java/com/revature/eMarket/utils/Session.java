@@ -14,6 +14,7 @@ public class Session {
     private String role_id;
 
     public void setSession(User user) {
+        //System.out.println(user);
         this.id = user.getId();
         this.username = user.getUsername();
         this.role_id = user.getRole_id();
