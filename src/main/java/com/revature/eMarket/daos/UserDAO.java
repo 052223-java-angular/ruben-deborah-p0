@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class UserDAO implements CrudDAO<User>{
@@ -48,7 +49,7 @@ public class UserDAO implements CrudDAO<User>{
 
     public Optional<User> findByUsername(String username){
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "SELECT * FROM user WHERE username = ?";
+            String sql = "SELECT * FROM users WHERE username = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 // set the username parameters for the prepared statement
@@ -65,6 +66,8 @@ public class UserDAO implements CrudDAO<User>{
                     }
                 }
             }
+        }catch(NoSuchElementException e){
+            System.out.println("User element not found.");
         }catch(SQLException e){
             throw new RuntimeException(e.getMessage());
         }catch(IOException e){
