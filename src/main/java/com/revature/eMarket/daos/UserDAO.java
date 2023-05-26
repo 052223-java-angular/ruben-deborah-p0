@@ -48,7 +48,7 @@ public class UserDAO implements CrudDAO<User>{
 
     public Optional<User> findByUsername(String username){
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "SELECT * FROM users WHERE username = ?";
+            String sql = "SELECT * FROM user WHERE username = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 // set the username parameters for the prepared statement
