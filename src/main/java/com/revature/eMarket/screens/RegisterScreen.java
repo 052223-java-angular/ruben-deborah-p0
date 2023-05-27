@@ -1,14 +1,20 @@
 package com.revature.eMarket.screens;
 
-import com.revature.eMarket.models.User;
-import com.revature.eMarket.services.UserService;
-import lombok.AllArgsConstructor;
-
 import java.util.Scanner;
+
+import com.revature.eMarket.models.User;
+import com.revature.eMarket.services.RoleService;
+import com.revature.eMarket.utils.Session;
+import  lombok.*;
+import com.revature.eMarket.services.RouterService;
+import com.revature.eMarket.services.UserService;
 
 @AllArgsConstructor
 public class RegisterScreen implements IScreen {
     private final UserService userService;
+    private final RouterService router;
+    private Session session;
+
 
     @Override
     public void start(Scanner scan) {
@@ -19,47 +25,47 @@ public class RegisterScreen implements IScreen {
         exit:
         {
             while (true) {
-                clearScreen();
-                System.out.println("\nWelcome to the Registration Screen.");
-//                scan.nextLine();
+                System.out.println("\nRegister Screen. [Enter to cont..]");
+                scan.nextLine();
 
-                // get username
                 username = getUsername(scan);
-                if(username.equals("x")){
+
+                if (username.equals("x")) {
                     break exit;
                 }
 
                 // get password
                 password = getPassword(scan);
-                if(password.equals("x")){
-                    break;
+
+                if(password.equals("x")) {
+                    break exit;
                 }
 
-                //confirm user's info
-                clearScreen();
-                System.out.println("Please confirm your credentials.");
-                System.out.println("\nUsername :" + username);
-                System.out.println("Password: " + password);
-                System.out.println("\n Enter (y/n)");
+                System.out.println("Please confirm your credentials: ");
+                System.out.println("\nUsername: " + username);
+                System.out.println("\npassword: " + password);
+                System.out.println("\n[y/n]: ");
 
-                switch(scan.nextLine()){
+                switch(scan.nextLine()) {
                     case "y":
-                        User newUser = userService.register(username, password);
-                        break;
-                    case "n":
-                        clearScreen();
-                        System.out.println("\nRestarting process:");
-                        System.out.println("\nPress enter to continue...");
-                        scan.nextLine();
-                        break;
-                    default:
-                        clearScreen();
-                        System.out.println("\nInvalid Option!");
-                        System.out.println("\nPress enter to continue...");
-                        scan.nextLine();
+                        System.out.println("Created user confirm test [y]");
+                        User createdUser = userService.register(username, password);
+                        //Session session = new Session();
+                        session.setSession(createdUser);
+                        router.navigate("/menu", scan);
+                        break exit;
 
+                    case "n":
+                        System.out.println("Restarting register process");
+                        System.out.print("Press [Enter] to continue...");
+                        scan.nextLine();
+                    default:
+                        System.out.println("Choose a valid option.");
+                        System.out.print("Press [Enter] to continue...");
+                        scan.nextLine();
                         break;
                 }
+
                 break exit;
             }
         }
@@ -67,9 +73,48 @@ public class RegisterScreen implements IScreen {
 
     /*************************** Helper methods *****************************************/
 
+    public String getPassword(Scanner scan) {
+        String password = "";
+        String confirm = "";
+
+        while(true) {
+            System.out.print("\nEnter a password (x to cancel): ");
+            password = scan.nextLine();
+
+            System.out.print("password:" + password);
+
+            if (password.equalsIgnoreCase("x")) {
+                return "x";
+            }
+            // verify if input password is valid
+            if (!userService.isValidPassword(password)) {
+                System.out.println("Invalid password. 8 chars, 1 letter and 1 number. [Enter to continue...]");
+                scan.nextLine();
+                continue;
+            }
+
+            System.out.println("Confirm password: ");
+            confirm = scan.nextLine();
+
+            if (confirm.equalsIgnoreCase("x")) {
+                return "x";
+            }
+
+            if (!userService.isSamePassword(password, confirm)) {
+                System.out.println("Passwords need to be the same. [Enter to cont...]");
+                scan.nextLine();
+                continue;
+            }
+
+
+
+            break;
+        }
+        return password;
+    }
+
     public String getUsername(Scanner scan) {
         String username = "";
-
         while (true) {
             System.out.print("\nEnter a username (x to cancel): ");
             username = scan.nextLine();
@@ -80,33 +125,26 @@ public class RegisterScreen implements IScreen {
                 return "x";
             }
             if (!userService.isValidUsername(username)) {
-                clearScreen();
-                // username must be 8-20 characters long
                 System.out.println("Invalid username. [8.20 chars, alpha num].");
-                System.out.println("Press [Enter] to continue.");
+                System.out.println("[Enter] to continue.");
                 scan.nextLine();
                 continue;
             }
+
             if (!userService.isUniqueUsername(username)) {
-                clearScreen();
-                // username must be 8-20 characters long
-                System.out.println("Username must be unique!");
-                System.out.println("Press [Enter] to continue.");
+
+                System.out.print("Username is not unique! [Enter] to continue: ");
                 scan.nextLine();
                 continue;
             }
+
             break;
         }
         return username;
     }
 
-    public String getPassword(Scanner scan) {
-//        String password = "";
+    public String getPassword() {
         return "";
-    }
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 
 

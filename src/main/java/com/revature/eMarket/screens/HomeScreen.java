@@ -8,7 +8,6 @@ public class HomeScreen implements IScreen {
     private final RouterService router;
 
     public HomeScreen(RouterService router) {
-
         this.router = router;
     }
     @Override
@@ -20,19 +19,20 @@ public class HomeScreen implements IScreen {
         {
             while (true) {
                 System.out.println("Welcome to eMarket!");
-                System.out.println("\n[1] Login Screen");
-                System.out.println("[2] Register Screen");
-                System.out.println("[x] Exit");
+
+                System.out.println("\n[1] Register Screen");
+                System.out.println("\n[2] Menu Screen");
+                System.out.println("\n[x] Exit");
 
                 System.out.print("\nEnter: ");
                 input = scan.nextLine();
 
                 switch(input.toLowerCase()) {
                     case "1":
-                        break;
-                    case "2":
                         router.navigate("/register", scan);
                         break;
+                    case "2":
+                        router.navigate("/menu", scan);
                     case "x":
                         System.out.println("\nGoodbye.");
                         break exit;

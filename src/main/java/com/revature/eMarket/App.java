@@ -2,6 +2,7 @@ package com.revature.eMarket;
 
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.utils.ConnectionFactory;
+import com.revature.eMarket.utils.Session;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,7 +13,7 @@ public class App {
     System.out.println(ConnectionFactory.getInstance().getConnection());
 
     Scanner scan = new Scanner(System.in);
-    RouterService router = new RouterService();
+    RouterService router = new RouterService(new Session());
     router.navigate("/home", scan);
   }
 }

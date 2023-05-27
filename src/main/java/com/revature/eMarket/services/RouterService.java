@@ -1,12 +1,19 @@
 package com.revature.eMarket.services;
 
 import com.revature.eMarket.daos.UserDAO;
+import com.revature.eMarket.daos.RoleDAO;
+import com.revature.eMarket.models.User;
 import com.revature.eMarket.screens.HomeScreen;
+import com.revature.eMarket.screens.MenuScreen;
 import com.revature.eMarket.screens.RegisterScreen;
+import com.revature.eMarket.utils.Session;
+import lombok.AllArgsConstructor;
 
 import java.util.Scanner;
 
+@AllArgsConstructor
 public class RouterService {
+    private Session session;
 
     public void navigate(String path, Scanner scan) {
 
@@ -14,19 +21,23 @@ public class RouterService {
             case "/home":
                 new HomeScreen(this).start(scan);
                 break;
-            case  "/login" :
-                break;
             case "/register":
-                new RegisterScreen(getUserService()).start(scan);
+                new RegisterScreen(getUserService(), this, session).start(scan);
                 break;
-//            default:
-//                break;
+            case "/menu":
+                new MenuScreen(session).start(scan);
+            default:
+                break;
         }
     }
 
     /*************************************** Helper Method ************************************/
 
     private UserService getUserService() {
-        return new UserService(new UserDAO());
+        return new UserService(new UserDAO(),getRoleService());
+    }
+
+    private RoleService getRoleService() {
+        return new RoleService(new RoleDAO());
     }
 }

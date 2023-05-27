@@ -9,73 +9,82 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public class UserDAO implements CrudDAO<User>{
+public class UserDAO implements CrudDAO<User> {
 
     @Override
     public void save(User obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "INSERT INTO users (id, username, password, role_id) VALUES (?, ?, ?, ?)";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, obj.getId());
+                ps.setString(2, obj.getUsername());
+                ps.setString(3, obj.getPassword());
+                ps.setString(4, obj.getRole_id());
+
+                // update the query, NOT save
+                ps.executeUpdate();
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to access the database. Debug");
+        }catch(ClassNotFoundException e) {
+            throw new RuntimeException("Can't find application. Debug");
+        }catch (IOException e) {
+            throw new RuntimeException("Unable to load JDBC. Debug");
+        }
     }
 
     @Override
     public void update(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
 
     }
 
     @Override
     public void delete(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+
     }
 
     @Override
     public User findById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
-//        return null;
+        return null;
     }
 
     @Override
     public List<User> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
-//        return null;
+        return null;
     }
 
-    public Optional<User> findByUsername(String username){
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+    public Optional<User> findByUsername(String username) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM users WHERE username = ?";
 
-            try(PreparedStatement ps = conn.prepareStatement(sql)){
-                // set the username parameters for the prepared statement
+            try(PreparedStatement ps = conn.prepareStatement(sql)) {
+
                 ps.setString(1, username);
 
-                try(ResultSet rs = ps.executeQuery()){
-                    if(rs.next()){
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
                         User user = new User();
                         user.setId(rs.getString("id"));
                         user.setUsername(rs.getString("username"));
                         user.setPassword(rs.getString("password"));
-                        user.setRoleId(rs.getString("role_id"));
+                        user.setRole_id(rs.getString("role_id"));
                         return Optional.of(user);
                     }
                 }
             }
-        }catch(NoSuchElementException e){
-            System.out.println("User element not found.");
-        }catch(SQLException e){
-            throw new RuntimeException(e.getMessage());
-        }catch(IOException e){
-            System.out.println("Unable to connect to application.properties");
-            throw new RuntimeException(e.getMessage());
-        }catch(ClassNotFoundException e){
-            System.out.println("unable to load jdbc");
-            throw new RuntimeException(e.getMessage());
+
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+            throw new RuntimeException("Unable to access the database. Debug");
+        }catch(ClassNotFoundException e) {
+            throw new RuntimeException("Can't find application. Debug");
+        }catch (IOException e) {
+            throw new RuntimeException("Unable to load JDBC. Debug");
         }
 
         return Optional.empty();
