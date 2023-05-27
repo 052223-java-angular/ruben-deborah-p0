@@ -21,6 +21,7 @@ public class HomeScreen implements IScreen {
                 System.out.println("Welcome to eMarket!");
 
                 System.out.println("\n[1] Register Screen");
+                System.out.println("\n[2] Menu Screen");
                 System.out.println("\n[x] Exit");
 
                 System.out.print("\nEnter: ");
@@ -30,6 +31,8 @@ public class HomeScreen implements IScreen {
                     case "1":
                         router.navigate("/register", scan);
                         break;
+                    case "2":
+                        router.navigate("/menu", scan);
                     case "x":
                         System.out.println("\nGoodbye.");
                         break exit;
