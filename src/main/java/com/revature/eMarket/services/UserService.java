@@ -3,7 +3,6 @@ package com.revature.eMarket.services;
 import com.revature.eMarket.daos.UserDAO;
 import com.revature.eMarket.models.Role;
 import com.revature.eMarket.models.User;
-import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Optional;
@@ -56,5 +55,15 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public boolean login(String username, String password) {
+        Optional<User> user = userDAO.findByUsername(username);
+        if(user.isEmpty()){
+            return false;
+        }
+        System.out.println(user.get().getPassword());
+        return BCrypt.checkpw(password, user.get().getPassword());
+
     }
 }

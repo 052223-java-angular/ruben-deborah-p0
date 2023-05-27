@@ -1,9 +1,9 @@
 package com.revature.eMarket.services;
 
-import com.revature.eMarket.daos.UserDAO;
 import com.revature.eMarket.daos.RoleDAO;
-import com.revature.eMarket.models.User;
+import com.revature.eMarket.daos.UserDAO;
 import com.revature.eMarket.screens.HomeScreen;
+import com.revature.eMarket.screens.LogInScreen;
 import com.revature.eMarket.screens.MenuScreen;
 import com.revature.eMarket.screens.RegisterScreen;
 import com.revature.eMarket.utils.Session;
@@ -20,6 +20,9 @@ public class RouterService {
         switch (path) {
             case "/home":
                 new HomeScreen(this).start(scan);
+                break;
+            case "/login":
+                new LogInScreen(this,getUserService()).start(scan);
                 break;
             case "/register":
                 new RegisterScreen(getUserService(), this, session).start(scan);
