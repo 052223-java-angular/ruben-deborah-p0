@@ -11,7 +11,7 @@ import lombok.*;
 public class Product {
     private String id;
     private String name;
-    private String price;
+    private int price;
     private String stock;
     private String category_id;
 }

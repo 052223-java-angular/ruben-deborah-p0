@@ -33,6 +33,33 @@ public class ProductDAO implements CrudDAO<Product>{
 
     @Override
     public Product findById(String id) {
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "SELECT * FROM products WHERE id = ?";
+            try(PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, id);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        Product prod = new Product();
+                        prod.setId(rs.getString("id"));
+                        prod.setName(rs.getString("name"));
+                        prod.setPrice(rs.getInt("price"));
+                        prod.setStock(rs.getString("stock"));
+                        prod.setCategory_id(rs.getString("category_id"));
+                        return prod;
+                    }
+                }
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to access the database. Debug");
+        }catch(ClassNotFoundException e) {
+            throw new RuntimeException("Can't find application. Debug");
+        }catch (IOException e) {
+            throw new RuntimeException("Unable to load JDBC. Debug");
+        }
+
         return null;
     }
 
@@ -54,7 +81,7 @@ public class ProductDAO implements CrudDAO<Product>{
                         Product prod = new Product();
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));
-                        prod.setPrice(rs.getString("price"));
+                        prod.setPrice(rs.getInt("price"));
                         prod.setStock(rs.getString("stock"));
                         prod.setCategory_id(rs.getString("category_id"));
                         storeList.add(prod);
@@ -87,7 +114,7 @@ public class ProductDAO implements CrudDAO<Product>{
                         Product prod = new Product();
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));
-                        prod.setPrice(rs.getString("price"));
+                        prod.setPrice(rs.getInt("price"));
                         prod.setStock(rs.getString("stock"));
                         prod.setCategory_id(rs.getString("category_id"));
                         return prod;
@@ -119,7 +146,7 @@ public class ProductDAO implements CrudDAO<Product>{
                         Product prod = new Product();
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));
-                        prod.setPrice(rs.getString("price"));
+                        prod.setPrice(rs.getInt("price"));
                         prod.setStock(rs.getString("stock"));
                         prod.setCategory_id(rs.getString("category_id"));
                         storeList.add(prod);
@@ -142,22 +169,24 @@ public class ProductDAO implements CrudDAO<Product>{
         List<Product> storeList = new ArrayList<>();
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "SELECT * FROM products WHERE price BETWEEN ? AND ?";
+            String sql = "SELECT * FROM products WHERE price > ? AND price < ? ORDER BY price";
             try(PreparedStatement ps = conn.prepareStatement(sql)) {
 
-                ps.setString(1, low);
-                ps.setString(2, high);
 
+                ps.setInt(1, Integer.parseInt(low));
+                ps.setInt(2, Integer.parseInt(high));
                 try (ResultSet rs = ps.executeQuery()) {
+
                     while (rs.next()) {
                         Product prod = new Product();
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));
-                        prod.setPrice(rs.getString("price"));
+                        prod.setPrice(rs.getInt("price"));
                         prod.setStock(rs.getString("stock"));
                         prod.setCategory_id(rs.getString("category_id"));
                         storeList.add(prod);
                     }
+
                 }
             }
 
