@@ -36,6 +36,7 @@ CREATE TABLE products (
     id VARCHAR PRIMARY KEY NOT NULL,
     name VARCHAR NOT NULL,
     price VARCHAR NOT NULL,
+    stock VARCHAR NOT NULL,
     category_id VARCHAR NOT null,
     foreign key (category_id) references categories (id)
 );
