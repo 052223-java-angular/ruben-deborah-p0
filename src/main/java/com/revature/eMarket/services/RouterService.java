@@ -21,7 +21,7 @@ public class RouterService {
                 new HomeScreen(this).start(scan);
                 break;
             case "/login":
-                new LogInScreen(this,getUserService()).start(scan);
+                new LogInScreen(this,getUserService(), session).start(scan);
                 break;
             case "/register":
                 new RegisterScreen(getUserService(), this, session).start(scan);
@@ -43,6 +43,7 @@ public class RouterService {
     }
 
     private RoleService getRoleService() {
+
         return new RoleService(new RoleDAO());
     }
 

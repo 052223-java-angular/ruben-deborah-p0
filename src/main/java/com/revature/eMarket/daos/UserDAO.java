@@ -15,9 +15,11 @@ public class UserDAO implements CrudDAO<User> {
 
     @Override
     public void save(User obj) {
+        //establish connection
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "INSERT INTO users (id, username, password, role_id) VALUES (?, ?, ?, ?)";
 
+            //convert java sql to sql
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, obj.getId());
                 ps.setString(2, obj.getUsername());
@@ -58,6 +60,7 @@ public class UserDAO implements CrudDAO<User> {
     }
 
     public Optional<User> findByUsername(String username) {
+        // establish connection
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM users WHERE username = ?";
 
