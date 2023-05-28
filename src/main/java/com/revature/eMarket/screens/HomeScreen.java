@@ -18,7 +18,6 @@ public class HomeScreen implements IScreen {
         exit:
         {
             while (true) {
-                System.out.println("Welcome to eMarket!");
 
                 System.out.println("\n[1] Register Screen");
                 System.out.println("\n[2] Session Screen");

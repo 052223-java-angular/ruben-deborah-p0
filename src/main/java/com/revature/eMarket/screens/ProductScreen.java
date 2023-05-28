@@ -1,7 +1,9 @@
 package com.revature.eMarket.screens;
 
+import com.revature.eMarket.models.Category;
 import com.revature.eMarket.models.Product;
 import com.revature.eMarket.models.User;
+import com.revature.eMarket.services.CategoryService;
 import com.revature.eMarket.services.ProductService;
 import com.revature.eMarket.services.RouterService;
 import lombok.AllArgsConstructor;
@@ -14,28 +16,31 @@ import java.util.Scanner;
 public class ProductScreen implements IScreen{
     private final ProductService productServ;
     private final RouterService router;
+    private final CategoryService catServ;
 
 
     @Override
     public void start(Scanner scan) {
             List<Product> inventory = new ArrayList<>(); // = productServ.findAll();
+            String input = "";
 
             while (true) {
-                System.out.println("\nProducts Screen. [Enter to cont..]");
+                System.out.println("Products Screen. [Enter to cont..]");
                 System.out.println("\n[1] View All Products");
-                System.out.println("\n[2] View By Name");
-                System.out.println("\n[x] Exit ");
+                System.out.println("[2] View By Name");
+                System.out.println("[3] View By Category");
+                System.out.println("[4] Search in range [low,high]");
+                System.out.println("[x] Exit ");
 
                 switch (scan.nextLine()) {
                     case "1": // print the list
-                        System.out.println("Created user confirm test [y]");
                         inventory = productServ.findAll();
                         printList(inventory);
                         break;
                     case "2":
                         System.out.println("Enter product name");
-                        String temp = scan.nextLine();
-                        Product prod = productServ.findByName(temp);
+                        input = scan.nextLine();
+                        Product prod = productServ.findByName(input);
 
                         if (prod != null) {
                             System.out.print("[" + prod.getName() + "] ");
@@ -49,6 +54,25 @@ public class ProductScreen implements IScreen{
                             scan.nextLine();
                         }
                         break;
+                    case "3":
+                        System.out.println("Search by Category\n");
+                        // display categories as options
+                        List<Category> catList = catServ.findAll();
+                        displayCategory(catList);
+                        input = scan.nextLine();
+
+                        inventory = productServ.findById(input);
+                        printList(inventory);
+                        break;
+                    case "4":
+                        System.out.println("Enter low: ");
+                        String low = scan.nextLine();
+                        System.out.println("Enter high: ");
+                        String high = scan.nextLine();
+
+                        inventory = productServ.findByRange(low,high);
+                        printList(inventory);
+                        break;
                     case "x":
                         System.out.println("Leaving products.[Enter] to cont...");
                         router.navigate("/home", scan);
@@ -57,19 +81,28 @@ public class ProductScreen implements IScreen{
                         System.out.println("Choose a valid option. [Enter] to cont...");
                         scan.nextLine();
                 }
-
             }
-
     }
-
 
     // Takes list of products and outputs
     public void printList(List<Product> list) {
         for (int i = 0; i < list.size(); i++) {
-            System.out.print("[" + list.get(i).getName() + "] ");
-            System.out.print(list.get(i).getName() + " ");
-            System.out.print("Price: " + list.get(i).getPrice() + " ");
-            System.out.print("Stock: " + list.get(i).getStock() + " \n");
+            loopPrint(list.get(i));
+        }
+    }
+
+    public void loopPrint(Product product) {
+        System.out.print("\n[" + product.getId() + "] ");
+        System.out.print("Name: " + product.getName() + " ");
+        System.out.print("Price: " + product.getPrice() + " ");
+        System.out.print("Stock: " + product.getStock() + " \n");
+    }
+
+    public void displayCategory(List<Category> categories) {
+        System.out.println("Select your choice: ");
+        for (int i = 0; i < categories.size(); i++) {
+            System.out.print("[" + categories.get(i).getId() + "] ");
+            System.out.println(categories.get(i).getCategory());
         }
     }
 

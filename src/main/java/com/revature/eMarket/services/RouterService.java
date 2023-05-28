@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class RouterService {
     private Session session;
     private ProductService prodServ;
+    private CategoryService catServ;
 
     public void navigate(String path, Scanner scan) {
 
@@ -27,7 +28,7 @@ public class RouterService {
                 new RegisterScreen(getUserService(), this, session).start(scan);
                 break;
             case "/product":
-                new ProductScreen(getProdService(), this).start(scan);
+                new ProductScreen(getProdService(), this, catServ).start(scan);
                 break;
             case "/menu":
                 new MenuScreen(session).start(scan);

@@ -19,6 +19,10 @@ public class ProductService {
         return prodDAO.findByCategory(category);
     }
 
+    public List<Product> findByRange(String low, String high) {
+        return prodDAO.findByRange(low, high);
+    }
+
     public Product findByName(String name) {
         return prodDAO.findByName(name);
     }

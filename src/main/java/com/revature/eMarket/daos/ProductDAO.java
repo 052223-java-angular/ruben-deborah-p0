@@ -78,7 +78,6 @@ public class ProductDAO implements CrudDAO<Product>{
 
 
             String sql = "SELECT * FROM products WHERE name = ?";
-
             try(PreparedStatement ps = conn.prepareStatement(sql)) {
 
                 ps.setString(1, name);
@@ -107,20 +106,16 @@ public class ProductDAO implements CrudDAO<Product>{
         return null;
     }
 
+    // Search product by passed in category_id
     public List<Product> findByCategory(String category) {
         List<Product> storeList = new ArrayList<>();
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
-
             String sql = "SELECT * FROM products WHERE category_id = ?";
-
             try(PreparedStatement ps = conn.prepareStatement(sql)) {
-
                 ps.setString(1, category);
-
                 try (ResultSet rs = ps.executeQuery()) {
-                    while(rs.next()){
-
+                    while (rs.next()) {
                         Product prod = new Product();
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));
@@ -130,8 +125,8 @@ public class ProductDAO implements CrudDAO<Product>{
                         storeList.add(prod);
                     }
                 }
-
             }
+
         }catch (SQLException e) {
             System.out.println(e.toString());
             throw new RuntimeException("Unable to access the database. Debug");
@@ -140,7 +135,40 @@ public class ProductDAO implements CrudDAO<Product>{
         }catch (IOException e) {
             throw new RuntimeException("Unable to load JDBC. Debug");
         }
-        System.out.println(storeList);
+        return storeList;
+    }
+
+    public List<Product> findByRange(String low, String high) {
+        List<Product> storeList = new ArrayList<>();
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "SELECT * FROM products WHERE price BETWEEN ? AND ?";
+            try(PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setString(1, low);
+                ps.setString(2, high);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        Product prod = new Product();
+                        prod.setId(rs.getString("id"));
+                        prod.setName(rs.getString("name"));
+                        prod.setPrice(rs.getString("price"));
+                        prod.setStock(rs.getString("stock"));
+                        prod.setCategory_id(rs.getString("category_id"));
+                        storeList.add(prod);
+                    }
+                }
+            }
+
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+            throw new RuntimeException("Unable to access the database. Debug");
+        }catch(ClassNotFoundException e) {
+            throw new RuntimeException("Can't find application. Debug");
+        }catch (IOException e) {
+            throw new RuntimeException("Unable to load JDBC. Debug");
+        }
         return storeList;
     }
 }
