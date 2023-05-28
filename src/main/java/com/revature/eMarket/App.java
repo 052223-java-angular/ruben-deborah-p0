@@ -1,6 +1,8 @@
 package com.revature.eMarket;
 
+import com.revature.eMarket.daos.CategoryDAO;
 import com.revature.eMarket.daos.ProductDAO;
+import com.revature.eMarket.services.CategoryService;
 import com.revature.eMarket.services.ProductService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.utils.ConnectionFactory;
@@ -28,10 +30,14 @@ public class App {
 
     Scanner scan = new Scanner(System.in);
 
+    RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO()), new CategoryService(new CategoryDAO()));
+=======
+
     // create a new RouterService with a Session.
-    RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO()));
+    //RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO()));
 
     // navigate to the "/home" route using the router and scanner
+
     router.navigate("/home", scan);
 
     logger.info("------------------- END APPLICATION --------------------");
