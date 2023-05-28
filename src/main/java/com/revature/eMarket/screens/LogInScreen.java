@@ -2,6 +2,7 @@ package com.revature.eMarket.screens;
 
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.services.UserService;
+import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
 
 import java.util.Scanner;
@@ -10,6 +11,7 @@ import java.util.Scanner;
 public class LogInScreen implements IScreen{
     private final RouterService router;
     private final UserService userService;
+    private Session session;
 
     @Override
     public void start(Scanner scan) {
