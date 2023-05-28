@@ -1,5 +1,7 @@
 package com.revature.eMarket;
 
+import com.revature.eMarket.daos.ProductDAO;
+import com.revature.eMarket.services.ProductService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.utils.ConnectionFactory;
 import com.revature.eMarket.utils.Session;
@@ -13,7 +15,7 @@ public class App {
     System.out.println(ConnectionFactory.getInstance().getConnection());
 
     Scanner scan = new Scanner(System.in);
-    RouterService router = new RouterService(new Session());
+    RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO()));
     router.navigate("/home", scan);
   }
 }
