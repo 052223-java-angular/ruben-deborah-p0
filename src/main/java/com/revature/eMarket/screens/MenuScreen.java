@@ -11,6 +11,7 @@ public class MenuScreen implements IScreen {
 
     @Override
     public void start(Scanner scan) {
+        clearScreen();
         System.out.print("Welcome to Menu Screen" + session.getUsername() + "!\n");
 //        scan.nextLine();
     }

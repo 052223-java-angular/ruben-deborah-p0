@@ -5,6 +5,8 @@ import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.services.UserService;
 import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
@@ -13,6 +15,7 @@ public class RegisterScreen implements IScreen {
     private final UserService userService;
     private final RouterService router;
     private Session session;
+    private static final Logger logger = LogManager.getLogger(RegisterScreen.class);
 
 
     @Override
@@ -20,6 +23,7 @@ public class RegisterScreen implements IScreen {
         String input = "";
         String username = "";
         String password = "";
+        logger.info("Start registration process...");
 
         exit:
         {
@@ -31,7 +35,10 @@ public class RegisterScreen implements IScreen {
                 // get username
                 username = getUsername(scan);
 
+                logger.info("username: {}", username);
+
                 if (username.equals("x")) {
+                    logger.info("Exit Registration Screen!");
                     break exit;
                 }
 
@@ -39,6 +46,7 @@ public class RegisterScreen implements IScreen {
                 password = getPassword(scan);
 
                 if(password.equals("x")) {
+                    logger.info("Exit Registration Screen!");
                     break exit;
                 }
 
@@ -49,6 +57,8 @@ public class RegisterScreen implements IScreen {
 
                 switch(scan.nextLine()) {
                     case "y":
+                        logger.info("User confirms credentials are correct.");
+                        clearScreen();
                         System.out.println("Created user confirm test [y]");
                         User createdUser = userService.register(username, password);
                         //Session session = new Session();
@@ -57,10 +67,12 @@ public class RegisterScreen implements IScreen {
                         break exit;
 
                     case "n":
+                        logger.info("Restarting registration process....");
                         System.out.println("Restarting register process");
                         System.out.print("Press [Enter] to continue...");
                         scan.nextLine();
                     default:
+                        logger.warn("Invalid Option");
                         System.out.println("Choose a valid option.");
                         System.out.print("Press [Enter] to continue...");
                         scan.nextLine();
@@ -124,6 +136,8 @@ public class RegisterScreen implements IScreen {
                 return "x";
             }
             if (!userService.isValidUsername(username)) {
+                logger.warn("Invalid username for: {}", username);
+                clearScreen();
                 System.out.println("Invalid username. [8.20 chars, alpha num].");
                 System.out.println("[Enter] to continue.");
                 scan.nextLine();
@@ -131,8 +145,10 @@ public class RegisterScreen implements IScreen {
             }
 
             if (!userService.isUniqueUsername(username)) {
-
-                System.out.print("Username is not unique! [Enter] to continue: ");
+                logger.warn("Username is not unique for: {}", username);
+                clearScreen();
+                System.out.print("Username is not unique!");
+                System.out.print("\nPress [Enter] to continue...");
                 scan.nextLine();
                 continue;
             }
@@ -145,7 +161,10 @@ public class RegisterScreen implements IScreen {
     public String getPassword() {
         return "";
     }
-
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 
 }
 
