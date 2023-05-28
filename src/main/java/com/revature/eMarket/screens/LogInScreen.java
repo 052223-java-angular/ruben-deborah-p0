@@ -4,6 +4,8 @@ import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.services.UserService;
 import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
@@ -12,53 +14,75 @@ public class LogInScreen implements IScreen{
     private final RouterService router;
     private final UserService userService;
     private Session session;
+    private static final Logger logger = LogManager.getLogger(LogInScreen.class);
 
     @Override
     public void start(Scanner scan) {
+        String input = "";
         String username = "";
         String password = "";
 
-        while(true){
-            System.out.println("Sign in here");
-            System.out.println("[b] Back to main menu");
-            System.out.println("[x] Exit");
+        logger.info("Start login process...");
 
-            username = getUsername(scan);
+        exit: {
+            while(true) {
+                logger.info("Login to eMarket!");
+                clearScreen();
+                System.out.println("Sign in here!");
+                System.out.println("[b] Back to main menu");
+                System.out.println("[x] Exit");
 
-            if(username.equals("x")){
-                break;
+                username = getUsername(scan);
+                logger.info("Username: " + username);
+//                System.out.println("Username" + username);
+
+                if (username.equals("b")) {
+                    logger.info("Returning back to the home screen...");
+                    router.navigate("/home", scan);
+                    break exit;
+                }
+
+                if (username.equals("x")) {
+                    logger.info("Leaving the Login Screen...");
+                    break exit;
+                }
+
+//                System.out.println("password");
+
+//                System.out.println("\nEnter your password");
+                password = getPassword(scan);
+                logger.info("Password: " + password );
+
+                if (password.equals("b")) {
+                    logger.info("Returning back to the home screen...");
+                    router.navigate("/home", scan);
+                    break;
+                }
+
+                if (password.equals("x")) {
+                    logger.info("Leaving the Login Screen...");
+                    break exit;
+                }
+
+                if (!userService.login(username, password)) {
+                    logger.warn("Login Unsuccessful!");
+                    System.out.println("\nNo user found with the combination of this username and password.");
+                    System.out.println("\nPlease try again...");
+                    scan.nextLine();
+                    continue;
+                } else {
+                    System.out.println("\nSuccess!!!");
+                }
+
+//                session.setSession(userService.get());
+                router.navigate("/menu", scan);
+                // return back to the home screen after log-in
+                break exit;
             }
-
-            if(username.equals("b")){
-                router.navigate("/home", scan);
-                break;
-            }
-
-            password = getPassword(scan);
-
-            if(password.equals("x")){
-                break;
-            }
-
-            if(password.equals("b")){
-                router.navigate("/home", scan);
-                break;
-            }
-
-            if(!userService.login(username, password)){
-                System.out.println("\nNo user found with that combination of username and password found");
-                System.out.println("\nTry again...");
-                continue;
-            }else{
-                System.out.println("\nSuccess!!!");
-            }
-
-            //to-do:
-            //go to screen thats available after log-in
-            break;
-
         }
     }
+
+    /*************************** Helper methods *****************************************/
 
     public String getUsername(Scanner scan){
         String username = "";
@@ -72,10 +96,15 @@ public class LogInScreen implements IScreen{
     public String getPassword(Scanner scan){
         String password = "";
 
-        System.out.println("\nEnter your password: ");
+        System.out.println("Enter your password: ");
         password = scan.nextLine();
 
         return password.equalsIgnoreCase("x") ? "x" : password.equalsIgnoreCase("b") ? "b" : password;
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
 }
