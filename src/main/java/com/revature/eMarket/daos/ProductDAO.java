@@ -41,14 +41,15 @@ public class ProductDAO implements CrudDAO<Product>{
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
-            String sql = "SELECT * FROM products";
+            String sql = "SELECT * FROM products WHERE stock > 0";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)) {
 
                 //ps.setString(1, username);
 
                 try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
+                    while(rs.next()){
+
                         Product prod = new Product();
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));

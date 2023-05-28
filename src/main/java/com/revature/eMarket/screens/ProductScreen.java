@@ -33,7 +33,8 @@ public class ProductScreen implements IScreen{
                             System.out.print("[" + inventory.get(i).getName() + "] ");
                             System.out.print(inventory.get(i).getName() + " ");
                             System.out.print("Price: " + inventory.get(i).getPrice() + " ");
-                            System.out.print("Stock: " + inventory.get(i).getStock() + " ");
+                            System.out.print("Stock: " + inventory.get(i).getStock() + " \n");
+
                         }
 
                         break;
