@@ -4,6 +4,8 @@ import com.revature.eMarket.models.Product;
 import com.revature.eMarket.models.Review;
 import com.revature.eMarket.services.ProductService;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +15,10 @@ import java.util.Scanner;
 @AllArgsConstructor
 public class ProdDetailsScreen implements IScreen {
     private final ProductService productServ;
+    private static final Logger logger = LogManager.getLogger(ProdDetailsScreen.class);
 
     public void details(Scanner scan, Product product) {
+        logger.info("Start details process...");
         System.out.print("[" + product.getId() + "] ");
         System.out.print("Name: " + product.getName() + " ");
         System.out.print("Price: " + product.getPrice() + " ");
@@ -22,7 +26,6 @@ public class ProdDetailsScreen implements IScreen {
 
         List<Review> reviews = new ArrayList<>();
         String input = "";
-
 
         exit:
         {
@@ -34,15 +37,18 @@ public class ProdDetailsScreen implements IScreen {
 
                 switch (scan.nextLine()){
                     case "1":
+                        logger.info("Start reviews process...");
                         reviews = productServ.findByProdId(product.getId());
                         System.out.println("Product id: "+product.getId());
                         printList(reviews);
 
                         break;
                     case "x":
+                        logger.info("Start add review process...");
                         System.out.println("Leaving Reviews");
                         break exit;
                     default:
+                        logger.warn("Wrong selection...");
                         System.out.println("Invalid selection, try again.");
                         break;
                 }
@@ -52,9 +58,7 @@ public class ProdDetailsScreen implements IScreen {
     }
 
     public void printList(List<Review> list) {
-        System.out.println("Test review print: " + list);
         if (list.isEmpty()) {
-
             return;
         }
         for (int i = 0; i < list.size(); i++) {
@@ -63,6 +67,7 @@ public class ProdDetailsScreen implements IScreen {
     }
 
     public void loopPrint(Review review) {
+        logger.info("Print all reviews...");
         System.out.print("[" + review.getId() + "] ");
         System.out.print("Rating: " + review.getRating() + " ");
         System.out.print("Review: " + review.getReview() + " ");
@@ -73,7 +78,6 @@ public class ProdDetailsScreen implements IScreen {
 
         List<Product> inventory = new ArrayList<>(); // = productServ.findAll();
         String input = "";
-
         while (true) {
 
         }
