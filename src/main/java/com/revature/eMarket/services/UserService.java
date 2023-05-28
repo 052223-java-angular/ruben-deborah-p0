@@ -9,6 +9,7 @@ import java.util.Optional;
 
 //@AllArgsConstructor
 public class UserService {
+    // this is a field
     private final UserDAO userDAO;
     private final RoleService roleService;
 
@@ -29,6 +30,15 @@ public class UserService {
         User newUser = new User(username, hashed, foundFound.getId());
         userDAO.save(newUser);
         return newUser;
+
+    }
+    public boolean login(String username, String password) {
+        Optional<User> user = userDAO.findByUsername(username);
+        if(user.isEmpty()){
+            return false;
+        }
+        System.out.println(user.get().getPassword());
+        return BCrypt.checkpw(password, user.get().getPassword());
 
     }
 
@@ -57,13 +67,5 @@ public class UserService {
         return false;
     }
 
-    public boolean login(String username, String password) {
-        Optional<User> user = userDAO.findByUsername(username);
-        if(user.isEmpty()){
-            return false;
-        }
-        System.out.println(user.get().getPassword());
-        return BCrypt.checkpw(password, user.get().getPassword());
 
-    }
 }
