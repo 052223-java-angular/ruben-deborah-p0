@@ -1,13 +1,12 @@
 package com.revature.eMarket.screens;
 
-import java.util.Scanner;
-
 import com.revature.eMarket.models.User;
-import com.revature.eMarket.services.RoleService;
-import com.revature.eMarket.utils.Session;
-import  lombok.*;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.services.UserService;
+import com.revature.eMarket.utils.Session;
+import lombok.AllArgsConstructor;
+
+import java.util.Scanner;
 
 @AllArgsConstructor
 public class RegisterScreen implements IScreen {
@@ -25,9 +24,11 @@ public class RegisterScreen implements IScreen {
         exit:
         {
             while (true) {
-                System.out.println("\nRegister Screen. [Enter to cont..]");
+                System.out.println("\nWelcome to the Register Screen.");
+                System.out.println("Press [Enter] to continue..");
                 scan.nextLine();
 
+                // get username
                 username = getUsername(scan);
 
                 if (username.equals("x")) {
@@ -93,7 +94,7 @@ public class RegisterScreen implements IScreen {
                 continue;
             }
 
-            System.out.println("Confirm password: ");
+            System.out.println("\nConfirm password: ");
             confirm = scan.nextLine();
 
             if (confirm.equalsIgnoreCase("x")) {
@@ -105,8 +106,6 @@ public class RegisterScreen implements IScreen {
                 scan.nextLine();
                 continue;
             }
-
-
 
             break;
         }
