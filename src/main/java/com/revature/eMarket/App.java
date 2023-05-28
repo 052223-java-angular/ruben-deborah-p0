@@ -14,7 +14,7 @@ public class App {
   private static final Logger logger = LogManager.getLogger(App.class);
 
   /**
-   * The entry point of the Yolp Application.
+   * The entry point of the eMarket Application.
    *
    * @param args command line arguments
    * @throws ClassNotFoundException if the specified class cannot be found
