@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 @AllArgsConstructor
 public class ProductScreen implements IScreen{
+
     private final ProductService productServ;
     private final RouterService router;
     private final CategoryService catServ;
@@ -23,6 +24,7 @@ public class ProductScreen implements IScreen{
     public void start(Scanner scan) {
             List<Product> inventory = new ArrayList<>(); // = productServ.findAll();
             String input = "";
+            ProdDetailsScreen details = new ProdDetailsScreen(productServ);
 
             while (true) {
                 System.out.println("Products Screen. [Enter to cont..]");
@@ -31,16 +33,24 @@ public class ProductScreen implements IScreen{
                 System.out.println("[3] View By Category");
                 System.out.println("[4] Search in range [low,high]");
                 System.out.println("[x] Exit ");
+                System.out.println("Select your option: ");
 
                 switch (scan.nextLine()) {
-                    case "1": // print the list
+                    case "1": // Show All products in store
                         inventory = productServ.findAll();
                         printList(inventory);
+
+                        input = scan.nextLine();
+
+                        Product prod = inventory.get(Integer.parseInt(input)-1);
+
+                        selection(scan,prod, details, input);
+
                         break;
                     case "2":
                         System.out.println("Enter product name");
                         input = scan.nextLine();
-                        Product prod = productServ.findByName(input);
+                        prod = productServ.findByName(input);
 
                         if (prod != null) {
                             System.out.print("[" + prod.getName() + "] ");
@@ -58,11 +68,13 @@ public class ProductScreen implements IScreen{
                         System.out.println("Search by Category\n");
                         // display categories as options
                         List<Category> catList = catServ.findAll();
+
                         displayCategory(catList);
                         input = scan.nextLine();
-
                         inventory = productServ.findById(input);
+
                         printList(inventory);
+
                         break;
                     case "4":
                         System.out.println("Enter low: ");
@@ -104,6 +116,28 @@ public class ProductScreen implements IScreen{
             System.out.print("[" + categories.get(i).getId() + "] ");
             System.out.println(categories.get(i).getCategory());
         }
+    }
+
+    public void selection(Scanner scan, Product product, ProdDetailsScreen details, String input) {
+
+        exit: {
+            while(true) {
+                switch(input.toLowerCase()) {
+                    case "1":
+                        details.details(scan, product);
+                        //router.navigate("/prodDetails", scan);
+                        break exit;
+                    case "x":
+                        System.out.println("Exiting...");
+                        break exit;
+                    default:
+                        System.out.println("Invalid option, try again.");
+                        break;
+                }
+            }
+        }
+
+
     }
 
 }

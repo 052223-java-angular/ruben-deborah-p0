@@ -2,6 +2,7 @@ package com.revature.eMarket;
 
 import com.revature.eMarket.daos.CategoryDAO;
 import com.revature.eMarket.daos.ProductDAO;
+import com.revature.eMarket.daos.ReviewDAO;
 import com.revature.eMarket.services.CategoryService;
 import com.revature.eMarket.services.ProductService;
 import com.revature.eMarket.services.RouterService;
@@ -30,7 +31,7 @@ public class App {
 
     Scanner scan = new Scanner(System.in);
 
-    RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO()), new CategoryService(new CategoryDAO()));
+    RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO(), new ReviewDAO()), new CategoryService(new CategoryDAO()));
 
     // create a new RouterService with a Session.
     //RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO()));

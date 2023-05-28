@@ -1,6 +1,7 @@
 package com.revature.eMarket.services;
 
 import com.revature.eMarket.daos.ProductDAO;
+import com.revature.eMarket.daos.ReviewDAO;
 import com.revature.eMarket.daos.RoleDAO;
 import com.revature.eMarket.daos.UserDAO;
 import com.revature.eMarket.screens.*;
@@ -32,6 +33,8 @@ public class RouterService {
                 break;
             case "/menu":
                 new MenuScreen(session).start(scan);
+            case "/prodDetails":
+                new ProdDetailsScreen(getProdService()).start(scan);
             default:
                 break;
         }
@@ -48,5 +51,5 @@ public class RouterService {
         return new RoleService(new RoleDAO());
     }
 
-    private ProductService getProdService() { return new ProductService(new ProductDAO()); };
+    private ProductService getProdService() { return new ProductService(new ProductDAO(), new ReviewDAO()); };
 }
