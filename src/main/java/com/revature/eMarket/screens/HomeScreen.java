@@ -26,7 +26,7 @@ public class HomeScreen implements IScreen {
                 System.out.println("Welcome to eMarket!");
 
                 System.out.println("\n[1] Register Screen");
-                System.out.println("\n[2] Menu Screen");
+                System.out.println("[2] Menu Screen");
                 System.out.println("[3] Login Screen");
                 System.out.println("[x] Exit");
 
