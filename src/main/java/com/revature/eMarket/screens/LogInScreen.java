@@ -32,8 +32,9 @@ public class LogInScreen implements IScreen{
                 logger.info("Welcome to the Login Screen of eMarket!");
                 clearScreen();
 
-                System.out.println("Sign in here!");
-                System.out.println("[b] back");
+
+                System.out.println("Login Screen.\n");
+
                 System.out.println("[x] Exit");
 
                 // get username
@@ -42,15 +43,18 @@ public class LogInScreen implements IScreen{
 
                 if (username.equals("x")) {
                     logger.info("Returning back to the home screen...");
+                    if (session.getId() == null) {
+                        router.navigate("/landing", scan);
+                    }
                     router.navigate("/home", scan);
                     break exit;
                 }
 
-                if(username.equals("b")){
+                /*if(username.equals("b")){
                     logger.info("Go back");
                     router.navigate(session.getHistory().pop(), scan);
                     break exit;
-                }
+                }*/
 
                 // get password
                 password = getPassword(scan);
@@ -58,15 +62,19 @@ public class LogInScreen implements IScreen{
 
                 if (password.equals("x")) {
                     logger.info("Returning back to the home screen...");
+                    if (session.getId() == null) {
+                        router.navigate("/landing", scan);
+                    }
                     router.navigate("/home", scan);
                     break exit;
                 }
 
-                if (password.equals("b")) {
+                /*if (password.equals("b")) {
                     logger.info("Go back");
                     router.navigate(session.getHistory().pop(), scan);
+
                     break exit;
-                }
+                }*/
 
                 // confirm user's credentials
                 System.out.println("Please confirm your credentials");
@@ -87,13 +95,12 @@ public class LogInScreen implements IScreen{
                         // find the cart
                         //Optional<Cart> cart = cartService.findCartByUserId(confirmedUser.get().getId());
                         // session created
-                        session.setSession(confirmedUser.get());
+                        session.setSession(confirmedUser);
                         // session successful
                         System.out.println("\nLogin Successful!");
                         System.out.println("\nPress [Enter] to continue...");
-                        scan.nextLine();
                         // navigate back to the menu screen
-                        session.getHistory().push("/login");
+                        //session//.getHistory().push("/login");
                         router.navigate("/home", scan);
                         break exit;
                     case "n":

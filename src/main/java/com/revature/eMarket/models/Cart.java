@@ -14,11 +14,11 @@ import java.util.UUID;
 public class Cart {
     private String id;
     private String user_id;
-//    double total;
+    //    double total;
 //    private BigDecimal total_cost;
     private List<CartItem> items;
 
-    public Cart(String total_cost, String user_id){
+    public Cart( String user_id){
         this.id = UUID.randomUUID().toString();
 //        this.total_cost = total_cost;
         this.user_id = user_id;

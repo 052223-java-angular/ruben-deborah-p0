@@ -27,7 +27,7 @@ public class CartItemService {
                 return;
             }
         }
-        CartItem cartItem = new CartItem(productOpt.get().getName(), cart.getId(), product_id, count, productOpt.get().getPrice());
+        CartItem cartItem = new CartItem(productOpt.get().getName(), cart.getItems().size(), 9, cart.getUser_id(), productOpt.get().getId());
         cartItemDAO.save(cartItem);
     }
 

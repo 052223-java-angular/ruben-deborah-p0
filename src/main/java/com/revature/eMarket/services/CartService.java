@@ -24,12 +24,12 @@ public class CartService {
         Cart cart = new Cart(userOpt.get().getId());
         cartDAO.save(cart);
     }
-    public void add(String product_id, int count, Cart cart) {
+    public void add(String product_id, int count, Cart cart, String user_id) {
         Optional<Cart> cartOpt = cartDAO.findByUserId(user_id);
         if(cartOpt.isEmpty()){
             createCart(user_id);
         }
-        cartItemService.add(item_id, count, cartOpt.get());
+        cartItemService.add(product_id, count, cartOpt.get());
     }
     public void remove(String item_id) {
         cartItemService.remove(item_id);

@@ -26,7 +26,7 @@ public class CartDAO implements CrudDAO<Cart> {
     @Override
     public void save(Cart cart) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "insert into users (id, user_id) values (?, ?)";
+            String sql = "insert into carts (id, user_id) values (?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, cart.getId());

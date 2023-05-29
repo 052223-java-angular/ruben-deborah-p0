@@ -3,7 +3,7 @@ package com.revature.eMarket.utils;
 import com.revature.eMarket.models.User;
 import lombok.*;
 
-import java.util.Stack;
+import java.util.Optional;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,33 +15,26 @@ public class Session {
     private String username;
     private String role_id;
     private String cart_id;
-    private Stack<String> History = new Stack<>();
 
-        public void setSession(User user){
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.role_id = user.getRole_id();
-//        this.cart_id = cart_id;
+    public void setSession(Optional<User> user) {
+        //System.out.println(user);
+        this.id = user.get().getId();
+        this.cart_id = user.get().getId();
+        this.username = user.get().getUsername();
+        this.role_id = user.get().getRole_id();
     }
-//    public void setSession(Optional<User> user) {
-//        //System.out.println(user);
-//        this.id = user.get().getId();
-//        this.cart_id = user.get().getId();
-//        this.username = user.get().getUsername();
-//        this.role_id = user.get().getRole_id();
-//    }
 
-//    public void logoutSession() {
-//        this.id = "";
-//        this. cart_id = "";
-//        this.username = "";
-//        this.role_id = "";
-//    }
+    public void logoutSession() {
+        this.id = "";
+        this.cart_id = "";
+        this.username = "";
+        this.role_id = "";
+    }
 
-//
-//    public void setSession(String id, String name, String cart_id){
-//        this.id = id;
-//        this.username = name;
-//        this.cart_id = cart_id;
-//    }
+
+    public void setSession(String id, String name, String cart_id){
+        this.id = id;
+        this.username = name;
+        this.cart_id = cart_id;
+    }
 }

@@ -49,6 +49,6 @@ public class ProductService {
     }
 
     public Optional<Product> getProd(String id) {
-        return prodDAO.getProd(id);
+        return prodDAO.findById(id);
     }
 }

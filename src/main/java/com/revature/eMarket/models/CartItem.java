@@ -13,7 +13,7 @@ import java.util.UUID;
 public class CartItem {
     private String id;
     private String name;
-//    private int stock;
+    //    private int stock;
     private String cart_id;
     private String product_id;
     private int quantity;

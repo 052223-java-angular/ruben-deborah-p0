@@ -13,7 +13,7 @@ import java.util.*;
 public class CartScreen implements IScreen {
     private final RouterService router;
     private final CartService cart;
-//    private final CartItemService cartItemService;
+    //    private final CartItemService cartItemService;
 //    private final CartDAO cartDAO;
 //    private final ProductService prodService;
     private final Session session;
@@ -73,45 +73,45 @@ public class CartScreen implements IScreen {
                 System.out.println("\nChoose option to navigate: ");
                 switch (input.toLowerCase()) {
                     case "b":
-                        router.navigate(session.getHistory().pop(), scan);
-//                        router.navigate("/home", scan);
+                        //router.navigate(session.getHistory().pop(), scan);
+                        router.navigate("/home", scan);
                         break;
                     case "1":
                         System.out.println("\nContinue shopping");
 //                        itemQuantity = scan.nextLine();
                     case "r":
-                            // get cart item choice
-                            // empty cart screen
-                            if(idMap.size() == 0) {
-                                cartIsEmpty(scan);
-                            }else {
-                                System.out.println("Chose item to remove");
-                                item = scan.nextLine();
-                                cart.remove(idMap.get(item));
-                                //                                clearScreen();
-                                // successful removal
+                        // get cart item choice
+                        // empty cart screen
+                        if(idMap.size() == 0) {
+                            cartIsEmpty(scan);
+                        }else {
+                            System.out.println("Chose item to remove");
+                            item = scan.nextLine();
+                            cart.remove(idMap.get(item));
+                            //                                clearScreen();
+                            // successful removal
 
 //                                System.out.println("Removal successful");
 //                                System.out.print("\nPress enter to continue...");
 //                                scan.nextLine();
 //                                continue;
-                            }
+                        }
                         continue;
 //                            continue;
                     case "m":
-                            // get cart item chosen
-                            if (idMap.size() == 0) {
-                                cartIsEmpty(scan);
-                            }else {
-                                // update cart and cart item
-                                System.out.println("Please chose an item to modify");
-                                item = scan.nextLine();
-                                System.out.println("Modify the amount: ");
-                                amount = Integer.parseInt(scan.nextLine());
-                                cart.modify(idMap.get(item), amount);
-                            }
-                            continue;
-                            // Successful update
+                        // get cart item chosen
+                        if (idMap.size() == 0) {
+                            cartIsEmpty(scan);
+                        }else {
+                            // update cart and cart item
+                            System.out.println("Please chose an item to modify");
+                            item = scan.nextLine();
+                            System.out.println("Modify the amount: ");
+                            amount = Integer.parseInt(scan.nextLine());
+                            cart.modify(idMap.get(item), amount);
+                        }
+                        continue;
+                        // Successful update
 //                            clearScreen();
 //                            System.out.println("Update successful");
 //                            System.out.print("\nPress enter to continue...");
@@ -143,11 +143,11 @@ public class CartScreen implements IScreen {
                     default:
                         System.out.println("Invalid choice!");
                         continue;
-                    }
-                    break;
                 }
+                break;
             }
         }
+    }
 
 
 
