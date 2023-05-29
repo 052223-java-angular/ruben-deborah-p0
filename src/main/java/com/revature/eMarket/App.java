@@ -33,9 +33,6 @@ public class App {
 
     RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO(), new ReviewDAO()), new CategoryService(new CategoryDAO()));
 
-    // create a new RouterService with a Session.
-    //RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO()));
-
     // navigate to the "/home" route using the router and scanner
 
     router.navigate("/home", scan);
