@@ -17,7 +17,7 @@ public class Cart {
     private String user_id;
     double total;
     private BigDecimal total_cost;
-    private List<CartItems> items;
+    private List<CartItem> items;
 
     public Cart(BigDecimal total_cost, String user_id){
         this.id = UUID.randomUUID().toString();

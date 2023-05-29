@@ -69,7 +69,6 @@ public class RegisterScreen implements IScreen {
 //                        session.setSession(createdUser, cart.getId());
                         router.navigate("/menu", scan);
                         break exit;
-
                     case "n":
                         logger.info("Restarting registration process....");
                         System.out.println("Restarting register process");

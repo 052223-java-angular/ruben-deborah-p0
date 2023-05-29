@@ -1,6 +1,6 @@
 package com.revature.eMarket.daos;
 
-import com.revature.eMarket.models.CartItems;
+import com.revature.eMarket.models.CartItem;
 import com.revature.eMarket.models.Product;
 import com.revature.eMarket.utils.ConnectionFactory;
 
@@ -38,7 +38,7 @@ public class CartItemDAO implements CrudDAO<Product> {
         return null;
     }
 
-    public List<CartItems> findAllCartItemsByCardId(String cartId) {
+    public List<CartItem> findAllCartItemsByCardId(String cartId) {
             try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
                 String sql = "SELECT cart_items.id, cart_items.quantity, cart_items.cart_id, cart_items.price, " +
                         "cart_items.product_id, products.stock, products.name FROM cart_items " +
@@ -48,9 +48,9 @@ public class CartItemDAO implements CrudDAO<Product> {
                     ps.setString(1, cartId);
 
                     try (ResultSet rs = ps.executeQuery()) {
-                        List<CartItems> cartItem = new ArrayList<>();
+                        List<CartItem> cartItem = new ArrayList<>();
                         while (rs.next()) {
-                            CartItems cartItems = new CartItems();
+                            CartItem cartItems = new CartItem();
                             cartItems.setId(rs.getString("id"));
                             cartItems.setStock(rs.getInt("stock"));
                             cartItems.setQuantity(rs.getInt("quantity"));
@@ -74,7 +74,7 @@ public class CartItemDAO implements CrudDAO<Product> {
 
     }
 
-    public void createCartItem(CartItems cartItems) {
+    public void createCartItem(CartItem cartItems) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "INSERT INTO cart_items (id, quantity, price, cart_id, product_id) " +
                     "VALUES (?, ?, ?, ?, ?)";
@@ -97,7 +97,7 @@ public class CartItemDAO implements CrudDAO<Product> {
         }
     }
 
-    public List<CartItems> findAllCartItemsByCartId(String cartId) {
+    public List<CartItem> findAllCartItemsByCartId(String cartId) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT cart_items.id, cart_items.quantity, cart_items.cart_id, cart_items.price, " +
                     "cart_items.product_id, products.stock, products.name FROM cart_items " +
@@ -107,9 +107,9 @@ public class CartItemDAO implements CrudDAO<Product> {
                 ps.setString(1, cartId);
 
                 try (ResultSet rs = ps.executeQuery()) {
-                    List<CartItems> cartItems = new ArrayList<>();
+                    List<CartItem> cartItems = new ArrayList<>();
                     while (rs.next()) {
-                        CartItems cartItem = new CartItems();
+                        CartItem cartItem = new CartItem();
                         cartItem.setId(rs.getString("id"));
                         cartItem.setStock(rs.getInt("stock"));
                         cartItem.setQuantity(rs.getInt("quantity"));
@@ -151,7 +151,7 @@ public class CartItemDAO implements CrudDAO<Product> {
         }
     }
 
-    public void updateCartItem(CartItems cartItem) {
+    public void updateCartItem(CartItem cartItem) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "UPDATE cart_items SET quantity = ?, price = ?, cart_id = ?, product_id = ? WHERE id = ?";
 

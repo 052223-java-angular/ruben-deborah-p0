@@ -34,7 +34,7 @@ public class LogInScreen implements IScreen{
                 logger.info("Welcome to the Login Screen of eMarket!");
                 clearScreen();
 
-                System.out.println("Sign in here!");
+                System.out.println("Login Screen.\n");
 
                 System.out.println("[x] Exit");
 
@@ -45,6 +45,9 @@ public class LogInScreen implements IScreen{
 
                 if (username.equals("x")) {
                     logger.info("Returning back to the home screen...");
+                    if (session.getId() == null) {
+                        router.navigate("/landing", scan);
+                    }
                     router.navigate("/home", scan);
                     break exit;
                 }
@@ -55,6 +58,9 @@ public class LogInScreen implements IScreen{
 
                 if (password.equals("x")) {
                     logger.info("Returning back to the home screen...");
+                    if (session.getId() == null) {
+                        router.navigate("/landing", scan);
+                    }
                     router.navigate("/home", scan);
                     break;
                 }
@@ -82,7 +88,6 @@ public class LogInScreen implements IScreen{
                         // session successful
                         System.out.println("\nLogin Successful!");
                         System.out.println("\nPress [Enter] to continue...");
-                        scan.nextLine();
                         // navigate back to the menu screen
                         router.navigate("/home", scan);
                         break exit;

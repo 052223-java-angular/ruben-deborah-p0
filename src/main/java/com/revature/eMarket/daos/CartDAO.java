@@ -1,7 +1,7 @@
 package com.revature.eMarket.daos;
 
 import com.revature.eMarket.models.Cart;
-import com.revature.eMarket.models.CartItems;
+import com.revature.eMarket.models.CartItem;
 import com.revature.eMarket.utils.ConnectionFactory;
 
 import java.io.IOException;
@@ -13,20 +13,20 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class CartDAO implements CrudDAO<CartItems> {
+public class CartDAO implements CrudDAO<CartItem> {
 
     public Optional<Cart> findByUserId(String id) {
 
         return null;
     }
 
-    public List<CartItems> findAllCartItemsByCardId(String cartId) {
+    public List<CartItem> findAllCartItemsByCardId(String cartId) {
 
         return null;
     }
 
     @Override
-    public void save(CartItems obj) {
+    public void save(CartItem obj) {
 
     }
 
@@ -41,12 +41,12 @@ public class CartDAO implements CrudDAO<CartItems> {
     }
 
     @Override
-    public CartItems findById(String id) {
+    public CartItem findById(String id) {
         return null;
     }
 
     @Override
-    public List<CartItems> findAll() {
+    public List<CartItem> findAll() {
         return null;
     }
 

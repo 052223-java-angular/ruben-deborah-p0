@@ -26,7 +26,7 @@ public class RouterService {
 
         switch (path) {
             case "/landing":
-                new SignOnScreen(this).start(scan);
+                new SignOnScreen(this, this.session).start(scan);
                 break;
             case "/home":
                 new HomeScreen(this, this.session).start(scan);

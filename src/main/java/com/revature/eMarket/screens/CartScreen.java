@@ -2,20 +2,15 @@ package com.revature.eMarket.screens;
 
 import com.revature.eMarket.daos.CartDAO;
 import com.revature.eMarket.models.Cart;
-import com.revature.eMarket.models.CartItems;
-import com.revature.eMarket.models.Product;
+import com.revature.eMarket.models.CartItem;
 import com.revature.eMarket.services.CartItemService;
 import com.revature.eMarket.services.CartService;
 import com.revature.eMarket.services.ProductService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
-import org.apache.logging.log4j.core.config.Order;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -37,7 +32,7 @@ public class CartScreen implements IScreen {
         String itemChosen = "";
         Cart cart = cartService.findCartByCardId(session.getCart_id());
 //        CartItems cartItems = cartItemService.findAllCartItemsByCartId(session.getCart_id());
-        List<CartItems> cartItem = cartItemService.findAllCartItemsByCartId(cart.getId());
+        List<CartItem> cartItem = cartItemService.findAllCartItemsByCartId(cart.getId());
 
         exit:
         {
@@ -80,7 +75,7 @@ public class CartScreen implements IScreen {
                                 break;
                             }
 
-                            CartItems cartItems = cartItem.get(Integer.parseInt(itemChosen) - 1);
+                            CartItem cartItems = cartItem.get(Integer.parseInt(itemChosen) - 1);
 
                             // update cart
                             cart.setTotal_cost(cart.getTotal_cost().subtract(cartItems.getPrice()));
@@ -113,7 +108,7 @@ public class CartScreen implements IScreen {
                                 break;
                             }
 
-                            CartItems cartItems = cartItem.get(Integer.parseInt(itemChosen) - 1);
+                            CartItem cartItems = cartItem.get(Integer.parseInt(itemChosen) - 1);
 
                             // get new quantity
                             itemQuantity = getQuantity(cartItems.getQuantity(), cartItems.getStock(), scan);
@@ -198,9 +193,9 @@ public class CartScreen implements IScreen {
         }
     }
 
-    public void viewCartItems(List<CartItems> cartItem) {
+    public void viewCartItems(List<CartItem> cartItem) {
         // looping through the cart items
-        for(CartItems cartItems : cartItem){
+        for(CartItem cartItems : cartItem){
             System.out.println("\n" +
                     cartItems.getName() +
                     " - Price: $" +
@@ -209,9 +204,9 @@ public class CartScreen implements IScreen {
                     cartItems.getQuantity());
         }
     }
-    private void viewCartItemsChosen(List<CartItems> cartItems) {
+    private void viewCartItemsChosen(List<CartItem> cartItems) {
         int counter = 1;
-        for(CartItems cartItem : cartItems){
+        for(CartItem cartItem : cartItems){
             System.out.println("\n[" + counter +"]" +
                     cartItem.getName() +
                     " - Price: $" +
@@ -220,7 +215,7 @@ public class CartScreen implements IScreen {
             counter += 1;
         }
     }
-    private String getCartItemChosen(List<CartItems> cartItems, Scanner scan) {
+    private String getCartItemChosen(List<CartItem> cartItems, Scanner scan) {
         String input = "";
         while (true) {
             clearScreen();
@@ -274,7 +269,7 @@ public class CartScreen implements IScreen {
         return input;
     }
 
-    private void updateCartAndCartItem(Cart cart, CartItems cartItem, int i) {
+    private void updateCartAndCartItem(Cart cart, CartItem cartItem, int i) {
         /*BigDecimal newPrice = cartItem.getPrice()
                 .divide(BigDecimal.valueOf(cartItem.getQuantity()))
                 .multiply(BigDecimal.valueOf(quantity));

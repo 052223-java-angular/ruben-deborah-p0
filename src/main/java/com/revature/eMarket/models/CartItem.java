@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 @ToString
 @NoArgsConstructor
-public class CartItems {
+public class CartItem {
     private String id;
     private String name;
     private int stock;
@@ -24,7 +24,7 @@ public class CartItems {
 //    private List<CartItems> items;
 
 
-    public CartItems(String name, int stock, int quantity, BigDecimal price, String cart_id, String product_id){
+    public CartItem(String name, int stock, int quantity, BigDecimal price, String cart_id, String product_id){
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.stock = stock;

@@ -1,6 +1,7 @@
 package com.revature.eMarket.screens;
 
 import com.revature.eMarket.services.RouterService;
+import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +14,7 @@ import static java.lang.System.exit;
 public class SignOnScreen implements IScreen {
     private static final Logger logger = LogManager.getLogger(SignOnScreen.class);
     private final RouterService router;
+    Session session;
     @Override
     public void start(Scanner scan) {
         String input = "";
@@ -21,10 +23,11 @@ public class SignOnScreen implements IScreen {
         exit:
         {
             while (true) {
-
+                System.out.println("User: " + session.getUsername());
+                System.out.println("Welcome to 'eMarket'!\n");
                 System.out.println("\n[1] Register Screen");
                 System.out.println("[2] Login Screen");
-                System.out.println("[x] Exit");
+                System.out.println("[x] Exit Program");
 
                 System.out.print("\nEnter: ");
                 input = scan.nextLine();

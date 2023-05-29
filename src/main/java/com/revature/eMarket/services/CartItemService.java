@@ -2,7 +2,7 @@ package com.revature.eMarket.services;
 
 import com.revature.eMarket.daos.CartDAO;
 import com.revature.eMarket.daos.CartItemDAO;
-import com.revature.eMarket.models.CartItems;
+import com.revature.eMarket.models.CartItem;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -12,16 +12,16 @@ import java.util.Scanner;
 public class CartItemService {
     private final CartDAO cartDAO;
     private final CartItemDAO cartItemDAO;
-    public List<CartItems> findAllCartItemsByCartId(String cartId){
-        List<CartItems> cartItems = cartItemDAO.findAllCartItemsByCardId(cartId);
+    public List<CartItem> findAllCartItemsByCartId(String cartId){
+        List<CartItem> cartItems = cartItemDAO.findAllCartItemsByCardId(cartId);
         return cartItems;
     }
 
-    public void createCartItem(CartItems cartItems) {
+    public void createCartItem(CartItem cartItems) {
         cartItemDAO.createCartItem(cartItems);
     }
 
-    private String getCartItemChosen(List<CartItems> cartItems, Scanner scan) {
+    private String getCartItemChosen(List<CartItem> cartItems, Scanner scan) {
         String input = "";
         while (true) {
             clearScreen();
@@ -48,9 +48,9 @@ public class CartItemService {
         }
     }
 
-    private void viewCartItemChosen(List<CartItems> cartItems) {
+    private void viewCartItemChosen(List<CartItem> cartItems) {
         int counter = 1;
-        for(CartItems cartItem : cartItems){
+        for(CartItem cartItem : cartItems){
             System.out.println("\n[" + counter +"]" +
                     cartItem.getName() +
                     " - Price: $" +
@@ -87,7 +87,7 @@ public class CartItemService {
         cartItemDAO.deleteCartItem(cartItemId);
     }
 
-    public void updateCartItem(CartItems cartItems){
+    public void updateCartItem(CartItem cartItems){
         cartItemDAO.updateCartItem(cartItems);
     }
 
