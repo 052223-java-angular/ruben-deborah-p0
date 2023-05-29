@@ -1,5 +1,6 @@
 package com.revature.eMarket.models;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class CartItems {
@@ -9,9 +10,11 @@ public class CartItems {
     private String cart_id;
     private String product_id;
     private int quantity;
-    private float price;
+    private BigDecimal price;
+//    private List<CartItems> items;
 
-    public CartItems(String name, int stock, int quantity, float price, String cart_id, String product_id){
+
+    public CartItems(String name, int stock, int quantity, BigDecimal price, String cart_id, String product_id){
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.stock = stock;

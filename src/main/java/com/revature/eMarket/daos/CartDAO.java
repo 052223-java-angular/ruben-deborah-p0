@@ -1,7 +1,6 @@
 package com.revature.eMarket.daos;
 
 import com.revature.eMarket.models.Cart;
-import com.revature.eMarket.models.CartItems;
 import com.revature.eMarket.utils.ConnectionFactory;
 
 import java.io.IOException;
@@ -9,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class CartDAO {
 
@@ -20,7 +18,7 @@ public class CartDAO {
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, cart.getId());
-                ps.setFloat(2, cart.getTotalCost());
+                ps.setBigDecimal(2, cart.getTotal_cost());
                 ps.setString(3, cart.getUser_id());
                 ps.executeUpdate();
             }
@@ -45,7 +43,7 @@ public class CartDAO {
                     Cart cart = new Cart();
                     if (rs.next()) {
                         cart.setId(rs.getString("id"));
-                        cart.setTotalCost(rs.getBigDecimal("total_cost"));
+                        cart.setTotal_cost(rs.getBigDecimal("total_cost"));
                         cart.setUser_id(rs.getString("user_id"));
                     }
                     return cart;
@@ -72,7 +70,7 @@ public class CartDAO {
                     Cart cart = new Cart();
                     if (rs.next()) {
                         cart.setId(rs.getString("id"));
-                        cart.setTotalCost(rs.getBigDecimal("total_cost"));
+                        cart.setTotal_cost(rs.getBigDecimal("total_cost"));
                         cart.setUser_id(rs.getString("user_id"));
                     }
                     return cart;
@@ -112,7 +110,7 @@ public class CartDAO {
             String sql = "UPDATE carts SET total_cost = ?, user_id = ? WHERE id = ?";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setFloat(1, cart.getTotalCost());
+                ps.setBigDecimal(1, cart.getTotal_cost());
                 ps.setString(2, cart.getUser_id());
                 ps.setString(3, cart.getId());
                 ps.executeUpdate();
@@ -120,28 +118,6 @@ public class CartDAO {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            throw new RuntimeException("Unable to connect to db");
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
-        }
-    }
-
-    public void updateCartItem(CartItems cartItem) {
-        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "UPDATE cart_items SET quantity = ?, price = ?, cart_id = ?, product_id = ? WHERE id = ?";
-
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, cartItem.getQuantity());
-                ps.setFloat(2, cartItem.getPrice());
-                ps.setString(3, cartItem.getCart_id());
-                ps.setString(4, cartItem.getProduct_id());
-                ps.setString(5, cartItem.getId());
-                ps.executeUpdate();
-            }
-
-        } catch (SQLException e) {
             throw new RuntimeException("Unable to connect to db");
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties");

@@ -29,9 +29,9 @@ public class CartService {
         cartDAO.deleteCart(cartId);
     }
 
-    public void deleteCartItem(String cartItemId){
-        cartItemDAO.deleteCartItem(cartItemId);
-    }
+//    public void deleteCartItem(String cartItemId){
+//        cartItemDAO.deleteCartItem(cartItemId);
+//    }
 
     public void updateCart(Cart cart){
         cartDAO.updateCart(cart);
