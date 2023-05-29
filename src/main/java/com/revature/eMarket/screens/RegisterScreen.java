@@ -66,7 +66,7 @@ public class RegisterScreen implements IScreen {
                         System.out.println("Created user confirm test [y]");
                         User createdUser = userService.register(username, password);
                         //Session session = new Session();
-                        session.setSession(createdUser);
+//                        session.setSession(createdUser, cart.getId());
                         router.navigate("/menu", scan);
                         break exit;
 
