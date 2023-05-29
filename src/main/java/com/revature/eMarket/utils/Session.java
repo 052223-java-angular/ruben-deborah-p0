@@ -23,6 +23,15 @@ public class Session {
         this.username = user.get().getUsername();
         this.role_id = user.get().getRole_id();
     }
+
+    public void logoutSession() {
+        this.id = "";
+        this. cart_id = "";
+        this.username = "";
+        this.role_id = "";
+    }
+
+
     public void setSession(String id, String name, String cart_id){
         this.id = id;
         this.username = name;

@@ -35,7 +35,7 @@ public class LogInScreen implements IScreen{
                 clearScreen();
 
                 System.out.println("Sign in here!");
-                System.out.println("[b] Back to main menu");
+
                 System.out.println("[x] Exit");
 
                 // get username
@@ -43,35 +43,23 @@ public class LogInScreen implements IScreen{
                 logger.info("Username: " + username);
 //                System.out.println("Username" + username);
 
-                if (username.equals("b")) {
+                if (username.equals("x")) {
                     logger.info("Returning back to the home screen...");
                     router.navigate("/home", scan);
                     break exit;
                 }
-
-                if (username.equals("x")) {
-                    logger.info("Leaving the Login Screen...");
-                    break exit;
-                }
-
 
                 // get password
                 password = getPassword(scan);
                 logger.info("Password: " + password );
 
-                if (password.equals("b")) {
+                if (password.equals("x")) {
                     logger.info("Returning back to the home screen...");
                     router.navigate("/home", scan);
                     break;
                 }
 
-                if (password.equals("x")) {
-                    logger.info("Leaving the Login Screen...");
-                    break exit;
-                }
-
                 // confirm user's credentials
-                clearScreen();
                 System.out.println("Please confirm your credentials");
                 System.out.println("\nUsername: " + username);
                 System.out.println("Password: " + password);
@@ -87,7 +75,6 @@ public class LogInScreen implements IScreen{
                             scan.nextLine();
                             break;
                         }
-
                         // find the cart
                         //Optional<Cart> cart = cartService.findCartByUserId(confirmedUser.get().getId());
                         // session created
@@ -97,7 +84,7 @@ public class LogInScreen implements IScreen{
                         System.out.println("\nPress [Enter] to continue...");
                         scan.nextLine();
                         // navigate back to the menu screen
-                        router.navigate("/menu", scan);
+                        router.navigate("/home", scan);
                         break exit;
                     case "n":
                         clearScreen();
