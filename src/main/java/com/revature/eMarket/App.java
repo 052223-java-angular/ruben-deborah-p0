@@ -31,13 +31,7 @@ public class App {
 
     Scanner scan = new Scanner(System.in);
 
-<<<<<<< HEAD
     RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO(), new ReviewDAO()), new CategoryService(new CategoryDAO()));
-
-=======
->>>>>>> 5cf5d464ef1c251b2a44c55f8f563380a60d9a38
-    // create a new RouterService with a Session.
-    RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO()), new CategoryService(new CategoryDAO()));
 
     // navigate to the "/home" route using the router and scanner
 

@@ -37,13 +37,12 @@ public class RouterService {
                 new CartScreen(this, getCartService(), getProdService(), session).start(scan);
                 break;
             case "/menu":
-<<<<<<< HEAD
-                new MenuScreen(session).start(scan);
-            case "/prodDetails":
-                new ProdDetailsScreen(getProdService()).start(scan);
-=======
-                new MenuScreen(getCartService(), this, session).start(scan);
->>>>>>> 5cf5d464ef1c251b2a44c55f8f563380a60d9a38
+                new MenuScreen(new CartService(new CartDAO()), this, session).start(scan);
+                break;
+           // case "/prodDetails":
+            //    new ProdDetailsScreen(getProdService()).start(scan);
+            //    new MenuScreen(getCartService(), this, session).start(scan);
+
             default:
                 break;
         }
@@ -63,14 +62,10 @@ public class RouterService {
         return new RoleService(new RoleDAO());
     }
 
-<<<<<<< HEAD
     private ProductService getProdService() { return new ProductService(new ProductDAO(), new ReviewDAO()); };
-=======
-    private ProductService getProdService() {
-        return new ProductService(new ProductDAO()); };
+
 
     private CartService getCartService() {
         return new CartService(new CartDAO());
     }
->>>>>>> 5cf5d464ef1c251b2a44c55f8f563380a60d9a38
 }
