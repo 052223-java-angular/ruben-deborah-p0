@@ -159,10 +159,14 @@ public class ProductScreen implements IScreen{
     }
 
     public void loopPrint(Product product) {
+<<<<<<< HEAD
         //System.out.print("[" + product.getId() + "] ");
+=======
+        System.out.print("[" + product.getId() + "] ");
+>>>>>>> 5cf5d464ef1c251b2a44c55f8f563380a60d9a38
         System.out.print("Name: " + product.getName() + " ");
         System.out.print("Price: " + product.getPrice() + " ");
-        System.out.print("Stock: " + product.getStock() + " \n");
+        System.out.print("Stock: " + product.getStock() + "\n");
     }
 
     public void displayCategory(List<Category> categories) {

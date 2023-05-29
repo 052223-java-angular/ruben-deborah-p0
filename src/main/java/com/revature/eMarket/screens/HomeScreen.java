@@ -27,7 +27,11 @@ public class HomeScreen implements IScreen {
                 System.out.println("\n[1] Register Screen");
                 System.out.println("[2] Menu Screen");
                 System.out.println("[3] Login Screen");
+<<<<<<< HEAD
                 System.out.println("[4] Products Screen");
+=======
+                System.out.println("[4] Product Screen");
+>>>>>>> 5cf5d464ef1c251b2a44c55f8f563380a60d9a38
                 System.out.println("[x] Exit");
 
                 System.out.print("\nEnter: ");
@@ -49,8 +53,12 @@ public class HomeScreen implements IScreen {
                         router.navigate("/login", scan);
                         break;
                     case "4":
+<<<<<<< HEAD
                         logger.info("Navigating to Product Screen");
 //                        router.navigate("/login", scan);
+=======
+                        logger.info("Navigate to Products Screen");
+>>>>>>> 5cf5d464ef1c251b2a44c55f8f563380a60d9a38
                         router.navigate("/product", scan);
                         break;
                     case "x":
@@ -64,7 +72,6 @@ public class HomeScreen implements IScreen {
                         System.out.print("Press [Enter] to continue...");
                         scan.nextLine();
                         break;
-
                 }
             }
         }

@@ -32,13 +32,16 @@ public class UserService {
         return newUser;
 
     }
-    public boolean login(String username, String password) {
-        Optional<User> user = userDAO.findByUsername(username);
-        if(user.isEmpty()){
-            return false;
+    public Optional<User> login(String username, String password) {
+        Optional<User> userOpt = userDAO.findByUsername(username);
+        // Is there a user
+        // if there is, check for matching password
+        if(userOpt.isEmpty() || !BCrypt.checkpw(password, userOpt.get().getPassword())){
+            return Optional.empty();
         }
-        System.out.println(user.get().getPassword());
-        return BCrypt.checkpw(password, user.get().getPassword());
+//        System.out.println(userOpt.get().getPassword());
+//        return BCrypt.checkpw(password, userOpt.get().getPassword());
+        return userOpt;
 
     }
 
@@ -48,6 +51,13 @@ public class UserService {
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
     }
 
+    public boolean usernameAlreadyExists(String username){
+        Optional<String> userOpt = userDAO.searchByUserName(username);
+        if(userOpt.isEmpty()){
+            return true;
+        }
+        return false;
+    }
     public boolean isValidPassword(String password) {
         return password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
     }

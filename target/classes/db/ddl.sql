@@ -35,7 +35,11 @@ create table categories (
 CREATE TABLE products (
     id VARCHAR PRIMARY KEY NOT NULL,
     name VARCHAR NOT NULL,
+<<<<<<< HEAD
     price INT NOT NULL,
+=======
+    price VARCHAR NOT NULL,
+>>>>>>> 5cf5d464ef1c251b2a44c55f8f563380a60d9a38
     stock INT NOT NULL,
     category_id VARCHAR NOT null,
     foreign key (category_id) references categories (id)
