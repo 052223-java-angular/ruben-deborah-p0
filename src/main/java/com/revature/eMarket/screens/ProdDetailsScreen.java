@@ -35,6 +35,7 @@ public class ProdDetailsScreen implements IScreen {
                 System.out.println("Select: [x to exit]");
                 System.out.println("\n[1] View All Reviews");
                 System.out.println("[2] Leave a Review");
+                System.out.println("[3] Add to cart TODO");
                 System.out.println("[x] Exit to products");
 
                 switch (scan.nextLine()){
@@ -101,6 +102,8 @@ public class ProdDetailsScreen implements IScreen {
                                 }
                             }
                         }
+                    case "3":
+                        System.out.print("TODO add to cart");
                         break;
                     case "x":
                         logger.info("Exiting product details");
