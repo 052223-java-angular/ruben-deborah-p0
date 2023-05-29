@@ -41,10 +41,10 @@ public class RouterService {
                 new ProductScreen(getProdService(), this, catServ).start(scan);
                 break;
             case "/cart":
-                new CartScreen(this, getCartService(), getProdService(), this.session).start(scan);
+                new CartScreen(this, getCartService(), getCartItemService(),new CartDAO(), getProdService(), this.session).start(scan);
                 break;
             case "/menu":
-                new MenuScreen(new CartService(new CartDAO()), this, this.session).start(scan);
+                new MenuScreen(getCartService(), this, this.session).start(scan);
                 break;
            // case "/prodDetails":
             //    new ProdDetailsScreen(getProdService()).start(scan);
@@ -77,6 +77,9 @@ public class RouterService {
 
 
     private CartService getCartService() {
-        return new CartService(new CartDAO());
+        return new CartService(new CartDAO(), new CartItemDAO());
+    }
+    private CartItemService getCartItemService() {
+        return new CartItemService(new CartDAO(), new CartItemDAO());
     }
 }

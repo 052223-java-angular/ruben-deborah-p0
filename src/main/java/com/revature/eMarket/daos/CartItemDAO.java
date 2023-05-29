@@ -48,19 +48,19 @@ public class CartItemDAO implements CrudDAO<Product> {
                     ps.setString(1, cartId);
 
                     try (ResultSet rs = ps.executeQuery()) {
-                        List<CartItems> cartItems = new ArrayList<>();
+                        List<CartItems> cartItem = new ArrayList<>();
                         while (rs.next()) {
-                            CartItems cartItem = new CartItems();
-                            cartItem.setId(rs.getString("id"));
-                            cartItem.setStock(rs.getInt("stock"));
-                            cartItem.setQuantity(rs.getInt("quantity"));
-                            cartItem.setName(rs.getString("name"));
-                            cartItem.setPrice(rs.getFloat("price"));
-                            cartItem.setCart_id(rs.getString("cart_id"));
-                            cartItem.setProduct_id(rs.getString("product_id"));
-                            cartItems.add(cartItem);
+                            CartItems cartItems = new CartItems();
+                            cartItems.setId(rs.getString("id"));
+                            cartItems.setStock(rs.getInt("stock"));
+                            cartItems.setQuantity(rs.getInt("quantity"));
+                            cartItems.setName(rs.getString("name"));
+                            cartItems.setPrice(rs.getBigDecimal("price"));
+                            cartItems.setCart_id(rs.getString("cart_id"));
+                            cartItems.setProduct_id(rs.getString("product_id"));
+                            cartItem.add(cartItems);
                         }
-                        return cartItems;
+                        return cartItem;
                     }
                 }
 
@@ -82,7 +82,7 @@ public class CartItemDAO implements CrudDAO<Product> {
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, cartItems.getId());
                 ps.setInt(2, cartItems.getQuantity());
-                ps.setFloat(3, cartItems.getPrice());
+                ps.setBigDecimal(3, cartItems.getPrice());
                 ps.setString(4, cartItems.getCart_id());
                 ps.setString(5, cartItems.getProduct_id());
                 ps.executeUpdate();
@@ -114,7 +114,7 @@ public class CartItemDAO implements CrudDAO<Product> {
                         cartItem.setStock(rs.getInt("stock"));
                         cartItem.setQuantity(rs.getInt("quantity"));
                         cartItem.setName(rs.getString("name"));
-                        cartItem.setPrice(rs.getFloat("price"));
+                        cartItem.setPrice(rs.getBigDecimal("price"));
                         cartItem.setCart_id(rs.getString("cart_id"));
                         cartItem.setProduct_id(rs.getString("product_id"));
                         cartItems.add(cartItem);
@@ -139,6 +139,28 @@ public class CartItemDAO implements CrudDAO<Product> {
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, cartItemId);
 
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
+
+    public void updateCartItem(CartItems cartItem) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "UPDATE cart_items SET quantity = ?, price = ?, cart_id = ?, product_id = ? WHERE id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, cartItem.getQuantity());
+                ps.setBigDecimal(2, cartItem.getPrice());
+                ps.setString(3, cartItem.getCart_id());
+                ps.setString(4, cartItem.getProduct_id());
+                ps.setString(5, cartItem.getId());
                 ps.executeUpdate();
             }
 

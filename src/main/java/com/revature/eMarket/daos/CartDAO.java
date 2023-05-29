@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +57,7 @@ public class CartDAO implements CrudDAO<CartItems> {
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, cart.getId());
                 ps.setFloat(2, cart.getItems().size());
+                ps.setBigDecimal(2, cart.getTotal_cost());
                 ps.setString(3, cart.getUser_id());
                 ps.executeUpdate();
             }
@@ -81,6 +83,7 @@ public class CartDAO implements CrudDAO<CartItems> {
                     if (rs.next()) {
                         cart.setId(rs.getString("id"));
                         cart.setTotalCost(rs.getFloat("total_cost"));
+                        cart.setTotal_cost(rs.getBigDecimal("total_cost"));
                         cart.setUser_id(rs.getString("user_id"));
                     }
                     return cart;
@@ -109,6 +112,7 @@ public class CartDAO implements CrudDAO<CartItems> {
                     if (rs.next()) {
                         cart.setId(rs.getString("id"));
                         cart.setTotalCost(rs.getFloat("total_cost"));
+                        cart.setTotal_cost(rs.getBigDecimal("total_cost"));
                         cart.setUser_id(rs.getString("user_id"));
                     }
                     return cart;
@@ -149,6 +153,7 @@ public class CartDAO implements CrudDAO<CartItems> {
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setFloat(1, 8);
+                ps.setBigDecimal(1, cart.getTotal_cost());
                 ps.setString(2, cart.getUser_id());
                 ps.setString(3, cart.getId());
                 ps.executeUpdate();
@@ -156,28 +161,6 @@ public class CartDAO implements CrudDAO<CartItems> {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            throw new RuntimeException("Unable to connect to db");
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
-        }
-    }
-
-    public void updateCartItem(CartItems cartItem) {
-        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "UPDATE cart_items SET quantity = ?, price = ?, cart_id = ?, product_id = ? WHERE id = ?";
-
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, cartItem.getQuantity());
-                ps.setFloat(2, cartItem.getPrice());
-                ps.setString(3, cartItem.getCart_id());
-                ps.setString(4, cartItem.getProduct_id());
-                ps.setString(5, cartItem.getId());
-                ps.executeUpdate();
-            }
-
-        } catch (SQLException e) {
             throw new RuntimeException("Unable to connect to db");
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties");

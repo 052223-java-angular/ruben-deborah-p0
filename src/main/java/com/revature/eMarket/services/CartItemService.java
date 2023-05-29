@@ -2,13 +2,11 @@ package com.revature.eMarket.services;
 
 import com.revature.eMarket.daos.CartDAO;
 import com.revature.eMarket.daos.CartItemDAO;
-import com.revature.eMarket.models.Cart;
 import com.revature.eMarket.models.CartItems;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 @AllArgsConstructor
 public class CartItemService {
@@ -77,11 +75,20 @@ public class CartItemService {
         cartItemService.updateCartItem(cartItem);
     }*/
 
+    /* where does pattern come from? TODO*/
     private boolean isValidNumber(String possibleNum) {
-        if (possibleNum.length() == 0 || !Pattern.matches("[0-9]+", possibleNum)) {
+        /*if (possibleNum.length() == 0 || !Pattern.matches("[0-9]+", possibleNum)) {
             return false;
-        }
+        }*/
         return true;
+    }
+
+    public void deleteCartItem(String cartItemId){
+        cartItemDAO.deleteCartItem(cartItemId);
+    }
+
+    public void updateCartItem(CartItems cartItems){
+        cartItemDAO.updateCartItem(cartItems);
     }
 
     public static void clearScreen() {
