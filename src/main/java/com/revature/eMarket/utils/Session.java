@@ -3,6 +3,8 @@ package com.revature.eMarket.utils;
 import com.revature.eMarket.models.User;
 import lombok.*;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,12 +16,12 @@ public class Session {
     private String role_id;
     private String cart_id;
 
-    public void setSession(User user, String id) {
+    public void setSession(Optional<User> user) {
         //System.out.println(user);
-        this.id = user.getId();
-        this.cart_id = user.getId();
-        this.username = user.getUsername();
-        this.role_id = user.getRole_id();
+        this.id = user.get().getId();
+        this.cart_id = user.get().getId();
+        this.username = user.get().getUsername();
+        this.role_id = user.get().getRole_id();
     }
     public void setSession(String id, String name, String cart_id){
         this.id = id;

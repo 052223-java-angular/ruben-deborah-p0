@@ -33,6 +33,7 @@ public class LogInScreen implements IScreen{
             while(true) {
                 logger.info("Welcome to the Login Screen of eMarket!");
                 clearScreen();
+
                 System.out.println("Sign in here!");
                 System.out.println("[b] Back to main menu");
                 System.out.println("[x] Exit");
@@ -88,15 +89,13 @@ public class LogInScreen implements IScreen{
                         }
 
                         // find the cart
-                        Cart cart = cartService.findCartByUserId(confirmedUser.get().getId());
-
+                        //Optional<Cart> cart = cartService.findCartByUserId(confirmedUser.get().getId());
                         // session created
-                        session.setSession(confirmedUser.get(), cart.getId());
+                        session.setSession(confirmedUser);
                         // session successful
                         System.out.println("\nLogin Successful!");
                         System.out.println("\nPress [Enter] to continue...");
                         scan.nextLine();
-
                         // navigate back to the menu screen
                         router.navigate("/menu", scan);
                         break exit;

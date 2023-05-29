@@ -49,11 +49,7 @@ public class ProdDetailsScreen implements IScreen {
                         logger.info("Start add review process...");
                         String rate = "";
                         String rev = "";
-
                         System.out.println("Leaving Reviews");
-                        Review review = new Review();
-                        review.setProduct_id(product.getId());
-                        //set review id, user id
 
                         jump:
                         {
@@ -70,28 +66,23 @@ public class ProdDetailsScreen implements IScreen {
                                     System.out.println("Invalid input, [0,5]. Retry.");
                                     break;
                                 }
-                                review.setRating(rate);
-
                                 System.out.println("Leave a written review: ");
                                 rev = scan.nextLine();
                                 if (rev.equals("x")) {
                                     logger.info("Exit Registration Screen!");
                                     break exit;
                                 }
-
                                 /*if (!productServ.isValidReview(rev)) {
                                     logger.info("Exit Registration Screen!");
                                     System.out.println("Invalid input, Alphanumeric");
                                     break;
                                 }*/
-                                review.setReview(rev);
-                                logger.info("Manual USEr input for testing. TODO");
-                                review.setUser_id("6c5b8722-c0ad-46e6-8637-412a206330e9");
 
+                                logger.info("Manual USEr input for testing. TODO");
                                 System.out.println("Rating: " + rate);
                                 System.out.println("Review: "+ rev);
                                 System.out.println("Confirm? [y/n] ");
-
+                                Review review = new Review(rate, rev,"6c5b8722-c0ad-46e6-8637-412a206330e9" ,product.getId());
                                 switch(scan.nextLine()) {
                                     case "y":
                                         logger.info("User confirms review.");

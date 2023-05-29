@@ -6,6 +6,7 @@ import com.revature.eMarket.models.CartItems;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class CartService {
@@ -29,7 +30,7 @@ public class CartService {
         return null;
     }
 
-    public Cart findCartByUserId(String id) {
-        return null;
+    public Optional<Cart> findCartByUserId(String id) {
+        return cartDAO.findByUserId(id);
     }
 }

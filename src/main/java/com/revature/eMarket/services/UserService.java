@@ -25,7 +25,6 @@ public class UserService {
         System.out.println("UserService > register method ERROR");
 
         Role foundFound = roleService.findByName("USER");
-
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt()); // one way encryption salt key
         User newUser = new User(username, hashed, foundFound.getId());
         userDAO.save(newUser);
@@ -41,6 +40,7 @@ public class UserService {
         }
 //        System.out.println(userOpt.get().getPassword());
 //        return BCrypt.checkpw(password, userOpt.get().getPassword());
+
         return userOpt;
 
     }
