@@ -10,6 +10,7 @@ import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -39,7 +40,7 @@ public class CartScreen implements IScreen {
                 cartIsEmpty(scan);
                 break exit;
             }
-        }
+
         // cart screen
         while (true) {
             clearScreen();
@@ -69,7 +70,7 @@ public class CartScreen implements IScreen {
                 case "r":
                     while (true) {
                         // get cart item choice
-                        itemChosen = getCartItemChosen(cartItems, scan);
+                        //itemChosen = getCartItemChosen(cartItems, scan);
                         if (itemChosen.equals("x")) {
                             break;
                         }
@@ -77,11 +78,11 @@ public class CartScreen implements IScreen {
                         CartItems cartItem = cartItems.get(Integer.parseInt(itemChosen) - 1);
 
                         // update cart
-                        cart.setTotalCost(cart.getTotalCost().subtract(cartItem.getPrice()));
+                        //cart.setTotalCost(cart.getTotalCost().subtract(cartItem.getPrice()));
                         cartService.updateCart(cart);
 
                         // delete cart item
-                        cartItemService.deleteCartItem(cartItem.getId());
+                        //cartItemService.deleteCartItem(cartItem.getId());
                         cartItems.remove(cartItem);
 
                         // empty cart screen
@@ -184,7 +185,7 @@ public class CartScreen implements IScreen {
                                 }
 
                                 // update cart
-                                cart.setTotalCost(BigDecimal.valueOf(0));
+                                //cart.setTotalCost(BigDecimal.valueOf(0));
                                 cartService.updateCart(cart);
 
                                 // process payment
@@ -200,8 +201,6 @@ public class CartScreen implements IScreen {
                         }
                         break;
                     }
-                    break;
-                default:
                     break;
             }
         }
