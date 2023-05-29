@@ -5,10 +5,7 @@ import com.revature.eMarket.models.Review;
 import com.revature.eMarket.utils.ConnectionFactory;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +33,32 @@ public class ReviewDAO implements CrudDAO<Review> {
 
     @Override
     public List<Review> findAll() {
+        return null;
+    }
+
+    public Review insert(Review rev) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "INSERT INTO reviews (id,review, rating, user_id, product_id) VALUES (?, ?, ?, ?, ?)";
+            System.out.println("Testing ReviewDAO insert");
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setInt(1, (int) System.currentTimeMillis() % Integer.MAX_VALUE);
+                ps.setString(2, rev.getReview());
+                ps.setString(3, rev.getRating());
+
+                ps.setString(4, rev.getUser_id());
+                ps.setString(5, rev.getProduct_id());
+                ps.executeUpdate();
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties \n" + e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
         return null;
     }
 

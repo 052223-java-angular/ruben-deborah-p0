@@ -34,4 +34,18 @@ public class ProductService {
         return reviewDAO.findByProdId(id);
     }
 
+    public boolean isValidRating(String rating) {
+        // checks if username 8-20 characters long, no _ or . at end, no _ or . at beginning, a-z, A-Z, 0-9
+        return rating.matches("^[1-5]+$");
+    }
+
+    public Review insert(Review rev) {
+        return reviewDAO.insert(rev);
+    }
+
+    public boolean isValidReview(String review) {
+        // checks if username 8-20 characters long, no _ or . at end, no _ or . at beginning, a-z, A-Z, 0-9
+        return review.matches("^[a-zA-Z0-9]+$");
+    }
+
 }

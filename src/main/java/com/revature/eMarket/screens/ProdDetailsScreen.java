@@ -2,7 +2,9 @@ package com.revature.eMarket.screens;
 
 import com.revature.eMarket.models.Product;
 import com.revature.eMarket.models.Review;
+import com.revature.eMarket.models.User;
 import com.revature.eMarket.services.ProductService;
+import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,9 +45,75 @@ public class ProdDetailsScreen implements IScreen {
                         printList(reviews);
 
                         break;
-                    case "x":
+                    case "2":
                         logger.info("Start add review process...");
+                        String rate = "";
+                        String rev = "";
+
                         System.out.println("Leaving Reviews");
+                        Review review = new Review();
+                        review.setProduct_id(product.getId());
+                        //set review id, user id
+
+                        jump:
+                        {
+                            while(true) {
+                                // rate out of 5
+                                System.out.println("Rate product [0 - 5]: ");
+                                rate = scan.nextLine();
+                                if (rate.equals("x")) {
+                                    logger.info("Exit Registration Screen!");
+                                    break exit;
+                                }
+
+                                if (!productServ.isValidRating(rate)) {
+                                    System.out.println("Invalid input, [0,5]. Retry.");
+                                    break;
+                                }
+                                review.setRating(rate);
+
+                                System.out.println("Leave a written review: ");
+                                rev = scan.nextLine();
+                                if (rev.equals("x")) {
+                                    logger.info("Exit Registration Screen!");
+                                    break exit;
+                                }
+
+                                /*if (!productServ.isValidReview(rev)) {
+                                    logger.info("Exit Registration Screen!");
+                                    System.out.println("Invalid input, Alphanumeric");
+                                    break;
+                                }*/
+                                review.setReview(rev);
+                                logger.info("Manual USEr input for testing. TODO");
+                                review.setUser_id("6c5b8722-c0ad-46e6-8637-412a206330e9");
+
+                                System.out.println("Rating: " + rate);
+                                System.out.println("Review: "+ rev);
+                                System.out.println("Confirm? [y/n] ");
+
+                                switch(scan.nextLine()) {
+                                    case "y":
+                                        logger.info("User confirms review.");
+                                        productServ.insert(review);
+                                        break exit;
+
+                                    case "n":
+                                        logger.info("Leaving review input....");
+                                        break jump;
+                                    default:
+                                        logger.warn("Invalid Option");
+                                        System.out.println("Choose a valid option.");
+                                        System.out.print("Press [Enter] to continue...");
+                                        scan.nextLine();
+                                        break;
+                                }
+                            }
+                        }
+                        break;
+                    case "x":
+                        logger.info("Exiting product details");
+                        System.out.println("Exiting product screen.");
                         break exit;
                     default:
                         logger.warn("Wrong selection...");
