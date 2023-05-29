@@ -1,95 +1,61 @@
 package com.revature.eMarket.services;
 
-import com.revature.eMarket.daos.CartDAO;
+
 import com.revature.eMarket.daos.CartItemDAO;
-import com.revature.eMarket.models.CartItems;
+import com.revature.eMarket.models.Cart;
+import com.revature.eMarket.models.CartItem;
+import com.revature.eMarket.models.Product;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.Scanner;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class CartItemService {
-    private final CartDAO cartDAO;
     private final CartItemDAO cartItemDAO;
-    public List<CartItems> findAllCartItemsByCartId(String cartId){
-        List<CartItems> cartItems = cartItemDAO.findAllCartItemsByCardId(cartId);
-        return cartItems;
-    }
+    private final ProductService productService;
 
-    public void createCartItem(CartItems cartItems) {
-        cartItemDAO.createCartItem(cartItems);
-    }
+    public void add(String product_id, int count, Cart cart) {
+        Optional<Product> productOpt = productService.getProd(product_id);
+        if (productOpt.isEmpty()) {
+            System.out.println("Product not found");
+        }
 
-    private String getCartItemChosen(List<CartItems> cartItems, Scanner scan) {
-        String input = "";
-        while (true) {
-            clearScreen();
-            System.out.println("Choosing cart item...");
-
-            // show cart item options
-            viewCartItemChosen(cartItems);
-
-            System.out.print("\nChoose an option (x to cancel): ");
-
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("x")) {
-                return "x";
-            } else if (!isValidNumber(input) || Integer.parseInt(input) > cartItems.size() ||
-                    Integer.parseInt(input) < 1) {
-                clearScreen();
-                System.out.println("Input is invalid: must be a number between 1 and " + cartItems.size());
-                System.out.print("\nEnter to continue...");
-                scan.nextLine();
-                continue;
+        for(CartItem cartItem : cart.getItems()){
+            if(cartItem.getProduct_id() == product_id){
+                cartItemDAO.update(product_id, cartItem.getQuantity() + count);
+                return;
             }
-
-            return input;
         }
+        CartItem cartItem = new CartItem(productOpt.get().getName(), cart.getId(), product_id, count, productOpt.get().getPrice());
+        cartItemDAO.save(cartItem);
     }
 
-    private void viewCartItemChosen(List<CartItems> cartItems) {
-        int counter = 1;
-        for(CartItems cartItem : cartItems){
-            System.out.println("\n[" + counter +"]" +
-                    cartItem.getName() +
-                    " - Price: $" +
-                    cartItem.getPrice() +
-                    " Quantity: " + cartItem.getQuantity());
-            counter += 1;
-        }
+
+    public void modify(String item, int count) {
+        cartItemDAO.update(item, count);
     }
 
-    /*private void updateCartAndCartItem(Cart cart, CartItems cartItem, int i) {
-        Float newPrice = cartItem.getPrice()
-                .divide(Float.valueOf(cartItem.getQuantity()))
-                .multiply(Float.valueOf(quantity));
-
-        // update cart
-        cart.setTotalCost(cart.getTotalCost().add(newPrice.subtract(cartItem.getPrice())));
-        cartService.updateCart(cart);
-
-        // update cart item
-        cartItem.setPrice(newPrice);
-        cartItem.setQuantity(quantity);
-        cartItemService.updateCartItem(cartItem);
-    }*/
-
-    /* where does pattern come from? TODO*/
-    private boolean isValidNumber(String possibleNum) {
-        /*if (possibleNum.length() == 0 || !Pattern.matches("[0-9]+", possibleNum)) {
-            return false;
-        }*/
-        return true;
+    public void remove(String item) {
+        cartItemDAO.delete(item);
     }
 
-    public void deleteCartItem(String cartItemId){
-        cartItemDAO.deleteCartItem(cartItemId);
+    public void getCartItemById(String id){
+
     }
 
-    public void updateCartItem(CartItems cartItems){
-        cartItemDAO.updateCartItem(cartItems);
+
+    public List<CartItem> getCartItemByCartId(String cart_id) {
+        return cartItemDAO.findByCartId(cart_id);
     }
+
+
+    public void clearByCartId(String id) {
+        cartItemDAO.deleteByCartId(id);
+    }
+
+
+    /*************************** Helper methods *****************************************/
 
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");

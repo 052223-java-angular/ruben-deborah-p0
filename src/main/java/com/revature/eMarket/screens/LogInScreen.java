@@ -1,8 +1,6 @@
 package com.revature.eMarket.screens;
 
-import com.revature.eMarket.models.Cart;
 import com.revature.eMarket.models.User;
-import com.revature.eMarket.services.CartService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.services.UserService;
 import com.revature.eMarket.utils.Session;
@@ -17,7 +15,7 @@ import java.util.Scanner;
 public class LogInScreen implements IScreen{
     private final RouterService router;
     private final UserService userService;
-    private final CartService cartService;
+//    private final CartService cartService;
     private Session session;
     private static final Logger logger = LogManager.getLogger(LogInScreen.class);
 
@@ -35,17 +33,22 @@ public class LogInScreen implements IScreen{
                 clearScreen();
 
                 System.out.println("Sign in here!");
-
+                System.out.println("[b] back");
                 System.out.println("[x] Exit");
 
                 // get username
                 username = getUsername(scan);
                 logger.info("Username: " + username);
-//                System.out.println("Username" + username);
 
                 if (username.equals("x")) {
                     logger.info("Returning back to the home screen...");
                     router.navigate("/home", scan);
+                    break exit;
+                }
+
+                if(username.equals("b")){
+                    logger.info("Go back");
+                    router.navigate(session.getHistory().pop(), scan);
                     break exit;
                 }
 
@@ -56,7 +59,13 @@ public class LogInScreen implements IScreen{
                 if (password.equals("x")) {
                     logger.info("Returning back to the home screen...");
                     router.navigate("/home", scan);
-                    break;
+                    break exit;
+                }
+
+                if (password.equals("b")) {
+                    logger.info("Go back");
+                    router.navigate(session.getHistory().pop(), scan);
+                    break exit;
                 }
 
                 // confirm user's credentials
@@ -78,12 +87,13 @@ public class LogInScreen implements IScreen{
                         // find the cart
                         //Optional<Cart> cart = cartService.findCartByUserId(confirmedUser.get().getId());
                         // session created
-                        session.setSession(confirmedUser);
+                        session.setSession(confirmedUser.get());
                         // session successful
                         System.out.println("\nLogin Successful!");
                         System.out.println("\nPress [Enter] to continue...");
                         scan.nextLine();
                         // navigate back to the menu screen
+                        session.getHistory().push("/login");
                         router.navigate("/home", scan);
                         break exit;
                     case "n":

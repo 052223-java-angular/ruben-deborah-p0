@@ -48,4 +48,7 @@ public class ProductService {
         return review.matches("^[a-zA-Z0-9]+$");
     }
 
+    public Optional<Product> getProd(String id) {
+        return prodDAO.getProd(id);
+    }
 }

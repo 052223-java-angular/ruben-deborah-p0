@@ -1,7 +1,6 @@
 package com.revature.eMarket.daos;
 
 import com.revature.eMarket.models.Category;
-import com.revature.eMarket.models.Product;
 import com.revature.eMarket.utils.ConnectionFactory;
 
 import java.io.IOException;
@@ -11,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CategoryDAO implements CrudDAO<Category> {
 
@@ -30,9 +30,14 @@ public class CategoryDAO implements CrudDAO<Category> {
     }
 
     @Override
-    public Category findById(String id) {
-        return null;
+    public Optional<Category> findById(String id) {
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
+
+//    @Override
+//    public Optional<CartItem> findById(String id) {
+//        return null;
+//    }
 
     @Override
     public List<Category> findAll() {

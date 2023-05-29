@@ -1,8 +1,6 @@
 package com.revature.eMarket.daos;
 
 import com.revature.eMarket.models.Product;
-import com.revature.eMarket.models.Role;
-import com.revature.eMarket.models.User;
 import com.revature.eMarket.utils.ConnectionFactory;
 
 import java.io.IOException;
@@ -32,36 +30,41 @@ public class ProductDAO implements CrudDAO<Product>{
     }
 
     @Override
-    public Product findById(String id) {
-
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "SELECT * FROM products WHERE id = ?";
-            try(PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, id);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        Product prod = new Product();
-                        prod.setId(rs.getString("id"));
-                        prod.setName(rs.getString("name"));
-                        prod.setPrice(rs.getInt("price"));
-                        prod.setStock(rs.getString("stock"));
-                        prod.setCategory_id(rs.getString("category_id"));
-                        return prod;
-                    }
-                }
-            }
-
-        }catch (SQLException e) {
-            throw new RuntimeException("Unable to access the database. Debug");
-        }catch(ClassNotFoundException e) {
-            throw new RuntimeException("Can't find application. Debug");
-        }catch (IOException e) {
-            throw new RuntimeException("Unable to load JDBC. Debug");
-        }
-
-        return null;
+    public Optional<Product> findById(String id) {
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
+//
+//    @Override
+//    public Optional<CartItem> findById(String id) {
+//
+//        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+//            String sql = "SELECT * FROM products WHERE id = ?";
+//            try(PreparedStatement ps = conn.prepareStatement(sql)) {
+//                ps.setString(1, id);
+//
+//                try (ResultSet rs = ps.executeQuery()) {
+//                    if (rs.next()) {
+//                        Product prod = new Product();
+//                        prod.setId(rs.getString("id"));
+//                        prod.setName(rs.getString("name"));
+//                        prod.setPrice(rs.getInt("price"));
+//                        prod.setStock(rs.getString("stock"));
+//                        prod.setCategory_id(rs.getString("category_id"));
+//                        return prod;
+//                    }
+//                }
+//            }
+//
+//        }catch (SQLException e) {
+//            throw new RuntimeException("Unable to access the database. Debug");
+//        }catch(ClassNotFoundException e) {
+//            throw new RuntimeException("Can't find application. Debug");
+//        }catch (IOException e) {
+//            throw new RuntimeException("Unable to load JDBC. Debug");
+//        }
+//
+//        return null;
+//    }
 
     @Override
     public List<Product> findAll() {

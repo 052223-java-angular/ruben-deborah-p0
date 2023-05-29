@@ -1,5 +1,8 @@
 package com.revature.eMarket.daos;
 
+import com.revature.eMarket.models.Role;
+import com.revature.eMarket.utils.ConnectionFactory;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,10 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-
-import com.revature.eMarket.models.Role;
-import com.revature.eMarket.models.User;
-import com.revature.eMarket.utils.ConnectionFactory;
 
 
 public class RoleDAO implements CrudDAO<Role> {
@@ -31,9 +30,15 @@ public class RoleDAO implements CrudDAO<Role> {
     }
 
     @Override
-    public Role findById(String id) {
-        return null;
+    public Optional<Role> findById(String id) {
+        // TODO
+        throw new UnsupportedOperationException("Unimplemented method 'findById' ");
     }
+
+//    @Override
+//    public Optional<CartItem> findById(String id) {
+//        return null;
+//    }
 
     @Override
     public List<Role> findAll() {

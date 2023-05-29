@@ -1,7 +1,6 @@
 package com.revature.eMarket.daos;
 
-import com.revature.eMarket.models.CartItems;
-import com.revature.eMarket.models.Product;
+import com.revature.eMarket.models.CartItem;
 import com.revature.eMarket.utils.ConnectionFactory;
 
 import java.io.IOException;
@@ -11,165 +10,190 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class CartItemDAO implements CrudDAO<Product> {
+public class CartItemDAO implements CrudDAO<CartItem> {
     @Override
-    public void save(Product obj) {
+    public void save(CartItem cartItem) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "insert into cart_items (id, cart_id, product_id, quantity) values (?, ?, ?, ?)";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, cartItem.getId());
+                ps.setString(2, cartItem.getCart_id());
+                ps.setString(3, cartItem.getProduct_id());
+                ps.setInt(5, cartItem.getQuantity());
+
+                ps.executeUpdate();
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties \n" + e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
 
     }
 
     @Override
     public void update(String id) {
-
+        throw new UnsupportedOperationException("Unimplemented method 'update' ");
     }
+
+    public void update(String id, int quantity) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "update cart_items set quantity = ? where id = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setInt(1, quantity);
+                ps.setString(2, id);
+                ps.executeUpdate();
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties \n" + e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public void delete(String id) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "delete from cart_items where id = ?";
 
-    }
-
-    @Override
-    public Product findById(String id) {
-        return null;
-    }
-
-    @Override
-    public List<Product> findAll() {
-        return null;
-    }
-
-    public List<CartItems> findAllCartItemsByCardId(String cartId) {
-            try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-                String sql = "SELECT cart_items.id, cart_items.quantity, cart_items.cart_id, cart_items.price, " +
-                        "cart_items.product_id, products.stock, products.name FROM cart_items " +
-                        "INNER JOIN products ON cart_items.product_id = products.id AND cart_items.cart_id = ?";
-
-                try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                    ps.setString(1, cartId);
-
-                    try (ResultSet rs = ps.executeQuery()) {
-                        List<CartItems> cartItem = new ArrayList<>();
-                        while (rs.next()) {
-                            CartItems cartItems = new CartItems();
-                            cartItems.setId(rs.getString("id"));
-                            cartItems.setStock(rs.getInt("stock"));
-                            cartItems.setQuantity(rs.getInt("quantity"));
-                            cartItems.setName(rs.getString("name"));
-                            cartItems.setPrice(rs.getBigDecimal("price"));
-                            cartItems.setCart_id(rs.getString("cart_id"));
-                            cartItems.setProduct_id(rs.getString("product_id"));
-                            cartItem.add(cartItems);
-                        }
-                        return cartItem;
-                    }
-                }
-
-            } catch (SQLException e) {
-                throw new RuntimeException("Unable to connect to db");
-            } catch (IOException e) {
-                throw new RuntimeException("Cannot find application.properties");
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Unable to load jdbc");
-            }
-
-    }
-
-    public void createCartItem(CartItems cartItems) {
-        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "INSERT INTO cart_items (id, quantity, price, cart_id, product_id) " +
-                    "VALUES (?, ?, ?, ?, ?)";
-
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, cartItems.getId());
-                ps.setInt(2, cartItems.getQuantity());
-                ps.setBigDecimal(3, cartItems.getPrice());
-                ps.setString(4, cartItems.getCart_id());
-                ps.setString(5, cartItems.getProduct_id());
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, id);
                 ps.executeUpdate();
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db");
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
+            throw new RuntimeException("Cannot find application.properties \n" + e);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
         }
     }
 
-    public List<CartItems> findAllCartItemsByCartId(String cartId) {
-        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "SELECT cart_items.id, cart_items.quantity, cart_items.cart_id, cart_items.price, " +
-                    "cart_items.product_id, products.stock, products.name FROM cart_items " +
-                    "INNER JOIN products ON cart_items.product_id = products.id AND cart_items.cart_id = ?";
+    @Override
+    public Optional<CartItem> findById(String id) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "select * from cart_items where id = ?";
 
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, cartId);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    List<CartItems> cartItems = new ArrayList<>();
-                    while (rs.next()) {
-                        CartItems cartItem = new CartItems();
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, id);
+                try(ResultSet rs = ps.executeQuery()){
+                    if(rs.next()){
+                        CartItem cartItem = new CartItem();
                         cartItem.setId(rs.getString("id"));
-                        cartItem.setStock(rs.getInt("stock"));
-                        cartItem.setQuantity(rs.getInt("quantity"));
-                        cartItem.setName(rs.getString("name"));
-                        cartItem.setPrice(rs.getBigDecimal("price"));
                         cartItem.setCart_id(rs.getString("cart_id"));
                         cartItem.setProduct_id(rs.getString("product_id"));
-                        cartItems.add(cartItem);
+                        cartItem.setQuantity(rs.getInt("quantity"));
+                        return Optional.of(cartItem);
                     }
-                    return cartItems;
                 }
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db");
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
+            throw new RuntimeException("Cannot find application.properties \n" + e);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
         }
+        return  Optional.empty();
     }
 
-    public void deleteCartItem(String cartItemId) {
-        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "DELETE FROM cart_items WHERE id = ?";
 
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, cartItemId);
-
-                ps.executeUpdate();
+    @Override
+    public List<CartItem> findAll() {
+        List<CartItem> cartItems = new ArrayList<>();
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "SELECT c.id, c.quantity, c.cart_id, c.product_id, p.name, p.price FROM cart_items c INNER JOIN products p ON c.product_id = p.id";
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                try(ResultSet rs = ps.executeQuery()){
+                    while(rs.next()){
+                        CartItem cartItem = new CartItem();
+                        cartItem.setId(rs.getString("id"));
+                        cartItem.setName(rs.getString("name"));
+                        cartItem.setCart_id(rs.getString("cart_id"));
+                        cartItem.setProduct_id(rs.getString("product_id"));
+                        cartItem.setQuantity(rs.getInt("quantity"));
+                        cartItem.setPrice(rs.getDouble("price"));
+                        cartItems.add(cartItem);
+                    }
+                }
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db");
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
+            throw new RuntimeException("Cannot find application.properties \n" + e);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
         }
+        return cartItems;
     }
 
-    public void updateCartItem(CartItems cartItem) {
-        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "UPDATE cart_items SET quantity = ?, price = ?, cart_id = ?, product_id = ? WHERE id = ?";
+    public List<CartItem> findByCartId(String cart_id) {
+        List<CartItem> cartItems = new ArrayList<>();
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "SELECT c.id, c.quantity, c.cart_id, c.product_id, p.name, p.price FROM cart_items c INNER JOIN products p ON c.product_id = p.id AND c.cart_id = ?";
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, cart_id);
+                try(ResultSet rs = ps.executeQuery()){
+                    while(rs.next()){
+                        CartItem cartItem = new CartItem();
+                        cartItem.setId(rs.getString("id"));
+                        cartItem.setName(rs.getString("name"));
+                        cartItem.setCart_id(rs.getString("cart_id"));
+                        cartItem.setProduct_id(rs.getString("product_id"));
+                        cartItem.setQuantity(rs.getInt("quantity"));
+                        cartItem.setPrice(rs.getDouble("price"));
+                        cartItems.add(cartItem);
+                    }
+                }
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties \n" + e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return cartItems;
+    }
 
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, cartItem.getQuantity());
-                ps.setBigDecimal(2, cartItem.getPrice());
-                ps.setString(3, cartItem.getCart_id());
-                ps.setString(4, cartItem.getProduct_id());
-                ps.setString(5, cartItem.getId());
+    public void deleteByCartId(String id) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "delete from cart_items where cart_id = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, id);
                 ps.executeUpdate();
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db");
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties");
+            throw new RuntimeException("Cannot find application.properties \n" + e);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc");
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
         }
     }
 }

@@ -1,31 +1,21 @@
 package com.revature.eMarket.screens;
 
-import com.revature.eMarket.daos.CartDAO;
 import com.revature.eMarket.models.Cart;
-import com.revature.eMarket.models.CartItems;
-import com.revature.eMarket.models.Product;
-import com.revature.eMarket.services.CartItemService;
+import com.revature.eMarket.models.CartItem;
 import com.revature.eMarket.services.CartService;
-import com.revature.eMarket.services.ProductService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
-import org.apache.logging.log4j.core.config.Order;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.regex.Pattern;
+import java.util.*;
 
 @AllArgsConstructor
 public class CartScreen implements IScreen {
     private final RouterService router;
-    private final CartService cartService;
-    private final CartItemService cartItemService;
-    private final CartDAO cartDAO;
-    private final ProductService prodService;
+    private final CartService cart;
+//    private final CartItemService cartItemService;
+//    private final CartDAO cartDAO;
+//    private final ProductService prodService;
     private final Session session;
 //    getProdService
 
@@ -33,19 +23,19 @@ public class CartScreen implements IScreen {
     @Override
     public void start(Scanner scan) {
         String input = "";
-        String itemQuantity = "";
-        String itemChosen = "";
-        Cart cart = cartService.findCartByCardId(session.getCart_id());
-//        CartItems cartItems = cartItemService.findAllCartItemsByCartId(session.getCart_id());
-        List<CartItems> cartItem = cartItemService.findAllCartItemsByCartId(cart.getId());
+        String item = "";
+        int amount = 0;
+        double total = 0;
 
         exit:
         {
             // cart screen emptied
-            if (cartItem.isEmpty()) {
-                cartIsEmpty(scan);
-                break exit;
-            }
+//            List<CartItem> cartItem = null;
+//            if (cartItem.isEmpty()) {
+//                cartIsEmpty(scan);
+//                break exit;
+//            }
+            clearScreen();
             // cart screen
             while (true) {
                 clearScreen();
@@ -53,7 +43,7 @@ public class CartScreen implements IScreen {
                 System.out.println("Press [Enter] to continue...");
 
                 // View Shopping cart
-                System.out.println("View shopping cart");
+                System.out.println("[1] View shopping cart");
                 //ViewCartItems(cartItem);
 
                 // navigate through the options
@@ -63,99 +53,96 @@ public class CartScreen implements IScreen {
                 System.out.println("[c] Checkout");
                 System.out.println("[b] Back to the main menu" + "[x] Exit");
 
+                Optional<Cart> ct = cart.getCartByUserId("08ccc180-30d9-4771-b384-2fba9ebdffa1");
+                Map<String, String> idMap = new HashMap<>();
+
+                if(ct.isPresent()){
+                    List<CartItem> cartItem = ct.get().getItems();
+
+                    for(int i = 0; i < cartItem.size(); i++){
+                        idMap.put("p" + i, cartItem.get(i).getProduct_id());
+                        System.out.println("[p" + i + "]: " + cartItem.get(i).getName() +
+                                " --------[" + cartItem.get(i).getQuantity() + "]*" +
+                                cartItem.get(i).getPrice() + "-------------" +
+                                cartItem.get(i).getPrice() * cartItem.get(i).getQuantity());
+                        total += cartItem.get(i).getPrice() * cartItem.get(i).getQuantity();
+                    }
+                    System.out.println(total);
+                }
                 // chose option
                 System.out.println("\nChoose option to navigate: ");
                 switch (input.toLowerCase()) {
                     case "b":
-                        router.navigate("/home", scan);
+                        router.navigate(session.getHistory().pop(), scan);
+//                        router.navigate("/home", scan);
                         break;
-//                    case "m":
-//                        System.out.println("\nEnter item to modify");
+                    case "1":
+                        System.out.println("\nContinue shopping");
 //                        itemQuantity = scan.nextLine();
                     case "r":
-                        while (true) {
                             // get cart item choice
-                            itemChosen = getCartItemChosen(cartItem, scan);
-                            if (itemChosen.equals("x")) {
-                                break;
-                            }
-
-                            CartItems cartItems = cartItem.get(Integer.parseInt(itemChosen) - 1);
-
-                            // update cart
-                            cart.setTotal_cost(cart.getTotal_cost().subtract(cartItems.getPrice()));
-                            cartService.updateCart(cart);
-
-                            // delete cart item
-                            cartItemService.deleteCartItem(cartItems.getId());
-                            cartItem.remove(cartItems);
-
                             // empty cart screen
-                            if (cartItem.isEmpty()) {
+                            if(idMap.size() == 0) {
                                 cartIsEmpty(scan);
-                                // leave cart screen
-                                break exit;
-                            }
+                            }else {
+                                System.out.println("Chose item to remove");
+                                item = scan.nextLine();
+                                cart.remove(idMap.get(item));
+                                //                                clearScreen();
+                                // successful removal
 
-                            // successful removal
-                            clearScreen();
-                            System.out.println("Removal successful");
-                            System.out.print("\nPress enter to continue...");
-                            scan.nextLine();
-                            break;
-                        }
-                        break;
+//                                System.out.println("Removal successful");
+//                                System.out.print("\nPress enter to continue...");
+//                                scan.nextLine();
+//                                continue;
+                            }
+                        continue;
+//                            continue;
                     case "m":
-                        while (true) {
                             // get cart item chosen
-                            itemChosen = getCartItemChosen(cartItem, scan);
-                            if (itemChosen.equals("x")) {
-                                break;
+                            if (idMap.size() == 0) {
+                                cartIsEmpty(scan);
+                            }else {
+                                // update cart and cart item
+                                System.out.println("Please chose an item to modify");
+                                item = scan.nextLine();
+                                System.out.println("Modify the amount: ");
+                                amount = Integer.parseInt(scan.nextLine());
+                                cart.modify(idMap.get(item), amount);
                             }
+                            continue;
+                            // Successful update
+//                            clearScreen();
+//                            System.out.println("Update successful");
+//                            System.out.print("\nPress enter to continue...");
+//                            scan.nextLine();
+//                            break;
 
-                            CartItems cartItems = cartItem.get(Integer.parseInt(itemChosen) - 1);
 
-                            // get new quantity
-                            itemQuantity = getQuantity(cartItems.getQuantity(), cartItems.getStock(), scan);
-                            if (itemQuantity.equals("x")) {
-                                continue;
-                            }
-
-                            if (Integer.parseInt(itemQuantity) == 0) {
-                                // update cart
-                                //cart.setTotalCost(BigDecimal.valueOf(0));
-                                cart.setTotal_cost(cart.getTotal_cost().subtract(cartItems.getPrice()));
-                                cartService.updateCart(cart);
-
-                                // delete cart item
-                                cartItemService.deleteCartItem(cartItems.getId());
-                                cartItem.remove(cartItems);
-
-                                // success removal
-                                clearScreen();
-                                System.out.println("Removal successful");
-                                System.out.print("\nPress enter to continue...");
-                                scan.nextLine();
-
-                                // show empty cart screen
-                                if (cartItem.isEmpty()) {
-                                    cartIsEmpty(scan);
-                                    // leave cart screen
-                                    break;
-                                }
-                                break;
-                            }
-                            // update cart and cart item
-                            updateCartAndCartItem(cart, cartItems, Integer.parseInt(itemQuantity));
-
-                            clearScreen();
-                            System.out.println("Update successful");
-                            System.out.print("\nPress enter to continue...");
-                            scan.nextLine();
-                            break;
-                            }
-                        default:
-                            break;
+//                    case "c":
+//                        if(idMap.size() == 0){
+//                            cartIsEmpty(scan);
+//                            continue;
+//                        }else{
+//                            System.out.println("The total amount: " + total);
+//                            cardNumber = getCardNumber(scan);
+//                            expirtionDate = getExpirationDate(scan);
+//                            securityCode = getSecurityCode(scan);
+//                            if(PaymentService.pay(cardNumber, expirtionDate, securityCode)){
+//                                System.out.println("Thank you for your purchase!");
+//                                //orderService.add(cart);
+//                                cart.clear(ct.get().getId());
+//                                //add to order history
+//                            }else{
+//                                System.out.println("Try again!");
+//                            }
+//                        }
+//                        break;
+                    case "x":
+                        router.navigate("/home", scan);
+                    default:
+                        System.out.println("Invalid choice!");
+                        continue;
                     }
                     break;
                 }
@@ -198,102 +185,182 @@ public class CartScreen implements IScreen {
         }
     }
 
-    public void viewCartItems(List<CartItems> cartItem) {
-        // looping through the cart items
-        for(CartItems cartItems : cartItem){
-            System.out.println("\n" +
-                    cartItems.getName() +
-                    " - Price: $" +
-                    cartItems.getPrice() +
-                    "Quantity: " +
-                    cartItems.getQuantity());
-        }
-    }
-    private void viewCartItemsChosen(List<CartItems> cartItems) {
-        int counter = 1;
-        for(CartItems cartItem : cartItems){
-            System.out.println("\n[" + counter +"]" +
-                    cartItem.getName() +
-                    " - Price: $" +
-                    cartItem.getPrice() +
-                    " Quantity: " + cartItem.getQuantity());
-            counter += 1;
-        }
-    }
-    private String getCartItemChosen(List<CartItems> cartItems, Scanner scan) {
-        String input = "";
-        while (true) {
-            clearScreen();
-            System.out.println("Choosing cart item...");
+    private String getCardNumber(Scanner scan){
+        String cardNumber = "";
 
-            // show cart item options
-            viewCartItemsChosen(cartItems);
+        while(true){
+            System.out.println("\nPlease enter your card number: ");
+            cardNumber = scan.nextLine();
 
-            System.out.print("\nChoose an option (x to cancel): ");
-
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("x")) {
-                return "x";
-            } else if (!isValidNumber(input) || Integer.parseInt(input) > cartItems.size() ||
-                    Integer.parseInt(input) < 1) {
-                clearScreen();
-                System.out.println("Input is invalid: must be a number between 1 and " + cartItems.size());
-                System.out.print("\nEnter to continue...");
-                scan.nextLine();
-                continue;
-            }
-
-            return input;
-        }
-    }
-
-
-    private String getQuantity(int amount, int stock, Scanner scan) {
-        String input = "";
-        while (true) {
-            clearScreen();
-            System.out.println("Changing quantity...");
-            System.out.println("\n- Current stock   : " + stock);
-            System.out.println("- Current quantity: " + amount);
-            System.out.print("\nEnter new quantity (x to cancel): ");
-
-            input = scan.nextLine();
-            if (input.equalsIgnoreCase("x")) {
+            if(cardNumber.equalsIgnoreCase("x")){
                 return "x";
             }
-            // validate
-            if (!isValidNumber(input) || Integer.parseInt(input) > stock || Integer.parseInt(input) < 0) {
-                clearScreen();
-                System.out.println("Input is invalid: must be a number between 0 and " + stock);
-                System.out.print("\nEnter to continue...");
-                scan.nextLine();
-                continue;
+
+            if(cardNumber.equalsIgnoreCase("b")){
+                return "b";
             }
+
+//            if(!PaymentService.isValidCardNumber(cardNumber)){
+//                clearScreen();
+//                System.out.println("Invalid card number!");
+//                System.out.print("\nPress enter to continue...");
+//                scan.nextLine();
+//                continue;
+//            }
             break;
         }
-        return input;
+        return cardNumber;
     }
+    private String getExpirationDate(Scanner scan){
+        String expirationDate = "";
 
-    private void updateCartAndCartItem(Cart cart, CartItems cartItem, int i) {
-        /*BigDecimal newPrice = cartItem.getPrice()
-                .divide(BigDecimal.valueOf(cartItem.getQuantity()))
-                .multiply(BigDecimal.valueOf(quantity));
+        while(true){
+            System.out.println("\nEnter the expiration date mm/yyyy: ");
+            expirationDate = scan.nextLine();
 
-        // update cart
-        cart.setTotal_cost(cart.getTotal_cost().add(newPrice.subtract(cartItem.getPrice())));
-        cartService.updateCart(cart);
+            if(expirationDate.equalsIgnoreCase("x")){
+                return "x";
+            }
 
-        // update cart item
-        cartItem.setPrice(newPrice);
-        cartItem.setQuantity(quantity);
-        cartItemService.updateCartItem(cartItem);*/
-    }
+            if(expirationDate.equalsIgnoreCase("b")){
+                return "b";
+            }
 
-    private boolean isValidNumber(String possibleNum) {
-        if (possibleNum.length() == 0 || !Pattern.matches("[0-9]+", possibleNum)) {
-            return false;
+//            if(!PaymentService.isValidExpirationDate(expirationDate)){
+//                clearScreen();
+//                System.out.println("Invalid expiration date!");
+//                System.out.print("\nPress enter to continue...");
+//                scan.nextLine();
+//                continue;
+//            }
+            break;
         }
-        return true;
+        return expirationDate;
     }
+    private String getSecurityCode(Scanner scan){
+        String securityCode = "";
+
+
+        while(true){
+            System.out.println("\nEnter the security code: ");
+            securityCode = scan.nextLine();
+
+            if(securityCode.equalsIgnoreCase("x")){
+                return "x";
+            }
+
+            if(securityCode.equalsIgnoreCase("b")){
+                return "b";
+            }
+
+//            if(!PaymentService.isValidSecurityCode(securityCode)){
+//                clearScreen();
+//                System.out.println("Invalid expiration security code!");
+//                System.out.print("\nPress enter to continue...");
+//                scan.nextLine();
+//                continue;
+//            }
+            break;
+        }
+        return securityCode;
+    }
+
+//    public void viewCartItems(List<CartItem> cartItem) {
+//        // looping through the cart items
+//        for(CartItem cartItems : cartItem){
+//            System.out.println("\n" +
+//                    cartItems.getName() +
+//                    " - Price: $" +
+//                    cartItems.getPrice() +
+//                    "Quantity: " +
+//                    cartItems.getQuantity());
+//        }
+//    }
+//    private void viewCartItemsChosen(List<CartItem> cartItems) {
+//        int counter = 1;
+//        for(CartItem cartItem : cartItems){
+//            System.out.println("\n[" + counter +"]" +
+//                    cartItem.getName() +
+//                    " - Price: $" +
+//                    cartItem.getPrice() +
+//                    " Quantity: " + cartItem.getQuantity());
+//            counter += 1;
+//        }
+//    }
+//    private String getCartItemChosen(List<CartItem> cartItems, Scanner scan) {
+//        String input = "";
+//        while (true) {
+//            clearScreen();
+//            System.out.println("Choosing cart item...");
+//
+//            // show cart item options
+//            viewCartItemsChosen(cartItems);
+//
+//            System.out.print("\nChoose an option (x to cancel): ");
+//
+//            input = scan.nextLine();
+//            if (input.equalsIgnoreCase("x")) {
+//                return "x";
+//            } else if (!isValidNumber(input) || Integer.parseInt(input) > cartItems.size() ||
+//                    Integer.parseInt(input) < 1) {
+//                clearScreen();
+//                System.out.println("Input is invalid: must be a number between 1 and " + cartItems.size());
+//                System.out.print("\nEnter to continue...");
+//                scan.nextLine();
+//                continue;
+//            }
+//
+//            return input;
+//        }
+//    }
+//
+//
+//    private String getQuantity(int amount, int stock, Scanner scan) {
+//        String input = "";
+//        while (true) {
+//            clearScreen();
+//            System.out.println("Changing quantity...");
+//            System.out.println("\n- Current stock   : " + stock);
+//            System.out.println("- Current quantity: " + amount);
+//            System.out.print("\nEnter new quantity (x to cancel): ");
+//
+//            input = scan.nextLine();
+//            if (input.equalsIgnoreCase("x")) {
+//                return "x";
+//            }
+//            // validate
+//            if (!isValidNumber(input) || Integer.parseInt(input) > stock || Integer.parseInt(input) < 0) {
+//                clearScreen();
+//                System.out.println("Input is invalid: must be a number between 0 and " + stock);
+//                System.out.print("\nEnter to continue...");
+//                scan.nextLine();
+//                continue;
+//            }
+//            break;
+//        }
+//        return input;
+//    }
+//
+//    private void updateCartAndCartItem(Cart cart, CartItem cartItem, int i) {
+//        /*BigDecimal newPrice = cartItem.getPrice()
+//                .divide(BigDecimal.valueOf(cartItem.getQuantity()))
+//                .multiply(BigDecimal.valueOf(quantity));
+//
+//        // update cart
+//        cart.setTotal_cost(cart.getTotal_cost().add(newPrice.subtract(cartItem.getPrice())));
+//        cartService.updateCart(cart);
+//
+//        // update cart item
+//        cartItem.setPrice(newPrice);
+//        cartItem.setQuantity(quantity);
+//        cartItemService.updateCartItem(cartItem);*/
+//    }
+//
+//    private boolean isValidNumber(String possibleNum) {
+//        if (possibleNum.length() == 0 || !Pattern.matches("[0-9]+", possibleNum)) {
+//            return false;
+//        }
+//        return true;
+//    }
 
 }

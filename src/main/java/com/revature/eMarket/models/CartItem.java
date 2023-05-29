@@ -3,9 +3,6 @@ package com.revature.eMarket.models;
 
 import lombok.*;
 
-
-import java.math.BigDecimal;
-
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -13,25 +10,25 @@ import java.util.UUID;
 @Getter
 @ToString
 @NoArgsConstructor
-public class CartItems {
+public class CartItem {
     private String id;
     private String name;
-    private int stock;
+//    private int stock;
     private String cart_id;
     private String product_id;
     private int quantity;
-    private BigDecimal price;
+    private double price;
 //    private List<CartItems> items;
 
 
-    public CartItems(String name, int stock, int quantity, BigDecimal price, String cart_id, String product_id){
+    public CartItem(String name, int quantity, double price, String cart_id, String product_id){
         this.id = UUID.randomUUID().toString();
         this.name = name;
-        this.stock = stock;
-        this.quantity = quantity;
-        this.price = price;
+//        this.stock = stock;
         this.cart_id = cart_id;
         this.product_id = product_id;
+        this.quantity = quantity;
+        this.price = price;
 
     }
 

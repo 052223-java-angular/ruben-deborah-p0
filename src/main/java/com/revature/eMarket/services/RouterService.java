@@ -32,7 +32,7 @@ public class RouterService {
                 new HomeScreen(this, this.session).start(scan);
                 break;
             case "/login":
-                new LogInScreen(this,getUserService(), getCartService(), this.session).start(scan);
+                new LogInScreen(this,getUserService(), session).start(scan);
                 break;
             case "/register":
                 new RegisterScreen(getUserService(), this, this.session).start(scan);
@@ -41,7 +41,7 @@ public class RouterService {
                 new ProductScreen(getProdService(), this, catServ).start(scan);
                 break;
             case "/cart":
-                new CartScreen(this, getCartService(), getCartItemService(),new CartDAO(), getProdService(), this.session).start(scan);
+                new CartScreen(this, getCartService(), this.session).start(scan);
                 break;
             case "/menu":
                 new MenuScreen(getCartService(), this, this.session).start(scan);
@@ -77,9 +77,10 @@ public class RouterService {
 
 
     private CartService getCartService() {
-        return new CartService(new CartDAO(), new CartItemDAO());
+        return new CartService(new CartDAO(), getCartItemService(), getUserService());
     }
     private CartItemService getCartItemService() {
-        return new CartItemService(new CartDAO(), new CartItemDAO());
+
+        return new CartItemService(new CartItemDAO(), getProdService());
     }
 }
