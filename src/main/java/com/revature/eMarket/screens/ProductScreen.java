@@ -3,9 +3,7 @@ package com.revature.eMarket.screens;
 import com.revature.eMarket.models.Category;
 import com.revature.eMarket.models.Product;
 import com.revature.eMarket.models.User;
-import com.revature.eMarket.services.CategoryService;
-import com.revature.eMarket.services.ProductService;
-import com.revature.eMarket.services.RouterService;
+import com.revature.eMarket.services.*;
 import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +19,8 @@ public class ProductScreen implements IScreen{
     private final ProductService productServ;
     private final RouterService router;
     private final CategoryService catServ;
+    private final CartItemService cartItemService;
+    private final CartService cartService;
     Session session;
 
     private static final Logger logger = LogManager.getLogger(ProductScreen.class);
@@ -30,7 +30,7 @@ public class ProductScreen implements IScreen{
     public void start(Scanner scan) {
             List<Product> inventory = new ArrayList<>(); // = productServ.findAll();
             String input = "";
-            ProdDetailsScreen details = new ProdDetailsScreen(productServ, this.session);
+            ProdDetailsScreen details = new ProdDetailsScreen(productServ, cartItemService, cartService,this.session);
             Product prod = new Product();
 
             while (true) {

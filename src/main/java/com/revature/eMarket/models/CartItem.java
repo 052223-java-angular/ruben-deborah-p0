@@ -29,7 +29,15 @@ public class CartItem {
         this.product_id = product_id;
         this.quantity = quantity;
         this.price = price;
+    }
 
+    public CartItem(Product prod, String cart_id) {
+        this.id = UUID.randomUUID().toString();
+        this.name = prod.getName();
+        this.cart_id = cart_id;
+        this.product_id = prod.getId();
+        this.quantity = prod.getStock();
+        this.price = prod.getPrice();
     }
 
 }

@@ -16,15 +16,14 @@ public class CartItemDAO implements CrudDAO<CartItem> {
     @Override
     public void save(CartItem cartItem) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "insert into cart_items (id, quantity, price, cart_id, prod_id) values (?, ?, ?, ?, ?)";
-
+            String sql = "insert into cart_items (id, quantity, price, cart_id, product_id) values (?, ?, ?, ?, ?)";
+            System.out.println(cartItem);
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, cartItem.getId());
-                ps.setString(2, cartItem.getCart_id());
+                ps.setInt(2, cartItem.getQuantity());
                 ps.setFloat(3, cartItem.getPrice());
-                ps.setString(5, cartItem.getCart_id());
+                ps.setString(4, cartItem.getCart_id());
                 ps.setString(5, cartItem.getProduct_id());
-
                 ps.executeUpdate();
             }
 

@@ -53,7 +53,7 @@ public class ProductDAO implements CrudDAO<Product>{
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));
                         prod.setPrice(rs.getFloat("price"));
-                        prod.setStock(rs.getString("stock"));
+                        prod.setStock(rs.getInt("stock"));
                         prod.setCategory_id(rs.getString("category_id"));
                         storeList.add(prod);
                     }
@@ -85,7 +85,7 @@ public class ProductDAO implements CrudDAO<Product>{
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));
                         prod.setPrice(rs.getFloat("price"));
-                        prod.setStock(rs.getString("stock"));
+                        prod.setStock(rs.getInt("stock"));
                         prod.setCategory_id(rs.getString("category_id"));
                         return prod;
                     }
@@ -117,7 +117,7 @@ public class ProductDAO implements CrudDAO<Product>{
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));
                         prod.setPrice(rs.getInt("price"));
-                        prod.setStock(rs.getString("stock"));
+                        prod.setStock(rs.getInt("stock"));
                         prod.setCategory_id(rs.getString("category_id"));
                         storeList.add(prod);
                     }
@@ -152,7 +152,7 @@ public class ProductDAO implements CrudDAO<Product>{
                         prod.setId(rs.getString("id"));
                         prod.setName(rs.getString("name"));
                         prod.setPrice(rs.getInt("price"));
-                        prod.setStock(rs.getString("stock"));
+                        prod.setStock(rs.getInt("stock"));
                         prod.setCategory_id(rs.getString("category_id"));
                         storeList.add(prod);
                     }

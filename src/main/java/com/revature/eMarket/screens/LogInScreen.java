@@ -1,6 +1,8 @@
 package com.revature.eMarket.screens;
 
+import com.revature.eMarket.models.Cart;
 import com.revature.eMarket.models.User;
+import com.revature.eMarket.services.CartService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.services.UserService;
 import com.revature.eMarket.utils.Session;
@@ -15,7 +17,7 @@ import java.util.Scanner;
 public class LogInScreen implements IScreen{
     private final RouterService router;
     private final UserService userService;
-//    private final CartService cartService;
+    private final CartService cartService;
     private Session session;
     private static final Logger logger = LogManager.getLogger(LogInScreen.class);
 
@@ -34,7 +36,6 @@ public class LogInScreen implements IScreen{
 
 
                 System.out.println("Login Screen.\n");
-
                 System.out.println("[x] Exit");
 
                 // get username
@@ -79,8 +80,11 @@ public class LogInScreen implements IScreen{
                             scan.nextLine();
                             break;
                         }
-
-                        session.setSession(confirmedUser);
+                        // gets cart id and sets this current session with user cart
+                        String cid = confirmedUser.get().getId().toString();
+                        System.out.println(cid);
+                        Optional<Cart> cart = cartService.findById(cid);
+                        session.setSession(confirmedUser, cart.get().getId());
                         // session successful
                         System.out.println("\nLogin Successful!");
                         System.out.println("\nPress [Enter] to continue...");

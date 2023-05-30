@@ -1,11 +1,13 @@
 package com.revature.eMarket.daos;
 
 import com.revature.eMarket.models.Cart;
+import com.revature.eMarket.models.Product;
 import com.revature.eMarket.utils.ConnectionFactory;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -63,9 +65,33 @@ public class CartDAO implements CrudDAO<Cart> {
 
     @Override
     public Optional<Cart> findById(String id) {
-        // TODO Auto-generated method sub
-        throw new UnsupportedOperationException("Unimplemented method 'findById' ");
-//        return null;
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+            String sql = "SELECT * FROM carts WHERE user_id = ?";
+            try(PreparedStatement ps = conn.prepareStatement(sql)) {
+            System.out.println("CartDAO test");
+                ps.setString(1, id);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        Cart cart = new Cart();
+                        cart.setId(rs.getString("id"));
+                        cart.setUser_id(rs.getString("user_id"));
+                        return Optional.of(cart);
+                    }
+                }
+            }
+            System.out.println("CartDAO test");
+
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to access the database. Debug");
+        }catch(ClassNotFoundException e) {
+            throw new RuntimeException("Can't find application. Debug");
+        }catch (IOException e) {
+            throw new RuntimeException("Unable to load JDBC. Debug");
+        }
+
+        return null;
     }
 
 }

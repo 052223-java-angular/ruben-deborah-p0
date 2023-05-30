@@ -66,12 +66,14 @@ public class RegisterScreen implements IScreen {
                 switch(scan.nextLine()) {
                     case "y":
                         logger.info("User confirms credentials are correct.");
-                        clearScreen();
                         System.out.println("Created user confirm test [y]");
                         User createdUser = userService.register(username, password);
-                        session.setSession(Optional.ofNullable(createdUser));
+                        session.setSession(Optional.ofNullable(createdUser).get().getUsername());
+                        //create a new cart upon successful registration
                         cartService.createCart(createdUser.getId());
-                        this.session.getUsername();
+                        String cid = Optional.ofNullable(createdUser).get().getId();
+                        session.setSessionCart(cid);
+                        System.out.println("Registering test");
                         router.navigate("/menu", scan);
                         break exit;
                     case "n":

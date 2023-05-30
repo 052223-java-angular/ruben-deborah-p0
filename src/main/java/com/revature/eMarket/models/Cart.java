@@ -24,14 +24,5 @@ public class Cart {
         this.user_id = user_id;
         this.items = new ArrayList<>();
     }
-//    private Cart(String user_id){
-//        this.id = UUID.randomUUID().toString();
-//        this.user_id = user_id;
-//        this.items = new ArrayList<>();
-//        this.total = 0.0;
-//    }
 
-//    public void setTotalCost(float totalCost) {
-//        this.total = totalCost;
-//    }
 }

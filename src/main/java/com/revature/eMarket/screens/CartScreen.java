@@ -49,29 +49,13 @@ public class CartScreen implements IScreen {
                 // navigate through the options
                 System.out.println("\nProduct name: "); // product name added
                 System.out.println("Product price: "); // price of the product
-
                 System.out.println("[r] Remove an item" + "[m] Modify an item");
                 System.out.println("[c] Checkout");
                 System.out.println("[b] Back to the main menu" + "[x] Exit");
 
-                Optional<Cart> ct = cart.getCartByUserId(session.getId());
-
+                Optional<Cart> ct = cart.findById(session.getId());
                 System.out.println(ct);
-                Map<String, String> idMap = new HashMap<>();
 
-                if(ct.isPresent()){
-                    List<CartItem> cartItem = ct.get().getItems();
-
-                    for(int i = 0; i < cartItem.size(); i++){
-                        idMap.put("p" + i, cartItem.get(i).getProduct_id());
-                        System.out.println("[p" + i + "]: " + cartItem.get(i).getName() +
-                                " --------[" + cartItem.get(i).getQuantity() + "]*" +
-                                cartItem.get(i).getPrice() + "-------------" +
-                                cartItem.get(i).getPrice() * cartItem.get(i).getQuantity());
-                        total += cartItem.get(i).getPrice() * cartItem.get(i).getQuantity();
-                    }
-                    System.out.println(total);
-                }
                 // chose option
                 System.out.println("\nChoose option to navigate: ");
                 switch (input.toLowerCase()) {
@@ -83,64 +67,12 @@ public class CartScreen implements IScreen {
                         System.out.println("\nContinue shopping");
 //                        itemQuantity = scan.nextLine();
                     case "r":
-                        // get cart item choice
-                        // empty cart screen
-                        if(idMap.size() == 0) {
-                            cartIsEmpty(scan);
-                        }else {
-                            System.out.println("Chose item to remove");
-                            item = scan.nextLine();
-                            cart.remove(idMap.get(item));
-                            //                                clearScreen();
-                            // successful removal
 
-//                                System.out.println("Removal successful");
-//                                System.out.print("\nPress enter to continue...");
-//                                scan.nextLine();
-//                                continue;
-                        }
+
                         continue;
-//                            continue;
+
                     case "m":
-                        // get cart item chosen
-                        if (idMap.size() == 0) {
-                            cartIsEmpty(scan);
-                        }else {
-                            // update cart and cart item
-                            System.out.println("Please chose an item to modify");
-                            item = scan.nextLine();
-                            System.out.println("Modify the amount: ");
-                            amount = Integer.parseInt(scan.nextLine());
-                            cart.modify(idMap.get(item), amount);
-                        }
-                        continue;
-                        // Successful update
-//                            clearScreen();
-//                            System.out.println("Update successful");
-//                            System.out.print("\nPress enter to continue...");
-//                            scan.nextLine();
-//                            break;
-
-
-//                    case "c":
-//                        if(idMap.size() == 0){
-//                            cartIsEmpty(scan);
-//                            continue;
-//                        }else{
-//                            System.out.println("The total amount: " + total);
-//                            cardNumber = getCardNumber(scan);
-//                            expirtionDate = getExpirationDate(scan);
-//                            securityCode = getSecurityCode(scan);
-//                            if(PaymentService.pay(cardNumber, expirtionDate, securityCode)){
-//                                System.out.println("Thank you for your purchase!");
-//                                //orderService.add(cart);
-//                                cart.clear(ct.get().getId());
-//                                //add to order history
-//                            }else{
-//                                System.out.println("Try again!");
-//                            }
-//                        }
-//                        break;
+                        break;
                     case "x":
                         router.navigate("/home", scan);
                     default:

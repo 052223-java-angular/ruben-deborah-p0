@@ -1,8 +1,11 @@
 package com.revature.eMarket.screens;
 
+import com.revature.eMarket.models.CartItem;
 import com.revature.eMarket.models.Product;
 import com.revature.eMarket.models.Review;
 import com.revature.eMarket.models.User;
+import com.revature.eMarket.services.CartItemService;
+import com.revature.eMarket.services.CartService;
 import com.revature.eMarket.services.ProductService;
 import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
@@ -17,10 +20,13 @@ import java.util.Scanner;
 @AllArgsConstructor
 public class ProdDetailsScreen implements IScreen {
     private final ProductService productServ;
+    private final CartItemService cartItemService;
+    private final CartService cartService;
     Session session;
     private static final Logger logger = LogManager.getLogger(ProdDetailsScreen.class);
 
     public void details(Scanner scan, Product product) {
+
         logger.info("Start details process...");
         System.out.print("[" + product.getId() + "] ");
         System.out.print("Name: " + product.getName() + " ");
@@ -105,6 +111,13 @@ public class ProdDetailsScreen implements IScreen {
                         }
                     case "3":
                         System.out.print("TODO add to cart");
+                        logger.info("Add product to cart");
+                        CartItem cartItem = new CartItem(product, session.getCart_id());
+
+                        cartService.findById(session.getId());
+                        cartItemService.insert(cartItem);
+
+                        System.out.println("Item added to cart!");
                         break;
                     case "x":
                         logger.info("Exiting product details");

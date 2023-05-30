@@ -39,11 +39,8 @@ public class CartService {
         cartItemService.modify(item, amount);
     }
 
-    public Optional<Cart> getCartByUserId(String user_id) {
-        Optional<Cart> cart = cartDAO.findByUserId(user_id);
-        if(!cart.isEmpty()){
-            cart.get().setItems(cartItemService.getCartItemByCartId(cart.get().getId()));
-        }
+    public Optional<Cart> findById(String user_id) {
+        Optional<Cart> cart = cartDAO.findById(user_id);
         return cart;
     }
     public void clear(String id) {
