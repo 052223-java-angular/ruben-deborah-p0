@@ -49,11 +49,14 @@ public class CartScreen implements IScreen {
                 // navigate through the options
                 System.out.println("\nProduct name: "); // product name added
                 System.out.println("Product price: "); // price of the product
+
                 System.out.println("[r] Remove an item" + "[m] Modify an item");
                 System.out.println("[c] Checkout");
                 System.out.println("[b] Back to the main menu" + "[x] Exit");
 
-                Optional<Cart> ct = cart.getCartByUserId("08ccc180-30d9-4771-b384-2fba9ebdffa1");
+                Optional<Cart> ct = cart.getCartByUserId(session.getId());
+
+                System.out.println(ct);
                 Map<String, String> idMap = new HashMap<>();
 
                 if(ct.isPresent()){

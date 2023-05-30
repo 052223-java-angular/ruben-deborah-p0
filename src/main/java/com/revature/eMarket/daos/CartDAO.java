@@ -14,8 +14,10 @@ public class CartDAO implements CrudDAO<Cart> {
 
     public Optional<Cart> findByUserId(String id) {
         // TODO Auto-generated method sub
-        throw new UnsupportedOperationException("Unimplemented method 'findByUserId' ");
-//        return null;
+        //throw new UnsupportedOperationException("Unimplemented method 'findByUserId' ");
+
+
+       return null;
     }
 
     public List<Cart> findAll() {
@@ -26,6 +28,7 @@ public class CartDAO implements CrudDAO<Cart> {
     @Override
     public void save(Cart cart) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+
             String sql = "insert into carts (id, user_id) values (?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){

@@ -33,7 +33,7 @@ public class ProductDAO implements CrudDAO<Product>{
     public Optional<Product> findById(String id) {
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
-//
+
 //    @Override
 //    public Optional<CartItem> findById(String id) {
 //
@@ -105,7 +105,6 @@ public class ProductDAO implements CrudDAO<Product>{
 
     public Product findByName(String name) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
-
 
             String sql = "SELECT * FROM products WHERE name = ?";
             try(PreparedStatement ps = conn.prepareStatement(sql)) {

@@ -17,7 +17,7 @@ public class RoleService {
         System.out.println("RoleService > findByName");
         System.out.println(username);
 
-        if (roleOpt.isEmpty()) {
+        if (roleOpt == null) {
             System.out.println("User Role not found :(");
         }
         return roleOpt.get();

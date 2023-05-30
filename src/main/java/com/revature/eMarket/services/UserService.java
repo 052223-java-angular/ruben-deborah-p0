@@ -33,8 +33,8 @@ public class UserService {
     }
 
     public Optional<User> login(String username, String password) {
-        Optional<User> user = userDAO.findByUsername(username);
 
+        Optional<User> user = userDAO.findByUsername(username);
         if(user.isEmpty() || !BCrypt.checkpw(password, user.get().getPassword())){
             return Optional.empty();
         }
@@ -93,11 +93,11 @@ public class UserService {
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
     }
 
-    public Optional<User> findByName(String username) {
+    public Optional<User> findByUserName(String username) {
         return null;
     }
 
     public Optional<User> findById(String user_id) {
-        return null;
+        return userDAO.findById(user_id);
     }
 }

@@ -32,9 +32,10 @@ public class Session {
     }
 
 
-    public void setSession(String id, String name, String cart_id){
+    public void setSession(String id){
         this.id = id;
-        this.username = name;
+        this.username = id;
+        this.role_id = "1";
         this.cart_id = cart_id;
     }
 }

@@ -50,12 +50,6 @@ public class LogInScreen implements IScreen{
                     break exit;
                 }
 
-                /*if(username.equals("b")){
-                    logger.info("Go back");
-                    router.navigate(session.getHistory().pop(), scan);
-                    break exit;
-                }*/
-
                 // get password
                 password = getPassword(scan);
                 logger.info("Password: " + password );
@@ -68,13 +62,6 @@ public class LogInScreen implements IScreen{
                     router.navigate("/home", scan);
                     break exit;
                 }
-
-                /*if (password.equals("b")) {
-                    logger.info("Go back");
-                    router.navigate(session.getHistory().pop(), scan);
-
-                    break exit;
-                }*/
 
                 // confirm user's credentials
                 System.out.println("Please confirm your credentials");
@@ -92,9 +79,7 @@ public class LogInScreen implements IScreen{
                             scan.nextLine();
                             break;
                         }
-                        // find the cart
-                        //Optional<Cart> cart = cartService.findCartByUserId(confirmedUser.get().getId());
-                        // session created
+
                         session.setSession(confirmedUser);
                         // session successful
                         System.out.println("\nLogin Successful!");

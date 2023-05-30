@@ -1,6 +1,7 @@
 package com.revature.eMarket.screens;
 
 import com.revature.eMarket.models.User;
+import com.revature.eMarket.services.CartService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.services.UserService;
 import com.revature.eMarket.utils.Session;
@@ -8,12 +9,14 @@ import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 @AllArgsConstructor
 public class RegisterScreen implements IScreen {
     private final UserService userService;
     private final RouterService router;
+    private final CartService cartService;
     private Session session;
     private static final Logger logger = LogManager.getLogger(RegisterScreen.class);
 
@@ -33,6 +36,7 @@ public class RegisterScreen implements IScreen {
                 System.out.println("\nWelcome to the Register Screen.");
                 System.out.println("Press [Enter] to continue..");
                 scan.nextLine();
+
 
                 // get username
                 username = getUsername(scan);
@@ -65,8 +69,9 @@ public class RegisterScreen implements IScreen {
                         clearScreen();
                         System.out.println("Created user confirm test [y]");
                         User createdUser = userService.register(username, password);
-                        //Session session = new Session();
-//                        session.setSession(createdUser, cart.getId());
+                        session.setSession(Optional.ofNullable(createdUser));
+                        cartService.createCart(createdUser.getId());
+                        this.session.getUsername();
                         router.navigate("/menu", scan);
                         break exit;
                     case "n":
@@ -169,6 +174,8 @@ public class RegisterScreen implements IScreen {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
+
 
 }
 

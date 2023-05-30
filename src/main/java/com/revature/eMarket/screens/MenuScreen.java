@@ -25,6 +25,8 @@ public class MenuScreen implements IScreen {
         System.out.println("role: "+ session.getRole_id());
         System.out.println("cart id: "+ session.getCart_id());
 
+
+
         while (true) {
 
             System.out.println("\n[1] Login Out");

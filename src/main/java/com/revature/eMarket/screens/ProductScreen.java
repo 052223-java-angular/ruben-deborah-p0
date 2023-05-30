@@ -6,6 +6,7 @@ import com.revature.eMarket.models.User;
 import com.revature.eMarket.services.CategoryService;
 import com.revature.eMarket.services.ProductService;
 import com.revature.eMarket.services.RouterService;
+import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,7 @@ public class ProductScreen implements IScreen{
     private final ProductService productServ;
     private final RouterService router;
     private final CategoryService catServ;
+    Session session;
 
     private static final Logger logger = LogManager.getLogger(ProductScreen.class);
 
@@ -33,6 +35,7 @@ public class ProductScreen implements IScreen{
 
             while (true) {
                 System.out.println("Products Screen. [Enter to cont..]");
+                printSession();
                 System.out.println("\n[1] View All Products");
                 System.out.println("[2] View By Name");
                 System.out.println("[3] View By Category");
@@ -193,6 +196,13 @@ public class ProductScreen implements IScreen{
         }
 
 
+    }
+
+    public void printSession() {
+        System.out.println("id: "+ session.getUsername());
+        System.out.println("id: "+ session.getId());
+        System.out.println("role: "+ session.getRole_id());
+        System.out.println("cart id: "+ session.getCart_id());
     }
 
 }
