@@ -16,13 +16,14 @@ public class CartItemDAO implements CrudDAO<CartItem> {
     @Override
     public void save(CartItem cartItem) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "insert into cart_items (id, cart_id, product_id, quantity) values (?, ?, ?, ?)";
+            String sql = "insert into cart_items (id, quantity, price, cart_id, prod_id) values (?, ?, ?, ?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, cartItem.getId());
                 ps.setString(2, cartItem.getCart_id());
-                ps.setString(3, cartItem.getProduct_id());
-                ps.setInt(5, cartItem.getQuantity());
+                ps.setFloat(3, cartItem.getPrice());
+                ps.setString(5, cartItem.getCart_id());
+                ps.setString(5, cartItem.getProduct_id());
 
                 ps.executeUpdate();
             }
@@ -130,7 +131,7 @@ public class CartItemDAO implements CrudDAO<CartItem> {
                         cartItem.setCart_id(rs.getString("cart_id"));
                         cartItem.setProduct_id(rs.getString("product_id"));
                         cartItem.setQuantity(rs.getInt("quantity"));
-                        cartItem.setPrice(rs.getDouble("price"));
+                        cartItem.setPrice(rs.getFloat("price"));
                         cartItems.add(cartItem);
                     }
                 }
@@ -161,7 +162,7 @@ public class CartItemDAO implements CrudDAO<CartItem> {
                         cartItem.setCart_id(rs.getString("cart_id"));
                         cartItem.setProduct_id(rs.getString("product_id"));
                         cartItem.setQuantity(rs.getInt("quantity"));
-                        cartItem.setPrice(rs.getDouble("price"));
+                        cartItem.setPrice(rs.getFloat("price"));
                         cartItems.add(cartItem);
                     }
                 }

@@ -23,7 +23,6 @@ public class MenuScreen implements IScreen {
         System.out.print("Welcome to Session Screen " + session.getUsername() + "!\n");
         System.out.println("id: "+ session.getId());
         System.out.println("role: "+ session.getRole_id());
-        System.out.println("cart id: "+ session.getCart_id());
 
 
 

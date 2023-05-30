@@ -17,11 +17,11 @@ public class CartItem {
     private String cart_id;
     private String product_id;
     private int quantity;
-    private double price;
+    private float price;
 //    private List<CartItems> items;
 
 
-    public CartItem(String name, int quantity, double price, String cart_id, String product_id){
+    public CartItem(String name, int quantity, float price, String cart_id, String product_id){
         this.id = UUID.randomUUID().toString();
         this.name = name;
 //        this.stock = stock;

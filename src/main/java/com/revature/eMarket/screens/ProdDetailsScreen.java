@@ -17,6 +17,7 @@ import java.util.Scanner;
 @AllArgsConstructor
 public class ProdDetailsScreen implements IScreen {
     private final ProductService productServ;
+    Session session;
     private static final Logger logger = LogManager.getLogger(ProdDetailsScreen.class);
 
     public void details(Scanner scan, Product product) {
@@ -83,7 +84,7 @@ public class ProdDetailsScreen implements IScreen {
                                 System.out.println("Rating: " + rate);
                                 System.out.println("Review: "+ rev);
                                 System.out.println("Confirm? [y/n] ");
-                                Review review = new Review(rate, rev,"6c5b8722-c0ad-46e6-8637-412a206330e9" ,product.getId());
+                                Review review = new Review(rate, rev, session.getId() ,product.getId());
                                 switch(scan.nextLine()) {
                                     case "y":
                                         logger.info("User confirms review.");

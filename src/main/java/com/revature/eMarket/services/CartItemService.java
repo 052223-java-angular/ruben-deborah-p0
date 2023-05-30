@@ -44,6 +44,10 @@ public class CartItemService {
 
     }
 
+    public void insert(CartItem product) {
+        cartItemDAO.save(product);
+    }
+
 
     public List<CartItem> getCartItemByCartId(String cart_id) {
         return cartItemDAO.findByCartId(cart_id);

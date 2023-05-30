@@ -30,7 +30,7 @@ public class ProductScreen implements IScreen{
     public void start(Scanner scan) {
             List<Product> inventory = new ArrayList<>(); // = productServ.findAll();
             String input = "";
-            ProdDetailsScreen details = new ProdDetailsScreen(productServ);
+            ProdDetailsScreen details = new ProdDetailsScreen(productServ, this.session);
             Product prod = new Product();
 
             while (true) {
@@ -202,7 +202,6 @@ public class ProductScreen implements IScreen{
         System.out.println("id: "+ session.getUsername());
         System.out.println("id: "+ session.getId());
         System.out.println("role: "+ session.getRole_id());
-        System.out.println("cart id: "+ session.getCart_id());
     }
 
 }
