@@ -28,7 +28,7 @@ public class CartScreen implements IScreen {
     @Override
     public void start(Scanner scan) {
         List<CartItem> inventory = new ArrayList<>(); // = productServ.findAll();
-        CartScreen details = new CartScreen(this.router, this.cart, this.cartItemService, this.session);
+        CartItemScreen details = new CartItemScreen(this.cartItemService, this.session);
         String input = "";
         Product prod = new Product();
         exit: {
@@ -55,8 +55,8 @@ public class CartScreen implements IScreen {
                                 System.out.println("Invalid option, select again.");
                                 break;
                             }
-                            //prod = inventory.get(x - 1);
-
+                            CartItem cartItem = inventory.get(x-1);
+                            details.details(scan, cartItem);
                         } catch (NumberFormatException e) {
                             System.out.println("input is not an int value");
                             break;

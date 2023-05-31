@@ -41,19 +41,17 @@ public class CartItemScreen implements IScreen{
                 switch (scan.nextLine()) {
                     case "1":
                         logger.info("Start cart removal process...");
-                        cartItemService.remove(session.getCart_id());
-                        System.out.println("Product id: " + cartItem.getId());
+                        cartItemService.remove(cartItem.getId());
+
                         break;
                     case "x":
                         logger.info("exiting cart details");
-
                         break exit;
 
                 }
             }
 
         }
-        System.out.print("Huh?");
     }
                         @Override
     public void start(Scanner scan) {

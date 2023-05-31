@@ -48,12 +48,6 @@ public class CartItemService {
         cartItemDAO.save(product);
     }
 
-
-    public Optional<CartItem> getCartItemByCartId(String cart_id) {
-        return cartItemDAO.findById(cart_id);
-    }
-
-
     public void clearByCartId(String id) {
         cartItemDAO.deleteByCartId(id);
     }
