@@ -3,8 +3,6 @@ package com.revature.eMarket.services;
 import com.revature.eMarket.daos.*;
 import com.revature.eMarket.screens.*;
 import com.revature.eMarket.utils.Session;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import java.util.Scanner;
 
@@ -31,7 +29,7 @@ public class RouterService {
 
         switch (path) {
             case "/landing":
-                new SignOnScreen(this, this.session).start(scan);
+                new Landing(this, this.session).start(scan);
                 break;
             case "/home":
                 new HomeScreen(this, this.session).start(scan);

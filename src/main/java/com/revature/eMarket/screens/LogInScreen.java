@@ -106,21 +106,6 @@ public class LogInScreen implements IScreen{
                         break;
                 }
 
-
-//                if (!userService.login(username, password)) {
-//                    logger.warn("Login Unsuccessful!");
-//                    System.out.println("\nNo user found with the combination of this username and password.");
-//                    System.out.println("\nPlease try again...");
-//                    scan.nextLine();
-//                    continue;
-//                } else {
-//                    System.out.println("\nSuccess!!!");
-//                }
-
-//                session.setSession(userService.get());
-//                router.navigate("/menu", scan);
-                // return back to the home screen after log-in
-//                break exit;
             }
         }
     }
@@ -140,8 +125,6 @@ public class LogInScreen implements IScreen{
             if (username.equalsIgnoreCase("b")) {
                 return "b";
             }
-//        return username.equalsIgnoreCase("x") ? "x" : username.equalsIgnoreCase("b") ? "b" : username;
-
                 if (!userService.isValidUsername(username)) {
                     clearScreen();
                     logger.warn("Login Unsuccessful!");
@@ -176,11 +159,9 @@ public class LogInScreen implements IScreen{
                 scan.nextLine();
                 continue;
             }
-
             break;
         }
         return password;
-//        return password.equalsIgnoreCase("x") ? "x" : password.equalsIgnoreCase("b") ? "b" : password;
     }
 
     public static void clearScreen() {

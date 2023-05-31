@@ -31,13 +31,11 @@ public class Session {
         this.cart_id = "";
     }
 
-
     public void setSession(String id){
         this.id = id;
         this.username = id;
         this.role_id = "1";
     }
-
     public  void setSessionCart(String id) {
         this.cart_id = id;
     }

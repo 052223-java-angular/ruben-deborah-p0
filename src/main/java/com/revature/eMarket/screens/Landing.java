@@ -8,11 +8,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
-import static java.lang.System.exit;
-
 @AllArgsConstructor
-public class SignOnScreen implements IScreen {
-    private static final Logger logger = LogManager.getLogger(SignOnScreen.class);
+public class Landing implements IScreen {
+    private static final Logger logger = LogManager.getLogger(Landing.class);
     private final RouterService router;
     Session session;
     @Override
