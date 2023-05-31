@@ -79,7 +79,7 @@ public class ReviewDAO implements CrudDAO<Review> {
 
 
             String sql = "SELECT * FROM reviews WHERE product_id = ? AND user_id != ?";
-            System.out.println(user_id);
+
             try(PreparedStatement ps = conn.prepareStatement(sql)) {
 
                 ps.setString(1, id);
