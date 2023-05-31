@@ -110,6 +110,11 @@ public class UserDAO implements CrudDAO<User> {
         return users;
     }
 
+    @Override
+    public List<User> findAll(String id) {
+        return null;
+    }
+
 //    @Override
 //    public Optional<CartItem> findById(String id) {
 //        return null;

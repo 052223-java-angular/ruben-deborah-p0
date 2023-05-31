@@ -46,7 +46,7 @@ public class RouterService {
                 new ProductScreen(getProdService(), this, catServ,cartItemService,this.getCartService(), this.session).start(scan);
                 break;
             case "/cart":
-                new CartScreen(this, getCartService(), this.session).start(scan);
+                new CartScreen(this, getCartService(), this.cartItemService,this.session).start(scan);
                 break;
             case "/menu":
                 new MenuScreen(getCartService(), this, this.session).start(scan);

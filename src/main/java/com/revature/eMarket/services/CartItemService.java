@@ -40,19 +40,13 @@ public class CartItemService {
         cartItemDAO.delete(item);
     }
 
-    public void getCartItemById(String id){
-
+    public List<CartItem> findAllByCart(String cart_id) {
+        return cartItemDAO.findAllByCart(cart_id);
     }
 
     public void insert(CartItem product) {
         cartItemDAO.save(product);
     }
-
-
-    public List<CartItem> getCartItemByCartId(String cart_id) {
-        return cartItemDAO.findByCartId(cart_id);
-    }
-
 
     public void clearByCartId(String id) {
         cartItemDAO.deleteByCartId(id);

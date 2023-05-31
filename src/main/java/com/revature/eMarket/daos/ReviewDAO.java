@@ -41,6 +41,11 @@ public class ReviewDAO implements CrudDAO<Review> {
         return null;
     }
 
+    @Override
+    public List<Review> findAll(String id) {
+        return null;
+    }
+
     public Review insert(Review rev) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "INSERT INTO reviews (id,review, rating, user_id, product_id) VALUES (?, ?, ?, ?, ?)";

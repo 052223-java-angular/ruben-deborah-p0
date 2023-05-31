@@ -71,6 +71,11 @@ public class ProductDAO implements CrudDAO<Product>{
         return storeList;
     }
 
+    @Override
+    public List<Product> findAll(String id) {
+        return null;
+    }
+
     public Product findByName(String name) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
