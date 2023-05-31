@@ -23,11 +23,9 @@ This is a Java-based command-line interface (CLI) eCommerce application. The app
 - A user can add products to my shopping cart so that I can purchase them later.
 - A user is able to modify the quantity or remove items from their cart to make it easier for them to make changes before finalizing the purchase.
 - A user is able to rate and review products in order to share their experience with other users.
-
-//Please delete once you're done double checking. I left this here to help you navigate your thoughts but please delete/update after you're done.
-- **As a user** I want to check out and pay for my order securely so that my personal and financial information is safe.
-- **As a user**, I want to review my order history so that I can keep track of my purchases.
-- **As a user**, I want to view ratings and reviews from other users so that I can make informed buying decisions.
+- A user is to check out and pay for my order securely so that my personal and financial information is safe.
+- A user is able to review my order history so that I can keep track of my purchases.
+- As I want to view ratings and reviews from other users so that I can make informed buying decisions.
 
 
 ## Getting Started
@@ -85,6 +83,3 @@ password='password'
 ```
 
 ## ERD and LucidChart
-
-// since this is a part of feature, I think you only need to add some comments to the [app features] at the top, so please delete this unless you find it neccessary to add.
-## Register User
