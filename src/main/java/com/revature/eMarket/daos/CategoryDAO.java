@@ -71,4 +71,9 @@ public class CategoryDAO implements CrudDAO<Category> {
         }
         return catList;
     }
+
+    @Override
+    public List<Category> findAll(String id) {
+        return null;
+    }
 }

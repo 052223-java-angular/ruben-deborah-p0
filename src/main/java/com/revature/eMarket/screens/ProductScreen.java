@@ -175,29 +175,6 @@ public class ProductScreen implements IScreen{
         }
     }
 
-    public void selection(Scanner scan, Product product, ProdDetailsScreen details, String input) {
-
-        exit: {
-            while(true) {
-                switch(input.toLowerCase()) {
-                    case "1":
-                        details.details(scan, product);
-                        //router.navigate("/prodDetails", scan);
-                        break exit;
-                    case "x":
-                        System.out.println("Exiting...");
-                        break exit;
-                    default:
-                        System.out.println("Invalid option, try again.");
-                        input = scan.nextLine();
-                        break;
-                }
-            }
-        }
-
-
-    }
-
     public void printSession() {
         System.out.println("id: "+ session.getUsername());
         System.out.println("id: "+ session.getId());

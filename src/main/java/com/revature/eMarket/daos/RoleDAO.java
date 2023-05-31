@@ -45,10 +45,13 @@ public class RoleDAO implements CrudDAO<Role> {
         return null;
     }
 
+    @Override
+    public List<Role> findAll(String id) {
+        return null;
+    }
+
     public Optional<Role> findByName(String username) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
-
-            System.out.println("RoleDAO > findByName");
 
             String sql = "SELECT * FROM roles WHERE role = ?";
 

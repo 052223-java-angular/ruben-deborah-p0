@@ -12,4 +12,5 @@ public interface CrudDAO<T> {
     Optional<T> findById(String id);
 
     List<T> findAll();
+    List<T> findAll(String id);
 }

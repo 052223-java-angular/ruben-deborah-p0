@@ -1,6 +1,7 @@
 package com.revature.eMarket.daos;
 
 import com.revature.eMarket.models.CartItem;
+import com.revature.eMarket.models.Product;
 import com.revature.eMarket.utils.ConnectionFactory;
 
 import java.io.IOException;
@@ -16,14 +17,15 @@ public class CartItemDAO implements CrudDAO<CartItem> {
     @Override
     public void save(CartItem cartItem) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "insert into cart_items (id, quantity, price, cart_id, product_id) values (?, ?, ?, ?, ?)";
-            System.out.println(cartItem);
+            String sql = "insert into cart_items (id, name, quantity, price, cart_id, product_id) values (?, ?, ?, ?, ?, ?)";
+
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, cartItem.getId());
-                ps.setInt(2, cartItem.getQuantity());
-                ps.setFloat(3, cartItem.getPrice());
-                ps.setString(4, cartItem.getCart_id());
-                ps.setString(5, cartItem.getProduct_id());
+                ps.setString(2, cartItem.getName());
+                ps.setInt(3, cartItem.getQuantity());
+                ps.setFloat(4, cartItem.getPrice());
+                ps.setString(5, cartItem.getCart_id());
+                ps.setString(6, cartItem.getProduct_id());
                 ps.executeUpdate();
             }
 
@@ -85,6 +87,43 @@ public class CartItemDAO implements CrudDAO<CartItem> {
         }
     }
 
+    public List<CartItem> findAllByCart(String cart_id) {
+        List<CartItem> cartList = new ArrayList<>();
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+            String sql = "SELECT * FROM cart_items WHERE cart_id = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setString(1, cart_id);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while(rs.next()){
+
+                        CartItem cartItem = new CartItem();
+                        cartItem.setId(rs.getString("id"));
+                        cartItem.setName(rs.getString("name"));
+                        cartItem.setCart_id(rs.getString("cart_id"));
+                        cartItem.setProduct_id(rs.getString("product_id"));
+                        cartItem.setQuantity(rs.getInt("quantity"));
+                        cartItem.setPrice(rs.getFloat("price"));
+                        cartList.add(cartItem);
+                    }
+                }
+
+            }
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+            throw new RuntimeException("Unable to access the database. Debug");
+        }catch(ClassNotFoundException e) {
+            throw new RuntimeException("Can't find application. Debug");
+        }catch (IOException e) {
+            throw new RuntimeException("Unable to load JDBC. Debug");
+        }
+        return cartList;
+    }
+
     @Override
     public Optional<CartItem> findById(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
@@ -115,46 +154,26 @@ public class CartItemDAO implements CrudDAO<CartItem> {
         return  Optional.empty();
     }
 
-
     @Override
     public List<CartItem> findAll() {
-        List<CartItem> cartItems = new ArrayList<>();
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "SELECT c.id, c.quantity, c.cart_id, c.product_id, p.name, p.price FROM cart_items c INNER JOIN products p ON c.product_id = p.id";
-            try(PreparedStatement ps = conn.prepareStatement(sql)){
-                try(ResultSet rs = ps.executeQuery()){
-                    while(rs.next()){
-                        CartItem cartItem = new CartItem();
-                        cartItem.setId(rs.getString("id"));
-                        cartItem.setName(rs.getString("name"));
-                        cartItem.setCart_id(rs.getString("cart_id"));
-                        cartItem.setProduct_id(rs.getString("product_id"));
-                        cartItem.setQuantity(rs.getInt("quantity"));
-                        cartItem.setPrice(rs.getFloat("price"));
-                        cartItems.add(cartItem);
-                    }
-                }
-            }
-        }catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db \n" + e);
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties \n" + e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc \n" + e);
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-        return cartItems;
+        return null;
     }
 
-    public List<CartItem> findByCartId(String cart_id) {
-        List<CartItem> cartItems = new ArrayList<>();
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "SELECT c.id, c.quantity, c.cart_id, c.product_id, p.name, p.price FROM cart_items c INNER JOIN products p ON c.product_id = p.id AND c.cart_id = ?";
-            try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+    public List<CartItem> findAll(String cart_id) {
+        List<CartItem> storeList = new ArrayList<>();
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+            String sql = "SELECT * FROM cart_items WHERE cart_id = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)) {
+
                 ps.setString(1, cart_id);
-                try(ResultSet rs = ps.executeQuery()){
+
+                try (ResultSet rs = ps.executeQuery()) {
                     while(rs.next()){
+
                         CartItem cartItem = new CartItem();
                         cartItem.setId(rs.getString("id"));
                         cartItem.setName(rs.getString("name"));
@@ -162,21 +181,23 @@ public class CartItemDAO implements CrudDAO<CartItem> {
                         cartItem.setProduct_id(rs.getString("product_id"));
                         cartItem.setQuantity(rs.getInt("quantity"));
                         cartItem.setPrice(rs.getFloat("price"));
-                        cartItems.add(cartItem);
+                        storeList.add(cartItem);
                     }
                 }
+
             }
         }catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db \n" + e);
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties \n" + e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc \n" + e);
-        } catch (Exception e){
-            throw new RuntimeException(e);
+            System.out.println(e.toString());
+            throw new RuntimeException("Unable to access the database. Debug");
+        }catch(ClassNotFoundException e) {
+            throw new RuntimeException("Can't find application. Debug");
+        }catch (IOException e) {
+            throw new RuntimeException("Unable to load JDBC. Debug");
         }
-        return cartItems;
+        return storeList;
     }
+
+
 
     public void deleteByCartId(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){

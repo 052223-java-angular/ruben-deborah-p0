@@ -40,8 +40,8 @@ public class CartItemService {
         cartItemDAO.delete(item);
     }
 
-    public void getCartItemById(String id){
-
+    public List<CartItem> findAllByCart(String cart_id) {
+        return cartItemDAO.findAllByCart(cart_id);
     }
 
     public void insert(CartItem product) {
@@ -49,8 +49,8 @@ public class CartItemService {
     }
 
 
-    public List<CartItem> getCartItemByCartId(String cart_id) {
-        return cartItemDAO.findByCartId(cart_id);
+    public Optional<CartItem> getCartItemByCartId(String cart_id) {
+        return cartItemDAO.findById(cart_id);
     }
 
 

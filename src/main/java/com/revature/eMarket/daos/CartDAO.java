@@ -27,6 +27,12 @@ public class CartDAO implements CrudDAO<Cart> {
         throw new UnsupportedOperationException("Unimplemented method 'findAll' ");
 //        return null;
     }
+
+    @Override
+    public List<Cart> findAll(String id) {
+        return null;
+    }
+
     @Override
     public void save(Cart cart) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){

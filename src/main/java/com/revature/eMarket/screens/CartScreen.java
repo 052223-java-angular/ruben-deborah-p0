@@ -2,10 +2,14 @@ package com.revature.eMarket.screens;
 
 import com.revature.eMarket.models.Cart;
 import com.revature.eMarket.models.CartItem;
+import com.revature.eMarket.models.Product;
+import com.revature.eMarket.services.CartItemService;
 import com.revature.eMarket.services.CartService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -13,73 +17,57 @@ import java.util.*;
 public class CartScreen implements IScreen {
     private final RouterService router;
     private final CartService cart;
-    //    private final CartItemService cartItemService;
+    private final CartItemService cartItemService;
 //    private final CartDAO cartDAO;
 //    private final ProductService prodService;
     private final Session session;
-//    getProdService
+    private static final Logger logger = LogManager.getLogger(CartScreen.class);
+
 
 
     @Override
     public void start(Scanner scan) {
+        List<CartItem> inventory = new ArrayList<>(); // = productServ.findAll();
+        CartScreen details = new CartScreen(this.router, this.cart, this.cartItemService, this.session);
         String input = "";
-        String item = "";
-        int amount = 0;
-        double total = 0;
-
-        exit:
-        {
-            // cart screen emptied
-//            List<CartItem> cartItem = null;
-//            if (cartItem.isEmpty()) {
-//                cartIsEmpty(scan);
-//                break exit;
-//            }
-            clearScreen();
-            // cart screen
+        Product prod = new Product();
+        exit: {
             while (true) {
-                clearScreen();
-                System.out.println("Welcome to the Cart Screen!" + session.getUsername() + "!");
-                System.out.println("Press [Enter] to continue...");
+                System.out.println("Cart Screen. [Enter to cont..]");
 
-                // View Shopping cart
-                System.out.println("[1] View shopping cart");
-                //ViewCartItems(cartItem);
+                System.out.println("\n[1] View Cart");
+                System.out.println("[x] Exit ");
+                System.out.println("Select your option: ");
 
-                // navigate through the options
-                System.out.println("\nProduct name: "); // product name added
-                System.out.println("Product price: "); // price of the product
-                System.out.println("[r] Remove an item" + "[m] Modify an item");
-                System.out.println("[c] Checkout");
-                System.out.println("[b] Back to the main menu" + "[x] Exit");
+                logger.info("Start cart selection process...");
 
-                Optional<Cart> ct = cart.findById(session.getId());
-                System.out.println(ct);
+                switch (scan.nextLine().toLowerCase()) {
+                    case "1": // Show All products in store
+                        logger.info("Show all cart...");
+                        inventory = cartItemService.findAllByCart(session.getCart_id());
+                        printList(inventory);
+                        input = scan.nextLine();
 
-                // chose option
-                System.out.println("\nChoose option to navigate: ");
-                switch (input.toLowerCase()) {
-                    case "b":
-                        //router.navigate(session.getHistory().pop(), scan);
-                        router.navigate("/home", scan);
-                        break;
-                    case "1":
-                        System.out.println("\nContinue shopping");
-//                        itemQuantity = scan.nextLine();
-                    case "r":
+                        try {
+                            int x = Integer.parseInt(input);
 
+                            if (x < 0 || x > inventory.size()) {
+                                System.out.println("Invalid option, select again.");
+                                break;
+                            }
+                            //prod = inventory.get(x - 1);
 
-                        continue;
-
-                    case "m":
+                        } catch (NumberFormatException e) {
+                            System.out.println("input is not an int value");
+                            break;
+                        }
                         break;
                     case "x":
-                        router.navigate("/home", scan);
+                        logger.info("Exiting cart screen");
+                        break exit;
                     default:
-                        System.out.println("Invalid choice!");
-                        continue;
+                        break;
                 }
-                break;
             }
         }
     }
@@ -87,6 +75,20 @@ public class CartScreen implements IScreen {
 
 
     /***************************** Helper Methods *****************************/
+
+    public void printList(List<CartItem> list) {
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print("[" + ( i + 1)  + "]");
+            loopPrint(list.get(i));
+        }
+    }
+
+    public void loopPrint(CartItem cartItem) {
+        System.out.print("Name: " + cartItem.getName() + " ");
+        System.out.print("Price: " + cartItem.getPrice() + " ");
+        System.out.print("Stock: " + cartItem.getQuantity() + "\n");
+    }
+
 
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -199,103 +201,5 @@ public class CartScreen implements IScreen {
         }
         return securityCode;
     }
-
-//    public void viewCartItems(List<CartItem> cartItem) {
-//        // looping through the cart items
-//        for(CartItem cartItems : cartItem){
-//            System.out.println("\n" +
-//                    cartItems.getName() +
-//                    " - Price: $" +
-//                    cartItems.getPrice() +
-//                    "Quantity: " +
-//                    cartItems.getQuantity());
-//        }
-//    }
-//    private void viewCartItemsChosen(List<CartItem> cartItems) {
-//        int counter = 1;
-//        for(CartItem cartItem : cartItems){
-//            System.out.println("\n[" + counter +"]" +
-//                    cartItem.getName() +
-//                    " - Price: $" +
-//                    cartItem.getPrice() +
-//                    " Quantity: " + cartItem.getQuantity());
-//            counter += 1;
-//        }
-//    }
-//    private String getCartItemChosen(List<CartItem> cartItems, Scanner scan) {
-//        String input = "";
-//        while (true) {
-//            clearScreen();
-//            System.out.println("Choosing cart item...");
-//
-//            // show cart item options
-//            viewCartItemsChosen(cartItems);
-//
-//            System.out.print("\nChoose an option (x to cancel): ");
-//
-//            input = scan.nextLine();
-//            if (input.equalsIgnoreCase("x")) {
-//                return "x";
-//            } else if (!isValidNumber(input) || Integer.parseInt(input) > cartItems.size() ||
-//                    Integer.parseInt(input) < 1) {
-//                clearScreen();
-//                System.out.println("Input is invalid: must be a number between 1 and " + cartItems.size());
-//                System.out.print("\nEnter to continue...");
-//                scan.nextLine();
-//                continue;
-//            }
-//
-//            return input;
-//        }
-//    }
-//
-//
-//    private String getQuantity(int amount, int stock, Scanner scan) {
-//        String input = "";
-//        while (true) {
-//            clearScreen();
-//            System.out.println("Changing quantity...");
-//            System.out.println("\n- Current stock   : " + stock);
-//            System.out.println("- Current quantity: " + amount);
-//            System.out.print("\nEnter new quantity (x to cancel): ");
-//
-//            input = scan.nextLine();
-//            if (input.equalsIgnoreCase("x")) {
-//                return "x";
-//            }
-//            // validate
-//            if (!isValidNumber(input) || Integer.parseInt(input) > stock || Integer.parseInt(input) < 0) {
-//                clearScreen();
-//                System.out.println("Input is invalid: must be a number between 0 and " + stock);
-//                System.out.print("\nEnter to continue...");
-//                scan.nextLine();
-//                continue;
-//            }
-//            break;
-//        }
-//        return input;
-//    }
-//
-//    private void updateCartAndCartItem(Cart cart, CartItem cartItem, int i) {
-//        /*BigDecimal newPrice = cartItem.getPrice()
-//                .divide(BigDecimal.valueOf(cartItem.getQuantity()))
-//                .multiply(BigDecimal.valueOf(quantity));
-//
-//        // update cart
-//        cart.setTotal_cost(cart.getTotal_cost().add(newPrice.subtract(cartItem.getPrice())));
-//        cartService.updateCart(cart);
-//
-//        // update cart item
-//        cartItem.setPrice(newPrice);
-//        cartItem.setQuantity(quantity);
-//        cartItemService.updateCartItem(cartItem);*/
-//    }
-//
-//    private boolean isValidNumber(String possibleNum) {
-//        if (possibleNum.length() == 0 || !Pattern.matches("[0-9]+", possibleNum)) {
-//            return false;
-//        }
-//        return true;
-//    }
 
 }

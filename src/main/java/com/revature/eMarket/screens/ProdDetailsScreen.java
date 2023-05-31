@@ -110,7 +110,6 @@ public class ProdDetailsScreen implements IScreen {
                             }
                         }
                     case "3":
-                        System.out.print("TODO add to cart");
                         logger.info("Add product to cart");
                         CartItem cartItem = new CartItem(product, session.getCart_id());
 
