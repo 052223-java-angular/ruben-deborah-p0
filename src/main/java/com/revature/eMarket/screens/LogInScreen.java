@@ -34,44 +34,36 @@ public class LogInScreen implements IScreen{
                 logger.info("Welcome to the Login Screen of eMarket!");
                 clearScreen();
 
-                System.out.println("Sign in here!");
-                System.out.println("[b] Back to main menu");
-                System.out.println("[x] Exit");
+                System.out.println("Login Screen.\n");
+                System.out.println("[x] Exit to menu");
 
                 // get username
                 username = getUsername(scan);
                 logger.info("Username: " + username);
-//                System.out.println("Username" + username);
 
-                if (username.equals("b")) {
+                if (username.equals("x")) {
                     logger.info("Returning back to the home screen...");
+                    if (session.getId() == null) {
+                        router.navigate("/landing", scan);
+                    }
                     router.navigate("/home", scan);
                     break exit;
                 }
-
-                if (username.equals("x")) {
-                    logger.info("Leaving the Login Screen...");
-                    break exit;
-                }
-
 
                 // get password
                 password = getPassword(scan);
                 logger.info("Password: " + password );
 
-                if (password.equals("b")) {
-                    logger.info("Returning back to the home screen...");
-                    router.navigate("/home", scan);
-                    break;
-                }
-
                 if (password.equals("x")) {
-                    logger.info("Leaving the Login Screen...");
+                    logger.info("Returning back to the home screen...");
+                    if (session.getId() == null) {
+                        router.navigate("/landing", scan);
+                    }
+                    router.navigate("/home", scan);
                     break exit;
                 }
 
                 // confirm user's credentials
-                clearScreen();
                 System.out.println("Please confirm your credentials");
                 System.out.println("\nUsername: " + username);
                 System.out.println("Password: " + password);
@@ -87,47 +79,32 @@ public class LogInScreen implements IScreen{
                             scan.nextLine();
                             break;
                         }
+                        // gets cart id and sets this current session with user cart
+                        String cid = confirmedUser.get().getId().toString();
+                        Optional<Cart> cart = cartService.findById(cid);
 
-                        // find the cart
-                        //Optional<Cart> cart = cartService.findCartByUserId(confirmedUser.get().getId());
-                        // session created
-                        session.setSession(confirmedUser);
+                        session.setSession(confirmedUser, cart.get().getId());
                         // session successful
                         System.out.println("\nLogin Successful!");
-                        System.out.println("\nPress [Enter] to continue...");
-                        scan.nextLine();
                         // navigate back to the menu screen
-                        router.navigate("/menu", scan);
+                        router.navigate("/home", scan);
                         break exit;
                     case "n":
                         clearScreen();
+                        logger.info("Restarting login");
                         System.out.println("Restarting process...");
                         System.out.println("\nPress [Enter] to continue...");
                         scan.nextLine();
                         break;
                     default:
                         clearScreen();
+                        logger.warn("Wrong option");
                         System.out.println("Invalid option!");
                         System.out.println("\nPress [Enter] to continue...");
                         scan.nextLine();
                         break;
                 }
 
-
-//                if (!userService.login(username, password)) {
-//                    logger.warn("Login Unsuccessful!");
-//                    System.out.println("\nNo user found with the combination of this username and password.");
-//                    System.out.println("\nPlease try again...");
-//                    scan.nextLine();
-//                    continue;
-//                } else {
-//                    System.out.println("\nSuccess!!!");
-//                }
-
-//                session.setSession(userService.get());
-//                router.navigate("/menu", scan);
-                // return back to the home screen after log-in
-//                break exit;
             }
         }
     }
@@ -147,8 +124,6 @@ public class LogInScreen implements IScreen{
             if (username.equalsIgnoreCase("b")) {
                 return "b";
             }
-//        return username.equalsIgnoreCase("x") ? "x" : username.equalsIgnoreCase("b") ? "b" : username;
-
                 if (!userService.isValidUsername(username)) {
                     clearScreen();
                     logger.warn("Login Unsuccessful!");
@@ -183,11 +158,9 @@ public class LogInScreen implements IScreen{
                 scan.nextLine();
                 continue;
             }
-
             break;
         }
         return password;
-//        return password.equalsIgnoreCase("x") ? "x" : password.equalsIgnoreCase("b") ? "b" : password;
     }
 
     public static void clearScreen() {

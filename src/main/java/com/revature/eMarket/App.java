@@ -1,13 +1,7 @@
 package com.revature.eMarket;
 
-import com.revature.eMarket.daos.CategoryDAO;
-import com.revature.eMarket.daos.ProductDAO;
-import com.revature.eMarket.daos.ReviewDAO;
-import com.revature.eMarket.services.CategoryService;
-import com.revature.eMarket.services.ProductService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.utils.ConnectionFactory;
-import com.revature.eMarket.utils.Session;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,16 +20,14 @@ public class App {
    * @throws SQLException           if a database error occurs
    */
   public static void main(String args[]) throws SQLException, IOException, ClassNotFoundException {
-    System.out.println(ConnectionFactory.getInstance().getConnection());
+    //System.out.println(ConnectionFactory.getInstance().getConnection()); // Use this to check db connection
     logger.info("------------------- START APPLICATION ------------------");
 
     Scanner scan = new Scanner(System.in);
-
-    RouterService router = new RouterService(new Session(), new ProductService(new ProductDAO(), new ReviewDAO()), new CategoryService(new CategoryDAO()));
-
+    RouterService router = new RouterService();
     // navigate to the "/home" route using the router and scanner
 
-    router.navigate("/home", scan);
+    router.navigate("/landing", scan);
 
     logger.info("------------------- END APPLICATION --------------------");
 

@@ -16,16 +16,28 @@ public class Session {
     private String role_id;
     private String cart_id;
 
-    public void setSession(Optional<User> user) {
+    public void setSession(Optional<User> user, String cart) {
         //System.out.println(user);
         this.id = user.get().getId();
-        this.cart_id = user.get().getId();
         this.username = user.get().getUsername();
         this.role_id = user.get().getRole_id();
+        this.cart_id = cart;
     }
-    public void setSession(String id, String name, String cart_id){
+
+    public void logoutSession() {
+        this.id = "";
+        this.username = "";
+        this.role_id = "";
+        this.cart_id = "";
+    }
+
+    public void setSession(String id){
         this.id = id;
-        this.username = name;
-        this.cart_id = cart_id;
+        this.username = id;
+        this.role_id = "1";
     }
+    public  void setSessionCart(String id) {
+        this.cart_id = id;
+    }
+
 }

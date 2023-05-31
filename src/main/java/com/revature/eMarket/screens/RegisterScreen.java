@@ -1,6 +1,7 @@
 package com.revature.eMarket.screens;
 
 import com.revature.eMarket.models.User;
+import com.revature.eMarket.services.CartService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.services.UserService;
 import com.revature.eMarket.utils.Session;
@@ -8,12 +9,14 @@ import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 @AllArgsConstructor
 public class RegisterScreen implements IScreen {
     private final UserService userService;
     private final RouterService router;
+    private final CartService cartService;
     private Session session;
     private static final Logger logger = LogManager.getLogger(RegisterScreen.class);
 
@@ -30,9 +33,8 @@ public class RegisterScreen implements IScreen {
         {
             while (true) {
                 clearScreen();
-                System.out.println("\nWelcome to the Register Screen.");
-                System.out.println("Press [Enter] to continue..");
-                scan.nextLine();
+                System.out.println("\nWelcome to the Register Screen.\n");
+
 
                 // get username
                 username = getUsername(scan);
@@ -62,14 +64,14 @@ public class RegisterScreen implements IScreen {
                 switch(scan.nextLine()) {
                     case "y":
                         logger.info("User confirms credentials are correct.");
-                        clearScreen();
-                        System.out.println("Created user confirm test [y]");
                         User createdUser = userService.register(username, password);
-                        //Session session = new Session();
-//                        session.setSession(createdUser, cart.getId());
+                        session.setSession(Optional.ofNullable(createdUser).get().getUsername());
+                        //create a new cart upon successful registration
+                        cartService.createCart(createdUser.getId());
+                        String cid = Optional.ofNullable(createdUser).get().getId();
+                        session.setSessionCart(cid);
                         router.navigate("/menu", scan);
                         break exit;
-
                     case "n":
                         logger.info("Restarting registration process....");
                         System.out.println("Restarting register process");
@@ -162,7 +164,7 @@ public class RegisterScreen implements IScreen {
         }
         return username;
     }
-
+    /*************************** Helper methods *****************************************/
     public String getPassword() {
         return "";
     }
@@ -170,6 +172,8 @@ public class RegisterScreen implements IScreen {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
+
 
 }
 

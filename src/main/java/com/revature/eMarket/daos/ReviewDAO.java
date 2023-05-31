@@ -1,6 +1,5 @@
 package com.revature.eMarket.daos;
 
-import com.revature.eMarket.models.Product;
 import com.revature.eMarket.models.Review;
 import com.revature.eMarket.utils.ConnectionFactory;
 
@@ -8,6 +7,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ReviewDAO implements CrudDAO<Review> {
 
@@ -27,19 +27,29 @@ public class ReviewDAO implements CrudDAO<Review> {
     }
 
     @Override
-    public Review findById(String id) {
-        return null;
+    public Optional<Review> findById(String id) {
+        throw new UnsupportedOperationException("Unimplemented method 'findById' ");
     }
+
+//    @Override
+//    public Optional<CartItem> findById(String id) {
+//        return null;
+//    }
 
     @Override
     public List<Review> findAll() {
         return null;
     }
 
+    @Override
+    public List<Review> findAll(String id) {
+        return null;
+    }
+
     public Review insert(Review rev) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "INSERT INTO reviews (id,review, rating, user_id, product_id) VALUES (?, ?, ?, ?, ?)";
-            System.out.println("Testing ReviewDAO insert");
+
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setInt(1, (int) System.currentTimeMillis() % Integer.MAX_VALUE);
                 ps.setString(2, rev.getReview());

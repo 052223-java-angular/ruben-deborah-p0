@@ -11,15 +11,18 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-
 public class Cart {
     private String id;
     private String user_id;
-    private List<CartItems> items;
+    //    double total;
+//    private BigDecimal total_cost;
+    private List<CartItem> items;
 
-    private Cart(String user_id){
+    public Cart( String user_id){
         this.id = UUID.randomUUID().toString();
+//        this.total_cost = total_cost;
         this.user_id = user_id;
         this.items = new ArrayList<>();
     }
+
 }

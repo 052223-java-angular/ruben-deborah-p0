@@ -2,35 +2,41 @@ package com.revature.eMarket.services;
 
 import com.revature.eMarket.daos.CartDAO;
 import com.revature.eMarket.models.Cart;
-import com.revature.eMarket.models.CartItems;
+import com.revature.eMarket.models.Product;
+import com.revature.eMarket.models.User;
 import lombok.AllArgsConstructor;
 
-import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
 public class CartService {
     private final CartDAO cartDAO;
-//    private final CartItemService cartItemService;
-//    private final UserService userService;
-    public List<CartItems> findAllCartItemsByCartId(String cartId){
-        List<CartItems> cartItems = cartDAO.findAllCartItemsByCardId(cartId);
-        return cartItems;
-    }
-//
-//    public Optional<Cart> getCartByUserId(String user_id) {
-//        Optional<Cart> cart = cartDAO.findByUserId(user_id);
-//        if(!cart.isEmpty()){
-//            cart.get().setItems(cartItemService.getCartItemByCartId(cart.get().getUser_id()));
-//        }
-//        return cart;
-//    }
+    private final CartItemService cartItemService;
+    private final UserService userService;
 
-    public Cart findCartByCardId(String cartId) {
-        return null;
+
+    // creates a cart when user registers
+    public void createCart(String user_id){
+        Optional<User> userOpt = userService.findById(user_id);
+        if(userOpt.isEmpty()){
+            System.out.println("No user found!");
+        }
+        Cart cart = new Cart(userOpt.get().getId());
+        cartDAO.save(cart);
+    }
+    // adds cart item to cart
+    public void add(String product_id, int count, Cart cart, String user_id) {
+        Optional<Cart> cartOpt = cartDAO.findByUserId(user_id);
+        if(cartOpt.isEmpty()){
+            createCart(user_id);
+        }
+        cartItemService.add(product_id, count, cartOpt.get());
     }
 
-    public Optional<Cart> findCartByUserId(String id) {
-        return cartDAO.findByUserId(id);
+    // query for existing cart, for use with cart items
+    public Optional<Cart> findById(String user_id) {
+        Optional<Cart> cart = cartDAO.findById(user_id);
+        return cart;
     }
+
 }

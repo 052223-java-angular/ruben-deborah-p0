@@ -35,7 +35,7 @@ create table categories (
 CREATE TABLE products (
     id VARCHAR PRIMARY KEY NOT NULL,
     name VARCHAR NOT NULL,
-    price INT NOT NULL,
+    price float NOT NULL,
     stock INT NOT NULL,
     category_id VARCHAR NOT null,
     foreign key (category_id) references categories (id)
@@ -43,8 +43,9 @@ CREATE TABLE products (
 
 create table cart_items (
 	id VARCHAR primary key,
-	quantity varchar not null,
-	price varchar not null,
+	name VARCHAR NOT NULL,
+	quantity int not null,
+	price float not null,
 	cart_id varchar not null,
 	product_id varchar not null,
 	foreign key (cart_id) references carts (id),
@@ -52,7 +53,7 @@ create table cart_items (
 );
 
 CREATE TABLE reviews (
-    id VARCHAR PRIMARY KEY NOT NULL,
+    id int primary key,
     review VARCHAR NOT NULL,
     rating VARCHAR NOT NULL,
     user_id VARCHAR NOT NULL,

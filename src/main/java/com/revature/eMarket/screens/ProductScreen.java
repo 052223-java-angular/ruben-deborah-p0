@@ -3,9 +3,8 @@ package com.revature.eMarket.screens;
 import com.revature.eMarket.models.Category;
 import com.revature.eMarket.models.Product;
 import com.revature.eMarket.models.User;
-import com.revature.eMarket.services.CategoryService;
-import com.revature.eMarket.services.ProductService;
-import com.revature.eMarket.services.RouterService;
+import com.revature.eMarket.services.*;
+import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +19,9 @@ public class ProductScreen implements IScreen{
     private final ProductService productServ;
     private final RouterService router;
     private final CategoryService catServ;
+    private final CartItemService cartItemService;
+    private final CartService cartService;
+    Session session;
 
     private static final Logger logger = LogManager.getLogger(ProductScreen.class);
 
@@ -28,11 +30,12 @@ public class ProductScreen implements IScreen{
     public void start(Scanner scan) {
             List<Product> inventory = new ArrayList<>(); // = productServ.findAll();
             String input = "";
-            ProdDetailsScreen details = new ProdDetailsScreen(productServ);
+            ProdDetailsScreen details = new ProdDetailsScreen(productServ, cartItemService, cartService,this.session);
             Product prod = new Product();
 
             while (true) {
-                System.out.println("Products Screen. [Enter to cont..]");
+                System.out.println("Products Screen.\n");
+
                 System.out.println("\n[1] View All Products");
                 System.out.println("[2] View By Name");
                 System.out.println("[3] View By Category");
@@ -47,6 +50,7 @@ public class ProductScreen implements IScreen{
                         logger.info("Show all products selected...");
                         inventory = productServ.findAll();
                         printList(inventory);
+                        System.out.print("\nSelect an option: ");
                         input = scan.nextLine();
 
                         try {
@@ -70,10 +74,10 @@ public class ProductScreen implements IScreen{
                         prod = productServ.findByName(input);
 
                         if (prod != null) {
-                            System.out.print("[" + prod.getName() + "] ");
-                            System.out.print(prod.getName() + " ");
-                            System.out.print("Price: " + prod.getPrice() + " ");
-                            System.out.print("Stock: " + prod.getStock() + " \n");
+                            //System.out.print("[" + prod.getName() + "] ");
+                            //System.out.print(prod.getName() + " ");
+                            //System.out.print("Price: " + prod.getPrice() + " ");
+                            //System.out.print("Stock: " + prod.getStock() + " \n");
 
                             //selection(scan, prod, details, input);
                             details.details(scan, prod);
@@ -122,6 +126,7 @@ public class ProductScreen implements IScreen{
                         printList(inventory);
 
                         // select from displayed list of items
+                        System.out.print("Select and option (x to cancel): ");
                         input = scan.nextLine();
                         try {
                             int x = Integer.parseInt(input);
@@ -149,19 +154,20 @@ public class ProductScreen implements IScreen{
                 }
             }
     }
-
+    /*************************** Helper methods *****************************************/
     // Takes list of products and outputs
     public void printList(List<Product> list) {
         for (int i = 0; i < list.size(); i++) {
-            System.out.print("[" + ( i + 1)  + "]");
+            System.out.print("[" + ( i + 1)  + "] ");
             loopPrint(list.get(i));
         }
     }
 
     public void loopPrint(Product product) {
-        System.out.print("Name: " + product.getName() + " ");
-        System.out.print("Price: " + product.getPrice() + " ");
-        System.out.print("Stock: " + product.getStock() + "\n");
+        System.out.format("%-15s%-10.2f%5d\n", product.getName(), product.getPrice(), product.getStock());
+        //System.out.print("Name: " + product.getName() + " ");
+        //System.out.print("Price: " + product.getPrice() + " ");
+        //System.out.print("Stock: " + product.getStock() + "\n");
     }
 
     public void displayCategory(List<Category> categories) {
@@ -172,27 +178,10 @@ public class ProductScreen implements IScreen{
         }
     }
 
-    public void selection(Scanner scan, Product product, ProdDetailsScreen details, String input) {
-
-        exit: {
-            while(true) {
-                switch(input.toLowerCase()) {
-                    case "1":
-                        details.details(scan, product);
-                        //router.navigate("/prodDetails", scan);
-                        break exit;
-                    case "x":
-                        System.out.println("Exiting...");
-                        break exit;
-                    default:
-                        System.out.println("Invalid option, try again.");
-                        input = scan.nextLine();
-                        break;
-                }
-            }
-        }
-
-
+    public void printSession() {
+        System.out.println("id: "+ session.getUsername());
+        System.out.println("id: "+ session.getId());
+        System.out.println("role: "+ session.getRole_id());
     }
 
 }
