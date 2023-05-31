@@ -1,39 +1,43 @@
-# P0 - Pair Programming eCommerce Project
+# P0 - eCommerce Project
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [App Features](#app-features)
+- [Getting Started](#getting-started)
+- [Tech Stacks](#tech-stacks)
+- [Development Steps](#development-steps)
+- [ERD](#erd)
+
 
 ## Introduction
 
-This is a Java-based command-line interface (CLI) eCommerce application. The application will be primarily built using Java and will utilize a PostgreSQL database to store product and user information.
+This is a Java-based command-line interface (CLI) eCommerce application. The application will be primarily built using Java and will utilize a PostgreSQL database to store the information of user, products, reviews, and carts.
 
-## User Stories
+## App Features
 
-- **As a user**, I want to register an account so that I can have a personalized shopping experience.
-- **As a user**, I want to log in to my account so that I can access my shopping cart and order history.
-- **As a user**, I want to browse through products only when logging in.
-- **As a user**, I want to search for products by name, category, or price range so that I can find what I'm looking for.
-- **As a user**, I want to add products to my shopping cart so that I can purchase them later.
-- **As a user**, I want to modify the quantity or remove items from my cart so that I can make changes before finalizing the purchase.
-- **As a user**, I want to check out and pay for my order securely so that my personal and financial information is safe.
+- A user can register an account which will then create a session with the user's information.
+- A user can log in into an existing account in order to have access to their profile which contains their products and items in the cart.
+- A user can browse through products only when logged in.
+- A user is able to search for products by name, category, or price range to assist in finding what they're looking for.
+- A user can add products to my shopping cart so that I can purchase them later.
+- A user is able to modify the quantity or remove items from their cart to make it easier for them to make changes before finalizing the purchase.
+- A user is able to rate and review products in order to share their experience with other users.
+
+//Please delete once you're done double checking.
+- **As a user** I want to check out and pay for my order securely so that my personal and financial information is safe.
 - **As a user**, I want to review my order history so that I can keep track of my purchases.
-- **As a user**, I want to rate and review products so that I can share my experience with other users.
 - **As a user**, I want to view ratings and reviews from other users so that I can make informed buying decisions.
 
 
-## MVP (Minimum Viable Product)
+## Getting Started
 
-- User registration and login
-- Browsing and searching for products
-- Adding products to a shopping cart
-- Modifying the shopping cart
-- Secure payment process
-- Order history
-- Product rating and reviewing
-
-## Stretch Goals
-
-- Implementing a recommendation system based on user's previous purchases
-- Adding an admin role that can add, remove, or modify products
-- Implementing promotional codes and discounts
-- Adding a wish list feature
+- [Download the installer](https://docs.oracle.com/en/java/javase/17/) for Java 17.
+- [Download the installer](https://docs.docker.com/) for Docker.
+- [Download the installer](https://maven.apache.org/guides/index.html) for Maven.
+- [Download the installer](https://dbeaver.io/docs/) for DBeaver.
+- [Download the installer](https://learning.postman.com/docs/) for Postman.
+- [Download the installer](https://git-scm.com/doc) for Git Documentation.
 
 ## Tech Stacks
 
@@ -47,20 +51,42 @@ This is a Java-based command-line interface (CLI) eCommerce application. The app
 - **JUnit, Mockito, and PowerMock**: Used for unit and integration testing.
 - **Git and GitHub**: Used for version control.
 
-## Requirements
 
-- **Clean Codebase**: All code should be clean and well-documented. The repository should not include any unnecessary files or folders such as the `target/`, `.DS_Store`, etc. All files and directories should be appropriately named and organized.
+## Development Steps
 
-- **Database Design**: The database should be designed following the principles of the 3rd Normal Form (3NF) to ensure data integrity and efficiency. An Entity Relationship Diagram (ERD) should be included in the documentation.
+- **Git Commands**: Always make a new branch that branches from main
 
-- **Secure**: All sensitive user data such as passwords must be securely hashed before storing it in the database. The application should not display any sensitive information in error messages.
+  `git checkout main`
 
-- **Error Handling**: The application should handle potential errors gracefully and provide clear and helpful error messages to the users.
+  `git pull origin main`
 
-- **Testing**: The application should have a high test coverage. Unit tests and integration tests should be implemented using JUnit, Mockito, and PowerMock.
+  `git checkout -b "branch-name"`
 
-- **Version Control**: The application should be developed using a version control system, preferably Git, with regular commits denoting progress.
+- **Docker Setup**: Execute the PostgreSQL instance using Docker by executing the following command in your terminal. Changes can be made to the password:
 
+```bash
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
+``` 
+
+- **DBeaver Setup**: 
+-  In DBeaver create a postgres connection. 
+-  Username must be postgres, port: 5432, and password must be the password used to create Docker container. 
+-  Create a schema for the tables (all of which must be lowercase) which you would be used to store data. 
+-  Create new scripts and copy the ddl and dml-products under src/main/resources/db/ file path. 
+-  Then execute these scripts on your schema.
+
+- **Application Properties**: 
+-  Create an application.properties file under src/main/resources/ file path. 
+-  Copy the following and replace the things in '' with the accurate information:
+```bash
+url=jdbc:postgresql://localhost:5432/postgres?currentSchema='currentSchema'
+username='username'
+password='password'
+```
+
+## ERD
+
+//this part still needs to be deleted. only left it there to remember the instrctions.
 - **Documentation**: The repository should include a README file with clear instructions on how to run the application. Code should be well-commented to allow for easy understanding and maintenance.
 
 - **Scalable**: The design of the application should be scalable, allowing for easy addition of new features or modifications in the future.
