@@ -16,13 +16,13 @@ This is a Java-based command-line interface (CLI) eCommerce application. The app
 
 ## App Features
 
-- **A user can register an account which will then create a session with the user's information.
-- **A user can log in into an existing account in order to have access to their profile which contains their products and items in the cart.
-- **A user can browse through products only when logged in.
-- **A user is able to search for products by name, category, or price range to assist in finding what they're looking for.
-- **A user can add products to my shopping cart so that I can purchase them later.
-- **A user is able to modify the quantity or remove items from their cart to make it easier for them to make changes before finalizing the purchase.
-- **A user is able to rate and review products in order to share their experience with other users.
+- A user can register an account which will then create a session with the user's information.
+- A user can log in into an existing account in order to have access to their profile which contains their products and items in the cart.
+- A user can browse through products only when logged in.
+- A user is able to search for products by name, category, or price range to assist in finding what they're looking for.
+- A user can add products to my shopping cart so that I can purchase them later.
+- A user is able to modify the quantity or remove items from their cart to make it easier for them to make changes before finalizing the purchase.
+- A user is able to rate and review products in order to share their experience with other users.
 
 - **As a user** I want to check out and pay for my order securely so that my personal and financial information is safe.
 - **As a user**, I want to review my order history so that I can keep track of my purchases.
@@ -68,15 +68,15 @@ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -p 5432:54
 ``` 
 
 - **DBeaver Setup**: 
--  **In DBeaver create a postgres connection. 
--  **Username must be postgres, port: 5432, and password must be the password used to create Docker container. 
--  **Create a schema for the tables (all of which must be lowercase) which you would be used to store data. 
--  **Create new scripts and copy the ddl and dml-products under src/main/resources/db/ file path. 
--  **Then execute these scripts on your schema.
+-  In DBeaver create a postgres connection. 
+-  Username must be postgres, port: 5432, and password must be the password used to create Docker container. 
+-  Create a schema for the tables (all of which must be lowercase) which you would be used to store data. 
+-  Create new scripts and copy the ddl and dml-products under src/main/resources/db/ file path. 
+-  Then execute these scripts on your schema.
 
 - **Application Properties**: 
--  **Create an application.properties file under src/main/resources/ file path. 
--  **Copy the following and replace the things in '' with the accurate information:
+-  Create an application.properties file under src/main/resources/ file path. 
+-  Copy the following and replace the things in '' with the accurate information:
 ```bash
 url=jdbc:postgresql://localhost:5432/postgres?currentSchema='currentSchema'
 username='username'
