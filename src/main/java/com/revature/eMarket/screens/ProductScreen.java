@@ -34,8 +34,8 @@ public class ProductScreen implements IScreen{
             Product prod = new Product();
 
             while (true) {
-                System.out.println("Products Screen. [Enter to cont..]");
-                printSession();
+                System.out.println("Products Screen.\n");
+
                 System.out.println("\n[1] View All Products");
                 System.out.println("[2] View By Name");
                 System.out.println("[3] View By Category");
@@ -50,6 +50,7 @@ public class ProductScreen implements IScreen{
                         logger.info("Show all products selected...");
                         inventory = productServ.findAll();
                         printList(inventory);
+                        System.out.print("\nSelect an option: ");
                         input = scan.nextLine();
 
                         try {
@@ -73,10 +74,10 @@ public class ProductScreen implements IScreen{
                         prod = productServ.findByName(input);
 
                         if (prod != null) {
-                            System.out.print("[" + prod.getName() + "] ");
-                            System.out.print(prod.getName() + " ");
-                            System.out.print("Price: " + prod.getPrice() + " ");
-                            System.out.print("Stock: " + prod.getStock() + " \n");
+                            //System.out.print("[" + prod.getName() + "] ");
+                            //System.out.print(prod.getName() + " ");
+                            //System.out.print("Price: " + prod.getPrice() + " ");
+                            //System.out.print("Stock: " + prod.getStock() + " \n");
 
                             //selection(scan, prod, details, input);
                             details.details(scan, prod);
@@ -156,15 +157,16 @@ public class ProductScreen implements IScreen{
     // Takes list of products and outputs
     public void printList(List<Product> list) {
         for (int i = 0; i < list.size(); i++) {
-            System.out.print("[" + ( i + 1)  + "]");
+            System.out.print("[" + ( i + 1)  + "] ");
             loopPrint(list.get(i));
         }
     }
 
     public void loopPrint(Product product) {
-        System.out.print("Name: " + product.getName() + " ");
-        System.out.print("Price: " + product.getPrice() + " ");
-        System.out.print("Stock: " + product.getStock() + "\n");
+        System.out.format("%-15s%-10.2f%5d\n", product.getName(), product.getPrice(), product.getStock());
+        //System.out.print("Name: " + product.getName() + " ");
+        //System.out.print("Price: " + product.getPrice() + " ");
+        //System.out.print("Stock: " + product.getStock() + "\n");
     }
 
     public void displayCategory(List<Category> categories) {

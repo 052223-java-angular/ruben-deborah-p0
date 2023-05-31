@@ -29,10 +29,10 @@ public class HomeScreen implements IScreen {
             {
                 while (true) {
                     System.out.println("\n[1] Register Screen");
-                    System.out.println("[2] Menu Screen");
+                    System.out.println("[2] Account Screen");
                     System.out.println("[3] Login Screen");
-                    System.out.println("[4] Product Screen");
-                    System.out.println("[5] Cart Screen");
+                    System.out.println("[4] Product Selection");
+                    System.out.println("[5] Cart");
                     System.out.println("[x] Logout");
 
                     System.out.print("\nEnter: ");

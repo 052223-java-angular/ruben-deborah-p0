@@ -29,7 +29,7 @@ public class RouterService {
 
         switch (path) {
             case "/landing":
-                new Landing(this, this.session).start(scan);
+                new LandingScreen(this, this.session).start(scan);
                 break;
             case "/home":
                 new HomeScreen(this, this.session).start(scan);
@@ -47,7 +47,7 @@ public class RouterService {
                 new CartScreen(this, getCartService(), this.cartItemService,this.session).start(scan);
                 break;
             case "/menu":
-                new MenuScreen(getCartService(), this, this.session).start(scan);
+                new AccountScreen(getCartService(), this, this.session).start(scan);
                 break;
             default:
                 break;

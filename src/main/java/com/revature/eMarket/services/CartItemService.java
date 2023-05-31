@@ -15,6 +15,7 @@ public class CartItemService {
     private final CartItemDAO cartItemDAO;
     private final ProductService productService;
 
+
     public void add(String product_id, int count, Cart cart) {
         Optional<Product> productOpt = productService.getProd(product_id);
         if (productOpt.isEmpty()) {
@@ -32,10 +33,7 @@ public class CartItemService {
     }
 
 
-    public void modify(String item, int count) {
-        cartItemDAO.update(item, count);
-    }
-
+    // remove cart item from user cart
     public void remove(String item) {
         cartItemDAO.delete(item);
     }
@@ -44,14 +42,10 @@ public class CartItemService {
         return cartItemDAO.findAllByCart(cart_id);
     }
 
+    // inserts cart item
     public void insert(CartItem product) {
         cartItemDAO.save(product);
     }
-
-    public void clearByCartId(String id) {
-        cartItemDAO.deleteByCartId(id);
-    }
-
 
     /*************************** Helper methods *****************************************/
 

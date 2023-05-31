@@ -33,9 +33,7 @@ public class RegisterScreen implements IScreen {
         {
             while (true) {
                 clearScreen();
-                System.out.println("\nWelcome to the Register Screen.");
-                System.out.println("Press [Enter] to continue..");
-                scan.nextLine();
+                System.out.println("\nWelcome to the Register Screen.\n");
 
 
                 // get username
@@ -66,14 +64,12 @@ public class RegisterScreen implements IScreen {
                 switch(scan.nextLine()) {
                     case "y":
                         logger.info("User confirms credentials are correct.");
-                        System.out.println("Created user confirm test [y]");
                         User createdUser = userService.register(username, password);
                         session.setSession(Optional.ofNullable(createdUser).get().getUsername());
                         //create a new cart upon successful registration
                         cartService.createCart(createdUser.getId());
                         String cid = Optional.ofNullable(createdUser).get().getId();
                         session.setSessionCart(cid);
-                        System.out.println("Registering test");
                         router.navigate("/menu", scan);
                         break exit;
                     case "n":

@@ -20,7 +20,7 @@ public class App {
    * @throws SQLException           if a database error occurs
    */
   public static void main(String args[]) throws SQLException, IOException, ClassNotFoundException {
-    System.out.println(ConnectionFactory.getInstance().getConnection());
+    //System.out.println(ConnectionFactory.getInstance().getConnection()); // Use this to check db connection
     logger.info("------------------- START APPLICATION ------------------");
 
     Scanner scan = new Scanner(System.in);

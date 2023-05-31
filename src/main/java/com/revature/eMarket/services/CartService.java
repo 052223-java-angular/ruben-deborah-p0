@@ -12,10 +12,10 @@ import java.util.Optional;
 public class CartService {
     private final CartDAO cartDAO;
     private final CartItemService cartItemService;
-//    private final ProductService productService;
     private final UserService userService;
 
 
+    // creates a cart when user registers
     public void createCart(String user_id){
         Optional<User> userOpt = userService.findById(user_id);
         if(userOpt.isEmpty()){
@@ -24,6 +24,7 @@ public class CartService {
         Cart cart = new Cart(userOpt.get().getId());
         cartDAO.save(cart);
     }
+    // adds cart item to cart
     public void add(String product_id, int count, Cart cart, String user_id) {
         Optional<Cart> cartOpt = cartDAO.findByUserId(user_id);
         if(cartOpt.isEmpty()){
@@ -31,19 +32,11 @@ public class CartService {
         }
         cartItemService.add(product_id, count, cartOpt.get());
     }
-    public void remove(String item_id) {
-        cartItemService.remove(item_id);
-    }
 
-    public void modify(String item, int amount) {
-        cartItemService.modify(item, amount);
-    }
-
+    // query for existing cart, for use with cart items
     public Optional<Cart> findById(String user_id) {
         Optional<Cart> cart = cartDAO.findById(user_id);
         return cart;
     }
-    public void clear(String id) {
-        cartItemService.clearByCartId(id);
-    }
+
 }

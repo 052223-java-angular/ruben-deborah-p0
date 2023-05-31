@@ -75,7 +75,6 @@ public class CartDAO implements CrudDAO<Cart> {
 
             String sql = "SELECT * FROM carts WHERE user_id = ?";
             try(PreparedStatement ps = conn.prepareStatement(sql)) {
-            System.out.println("CartDAO test");
                 ps.setString(1, id);
 
                 try (ResultSet rs = ps.executeQuery()) {
@@ -87,8 +86,6 @@ public class CartDAO implements CrudDAO<Cart> {
                     }
                 }
             }
-            System.out.println("CartDAO test");
-
         }catch (SQLException e) {
             throw new RuntimeException("Unable to access the database. Debug");
         }catch(ClassNotFoundException e) {

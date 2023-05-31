@@ -49,7 +49,7 @@ public class ReviewDAO implements CrudDAO<Review> {
     public Review insert(Review rev) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "INSERT INTO reviews (id,review, rating, user_id, product_id) VALUES (?, ?, ?, ?, ?)";
-            System.out.println("Testing ReviewDAO insert");
+
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setInt(1, (int) System.currentTimeMillis() % Integer.MAX_VALUE);
                 ps.setString(2, rev.getReview());

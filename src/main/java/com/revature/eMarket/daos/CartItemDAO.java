@@ -38,7 +38,6 @@ public class CartItemDAO implements CrudDAO<CartItem> {
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -67,6 +66,7 @@ public class CartItemDAO implements CrudDAO<CartItem> {
     }
 
 
+    // delete item from cart by cart item id
     @Override
     public void delete(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
@@ -87,6 +87,7 @@ public class CartItemDAO implements CrudDAO<CartItem> {
         }
     }
 
+    // find all items from a user cart
     public List<CartItem> findAllByCart(String cart_id) {
         List<CartItem> cartList = new ArrayList<>();
 
@@ -124,6 +125,7 @@ public class CartItemDAO implements CrudDAO<CartItem> {
         return cartList;
     }
 
+    // find specific cart item by id
     @Override
     public Optional<CartItem> findById(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
@@ -197,24 +199,4 @@ public class CartItemDAO implements CrudDAO<CartItem> {
         return storeList;
     }
 
-
-
-    public void deleteByCartId(String id) {
-        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "delete from cart_items where cart_id = ?";
-
-            try(PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setString(1, id);
-                ps.executeUpdate();
-            }
-        }catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db \n" + e);
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot find application.properties \n" + e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load jdbc \n" + e);
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
 }

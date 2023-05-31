@@ -33,11 +33,11 @@ public class CartScreen implements IScreen {
         Product prod = new Product();
         exit: {
             while (true) {
-                System.out.println("Cart Screen. [Enter to cont..]");
+                System.out.println("Cart Screen. ");
 
                 System.out.println("\n[1] View Cart");
                 System.out.println("[x] Exit ");
-                System.out.println("Select your option: ");
+                System.out.print("\nSelect your option: ");
 
                 logger.info("Start cart selection process...");
 
@@ -46,6 +46,12 @@ public class CartScreen implements IScreen {
                         logger.info("Show all cart...");
                         inventory = cartItemService.findAllByCart(session.getCart_id());
                         printList(inventory);
+
+                        if (inventory.isEmpty()) {
+                            System.out.println("\nCart is empty.");
+                            break;
+                        }
+
                         input = scan.nextLine();
 
                         try {

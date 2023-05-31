@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.Scanner;
 
 @AllArgsConstructor
-public class Landing implements IScreen {
-    private static final Logger logger = LogManager.getLogger(Landing.class);
+public class LandingScreen implements IScreen {
+    private static final Logger logger = LogManager.getLogger(LandingScreen.class);
     private final RouterService router;
     Session session;
     @Override
@@ -21,10 +21,9 @@ public class Landing implements IScreen {
         exit:
         {
             while (true) {
-                System.out.println("User: " + session.getUsername());
                 System.out.println("Welcome to 'eMarket'!\n");
-                System.out.println("\n[1] Register Screen");
-                System.out.println("[2] Login Screen");
+                System.out.println("\n[1] Register User");
+                System.out.println("[2] Login");
                 System.out.println("[x] Exit Program");
 
                 System.out.print("\nEnter: ");

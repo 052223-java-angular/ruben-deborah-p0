@@ -34,9 +34,8 @@ public class LogInScreen implements IScreen{
                 logger.info("Welcome to the Login Screen of eMarket!");
                 clearScreen();
 
-
                 System.out.println("Login Screen.\n");
-                System.out.println("[x] Exit");
+                System.out.println("[x] Exit to menu");
 
                 // get username
                 username = getUsername(scan);
@@ -82,24 +81,24 @@ public class LogInScreen implements IScreen{
                         }
                         // gets cart id and sets this current session with user cart
                         String cid = confirmedUser.get().getId().toString();
-                        System.out.println(cid);
                         Optional<Cart> cart = cartService.findById(cid);
+
                         session.setSession(confirmedUser, cart.get().getId());
                         // session successful
                         System.out.println("\nLogin Successful!");
-                        System.out.println("\nPress [Enter] to continue...");
                         // navigate back to the menu screen
-                        //session//.getHistory().push("/login");
                         router.navigate("/home", scan);
                         break exit;
                     case "n":
                         clearScreen();
+                        logger.info("Restarting login");
                         System.out.println("Restarting process...");
                         System.out.println("\nPress [Enter] to continue...");
                         scan.nextLine();
                         break;
                     default:
                         clearScreen();
+                        logger.warn("Wrong option");
                         System.out.println("Invalid option!");
                         System.out.println("\nPress [Enter] to continue...");
                         scan.nextLine();

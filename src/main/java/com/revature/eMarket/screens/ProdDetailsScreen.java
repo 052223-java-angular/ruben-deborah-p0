@@ -7,6 +7,7 @@ import com.revature.eMarket.models.User;
 import com.revature.eMarket.services.CartItemService;
 import com.revature.eMarket.services.CartService;
 import com.revature.eMarket.services.ProductService;
+import com.revature.eMarket.services.UserService;
 import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -28,40 +29,44 @@ public class ProdDetailsScreen implements IScreen {
     public void details(Scanner scan, Product product) {
 
         logger.info("Start details process...");
-        System.out.print("[" + product.getId() + "] ");
-        System.out.print("Name: " + product.getName() + " ");
-        System.out.print("Price: " + product.getPrice() + " ");
-        System.out.print("Stock: " + product.getStock() + " \n");
 
         List<Review> reviews = new ArrayList<>();
         String input = "";
 
         exit:
         {
+            System.out.print("[" + product.getId() + "] ");
+            System.out.print("Name: " + product.getName() + " ");
+            System.out.print("Price: " + product.getPrice() + " ");
+            System.out.print("Stock: " + product.getStock() + " \n");
+
             while (true) {
-                System.out.println("Select: [x to exit]");
+
                 System.out.println("\n[1] View All Reviews");
                 System.out.println("[2] Leave a Review");
                 System.out.println("[3] Add to cart TODO");
                 System.out.println("[x] Exit to products");
 
-                switch (scan.nextLine()){
+                System.out.print("\nSelect an option: ");
+            rev:
+            {
+                switch (scan.nextLine()) {
                     case "1":
                         logger.info("Start reviews process...");
                         reviews = productServ.findByProdId(product.getId());
-                        System.out.println("Product id: "+product.getId());
                         printList(reviews);
-
-                        break;
+                        System.out.print("\nEnter to continue: ");
+                        input = scan.nextLine();
+                        break rev;
                     case "2":
                         logger.info("Start add review process...");
                         String rate = "";
                         String rev = "";
-                        System.out.println("Leaving Reviews");
+                        System.out.println("user writes Reviews");
 
                         jump:
                         {
-                            while(true) {
+                            while (true) {
                                 // rate out of 5
                                 System.out.println("Rate product [0 - 5]: ");
                                 rate = scan.nextLine();
@@ -80,22 +85,18 @@ public class ProdDetailsScreen implements IScreen {
                                     logger.info("Exit Registration Screen!");
                                     break exit;
                                 }
-                                /*if (!productServ.isValidReview(rev)) {
-                                    logger.info("Exit Registration Screen!");
-                                    System.out.println("Invalid input, Alphanumeric");
-                                    break;
-                                }*/
 
-                                logger.info("Manual USEr input for testing. TODO");
+                                logger.info("Manual USEr input for testing");
                                 System.out.println("Rating: " + rate);
-                                System.out.println("Review: "+ rev);
+                                System.out.println("Review: " + rev);
                                 System.out.println("Confirm? [y/n] ");
-                                Review review = new Review(rate, rev, session.getId() ,product.getId());
-                                switch(scan.nextLine()) {
+                                Review review = new Review(rate, rev, session.getId(), product.getId());
+
+                                switch (scan.nextLine()) {
                                     case "y":
                                         logger.info("User confirms review.");
                                         productServ.insert(review);
-                                        break exit;
+                                        break rev;
 
                                     case "n":
                                         logger.info("Leaving review input....");
@@ -116,7 +117,8 @@ public class ProdDetailsScreen implements IScreen {
                         cartService.findById(session.getId());
                         cartItemService.insert(cartItem);
 
-                        System.out.println("Item added to cart!");
+                        System.out.println("Item added to cart! [Enter] to continue");
+                        input = scan.nextLine();
                         break;
                     case "x":
                         logger.info("Exiting product details");
@@ -127,6 +129,7 @@ public class ProdDetailsScreen implements IScreen {
                         System.out.println("Invalid selection, try again.");
                         break;
                 }
+            }
             }
         }
 
@@ -143,7 +146,7 @@ public class ProdDetailsScreen implements IScreen {
 
     public void loopPrint(Review review) {
         logger.info("Print all reviews...");
-        System.out.print("[" + review.getId() + "] ");
+        //System.out.format("%-15s%-10.2f%5d\n", "Rating: " + review.getRating(), product.getPrice(), product.getStock());
         System.out.print("Rating: " + review.getRating() + " ");
         System.out.print("Review: " + review.getReview() + " ");
         System.out.print("User: " + review.getUser_id() + " \n");

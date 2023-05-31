@@ -14,9 +14,6 @@ public class RoleService {
     public Role findByName(String username) {
 
         Optional<Role> roleOpt = roleDao.findByName(username);
-        System.out.println("RoleService > findByName");
-        System.out.println(username);
-
         if (roleOpt == null) {
             System.out.println("User Role not found :(");
         }

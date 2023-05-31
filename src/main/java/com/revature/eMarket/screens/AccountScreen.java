@@ -1,6 +1,5 @@
 package com.revature.eMarket.screens;
 
-import com.revature.eMarket.models.Cart;
 import com.revature.eMarket.services.CartService;
 import com.revature.eMarket.services.RouterService;
 import com.revature.eMarket.utils.Session;
@@ -11,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Scanner;
 
 @AllArgsConstructor
-public class MenuScreen implements IScreen {
+public class AccountScreen implements IScreen {
     private static final Logger logger = LogManager.getLogger(RegisterScreen.class);
 
     private CartService cartService;
@@ -20,17 +19,15 @@ public class MenuScreen implements IScreen {
 
     @Override
     public void start(Scanner scan) {
-        System.out.print("Welcome to Session Screen " + session.getUsername() + "!\n");
-        System.out.println("id: "+ session.getId());
-        System.out.println("role: "+ session.getRole_id());
-        System.out.println("cart id: " + session.getCart_id());
+        //display user settings
+        System.out.println("Hello, "  + session.getUsername()+ "!\n");
 
 
 
         while (true) {
-
+            //prompt users
             System.out.println("\n[1] Login Out");
-            System.out.println("[x] Back");
+            System.out.println("[x] Main Menu");
 
             System.out.print("\nEnter: ");
             String input = scan.nextLine();
@@ -53,6 +50,5 @@ public class MenuScreen implements IScreen {
                     break;
             }
         }
-
     }
 }
