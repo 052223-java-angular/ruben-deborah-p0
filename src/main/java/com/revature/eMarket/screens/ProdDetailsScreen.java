@@ -44,7 +44,7 @@ public class ProdDetailsScreen implements IScreen {
 
                 System.out.println("\n[1] View All Reviews");
                 System.out.println("[2] Leave a Review");
-                System.out.println("[3] Add to cart TODO");
+                System.out.println("[3] Add to cart");
                 System.out.println("[x] Exit to products");
 
                 System.out.print("\nSelect an option: ");
@@ -53,7 +53,7 @@ public class ProdDetailsScreen implements IScreen {
                 switch (scan.nextLine()) {
                     case "1":
                         logger.info("Start reviews process...");
-                        reviews = productServ.findByProdId(product.getId());
+                        reviews = productServ.findByProdId(product.getId(), session.getId());
                         printList(reviews);
                         System.out.print("\nEnter to continue: ");
                         input = scan.nextLine();

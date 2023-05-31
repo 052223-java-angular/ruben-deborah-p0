@@ -4,6 +4,7 @@ import com.revature.eMarket.daos.ProductDAO;
 import com.revature.eMarket.daos.ReviewDAO;
 import com.revature.eMarket.models.Product;
 import com.revature.eMarket.models.Review;
+import com.revature.eMarket.utils.Session;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -30,8 +31,8 @@ public class ProductService {
         return prodDAO.findByName(name);
     }
 
-    public List<Review> findByProdId(String id) {
-        return reviewDAO.findByProdId(id);
+    public List<Review> findByProdId(String id, String user_id) {
+        return reviewDAO.findByProdId(id, user_id);
     }
 
     public boolean isValidRating(String rating) {

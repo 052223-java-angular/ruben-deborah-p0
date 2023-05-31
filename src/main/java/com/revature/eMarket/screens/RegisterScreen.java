@@ -76,12 +76,9 @@ public class RegisterScreen implements IScreen {
                         logger.info("Restarting registration process....");
                         System.out.println("Restarting register process");
                         System.out.print("Press [Enter] to continue...");
-                        scan.nextLine();
                     default:
                         logger.warn("Invalid Option");
                         System.out.println("Choose a valid option.");
-                        System.out.print("Press [Enter] to continue...");
-                        scan.nextLine();
                         break;
                 }
 
@@ -107,9 +104,7 @@ public class RegisterScreen implements IScreen {
             }
             // verify if input password is valid
             if (!userService.isValidPassword(password)) {
-                System.out.println("Invalid password. 8 chars, 1 letter and 1 number.");
-                System.out.println("\nPress [Enter] to continue...");
-                scan.nextLine();
+                System.out.println("Invalid password. 8 chars, 1 letter and 1 number. Try again.");
                 continue;
             }
 
@@ -145,8 +140,8 @@ public class RegisterScreen implements IScreen {
             if (!userService.isValidUsername(username)) {
                 logger.warn("Invalid username for: {}", username);
                 clearScreen();
-                System.out.println("Invalid username. [8.20 chars, alpha num].");
-                System.out.println("\nPress [Enter] to continue.");
+                System.out.println("\nInvalid username. [8.20 chars, alpha num]. Try again.\n");
+
                 scan.nextLine();
                 continue;
             }
@@ -154,9 +149,8 @@ public class RegisterScreen implements IScreen {
             if (!userService.isUniqueUsername(username)) {
                 logger.warn("Username is not unique for: {}", username);
                 clearScreen();
-                System.out.print("Username is not unique!");
-                System.out.print("\nPress [Enter] to continue...");
-                scan.nextLine();
+                System.out.print("Username is not unique! Try again\n");
+
                 continue;
             }
 
