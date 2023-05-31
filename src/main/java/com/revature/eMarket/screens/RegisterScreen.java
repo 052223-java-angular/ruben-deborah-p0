@@ -65,7 +65,7 @@ public class RegisterScreen implements IScreen {
                     case "y":
                         logger.info("User confirms credentials are correct.");
                         User createdUser = userService.register(username, password);
-                        session.setSession(Optional.ofNullable(createdUser).get().getUsername());
+                        session.setSession(Optional.ofNullable(createdUser),Optional.ofNullable(createdUser).get().getUsername());
                         //create a new cart upon successful registration
                         cartService.createCart(createdUser.getId());
                         String cid = Optional.ofNullable(createdUser).get().getId();
