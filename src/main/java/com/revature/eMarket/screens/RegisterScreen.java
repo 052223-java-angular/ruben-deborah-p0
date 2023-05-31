@@ -164,7 +164,7 @@ public class RegisterScreen implements IScreen {
         }
         return username;
     }
-
+    /*************************** Helper methods *****************************************/
     public String getPassword() {
         return "";
     }

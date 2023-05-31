@@ -126,6 +126,7 @@ public class ProductScreen implements IScreen{
                         printList(inventory);
 
                         // select from displayed list of items
+                        System.out.print("Select and option (x to cancel): ");
                         input = scan.nextLine();
                         try {
                             int x = Integer.parseInt(input);
@@ -153,7 +154,7 @@ public class ProductScreen implements IScreen{
                 }
             }
     }
-
+    /*************************** Helper methods *****************************************/
     // Takes list of products and outputs
     public void printList(List<Product> list) {
         for (int i = 0; i < list.size(); i++) {

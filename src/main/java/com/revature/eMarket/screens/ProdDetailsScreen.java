@@ -134,7 +134,7 @@ public class ProdDetailsScreen implements IScreen {
         }
 
     }
-
+    /*************************** Helper methods *****************************************/
     public void printList(List<Review> list) {
         if (list.isEmpty()) {
             return;
