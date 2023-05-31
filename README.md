@@ -85,6 +85,7 @@ password='password'
 
 ## ERD
 
+//this part still needs to be deleted. only left it there to remember the instrctions.
 - **Documentation**: The repository should include a README file with clear instructions on how to run the application. Code should be well-commented to allow for easy understanding and maintenance.
 
 - **Scalable**: The design of the application should be scalable, allowing for easy addition of new features or modifications in the future.
